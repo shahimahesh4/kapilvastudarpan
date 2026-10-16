@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&display=swap');
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source "../**/*.blade.php";
+@source "../**/*.js";
+@source "../**/*.vue";
+
+@theme {
+    --font-sans: 'Mukta', ui-sans-serif, system-ui, sans-serif;
+    --color-brand: #a50404;
+    --color-ink: #151515;
+    --color-link: #075db6;
+    --color-news-red: #a50404;
+    --color-news-black: #000000;
+}
+
+@layer base {
+    [x-cloak] { display: none !important; }
+    html { font-size: 18px; }
+    body { @apply bg-white text-stone-900 antialiased; }
+    a, button, input { @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700; }
+    a[href], button:not(:disabled) { cursor: pointer; }
+}
+
+@layer components {
+    #primary-nav > div > ul { font-size: 20px; }
+    #main-content > section { margin-bottom: 2.5rem; }
+    #main-content > section:last-child { margin-bottom: 0; }
+    @media (max-width: 639px) { #main-content > section { margin-bottom: 2rem; } }
+    .profile-avatar { display: inline-block; flex: none; overflow: hidden; border-radius: 9999px; background: url('/images/profile-avatar.png') center / 130% no-repeat; }
+    button[aria-label="खोज्नुहोस्"] svg { display: none; }
+    button[aria-label="खोज्नुहोस्"]::after { content: '☰'; font-size: 1.45rem; font-weight: 700; line-height: 1; }
+    button[aria-label="मेनु खोल्नुहोस्"]:has(svg) svg { display: none; }
+    button[aria-label="मेनु खोल्नुहोस्"]:has(svg)::after { content: '☰'; font-size: 1.45rem; font-weight: 700; line-height: 1; }
+    .story-art { @apply relative overflow-hidden bg-gradient-to-br from-stone-900 via-stone-700 to-stone-400; }
+    .story-art::after { content: ''; @apply absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent; }
+    .story-art--lead { @apply from-red-950 via-red-700 to-amber-500; }
+    .story-art--video { @apply from-black via-stone-800 to-red-950; }
+    .story-art--wide { @apply from-sky-950 via-sky-700 to-stone-300; }
+    .story-art--small { @apply from-stone-800 via-stone-500 to-stone-200; }
+    .story-art--security { @apply from-slate-950 via-blue-800 to-slate-300; }
+    .story-art--sports-lead { @apply from-emerald-950 via-emerald-800 to-stone-300; background-image: radial-gradient(circle at 27% 62%, #f8fafc 0 8%, #151515 8.5% 10%, #f8fafc 10.5% 13%, transparent 13.5%), linear-gradient(140deg, #0b2016 0%, #24633e 54%, #95a981 100%); }
+    .story-art--sports-rugby { @apply from-blue-950 via-blue-700 to-stone-300; background-image: linear-gradient(120deg, rgba(14, 34, 83, .9), transparent 55%), repeating-linear-gradient(90deg, transparent 0 22%, rgba(255,255,255,.24) 22.5% 23%, transparent 23.5% 45%), linear-gradient(135deg, #183b7a, #77a6b9); }
+    .story-art--sports-afc { @apply from-red-950 via-red-700 to-amber-200; background-image: linear-gradient(125deg, rgba(80, 8, 8, .78), transparent 58%), repeating-linear-gradient(135deg, #ad2e2e 0 9%, #f4d14c 9% 18%, #fafafa 18% 27%, #27744c 27% 36%); }
+    .story-art--sports-medal { @apply from-sky-950 via-sky-600 to-rose-300; background-image: radial-gradient(circle at 30% 47%, #d9902f 0 10%, #f6c35b 10.5% 12%, transparent 12.5%), linear-gradient(135deg, #971f32 0 36%, #1a5eae 36% 68%, #d4e4f0 68%); }
+    .story-art--sports-partner { @apply from-amber-950 via-red-800 to-amber-300; background-image: repeating-linear-gradient(90deg, rgba(255,211,135,.14) 0 2%, transparent 2% 10%), linear-gradient(145deg, #381211, #9c3924 55%, #dfad55); }
+    .story-art--political-feature { @apply from-blue-950 via-blue-700 to-slate-300; background-image: radial-gradient(ellipse at 51% 45%, #f4d5bd 0 7%, #ede3d7 7.2% 10%, transparent 10.3%), radial-gradient(ellipse at 50% 70%, #20283e 0 19%, transparent 19.3%), linear-gradient(180deg, rgba(35, 96, 164, .22) 0 45%, rgba(15, 42, 83, .7) 45% 100%), linear-gradient(135deg, #8ab6e7 0 48%, #174d94 48% 100%); }
+    .story-art__stamp { @apply absolute bottom-3 left-3 z-10 bg-[#a50404] px-2 py-1 text-xs font-extrabold tracking-wide text-white; }
+    .rashi-icon { display: block; width: 5rem; height: 5rem; margin: 0 auto; padding: 0.65rem; border: 1px solid #fecdd3; border-radius: 9999px; background-color: #fff7f7; background-image: url('/images/rashifal-icons.png'); background-repeat: no-repeat; background-origin: content-box; background-clip: content-box; background-size: 600% 200%; }
+    .rashi-icon--0 { background-position: 0% 0%; }
+    .rashi-icon--1 { background-position: 20% 0%; }
+    .rashi-icon--2 { background-position: 40% 0%; }
+    .rashi-icon--3 { background-position: 60% 0%; }
+    .rashi-icon--4 { background-position: 80% 0%; }
+    .rashi-icon--5 { background-position: 100% 0%; }
+    .rashi-icon--6 { background-position: 0% 100%; }
+    .rashi-icon--7 { background-position: 20% 100%; }
+    .rashi-icon--8 { background-position: 40% 100%; }
+    .rashi-icon--9 { background-position: 60% 100%; }
+    .rashi-icon--10 { background-position: 80% 100%; }
+    .rashi-icon--11 { background-position: 100% 100%; }
+
+}
