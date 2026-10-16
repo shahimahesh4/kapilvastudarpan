@@ -25,6 +25,23 @@
 }
 
 @layer components {
+    .theme-toggle { display: inline-flex; align-items: center; gap: .15rem; min-height: 1.5rem; padding: .1rem .2rem; border: 1px solid #e7e5e4; border-radius: 9999px; background: #fff; color: #a50404; box-shadow: 0 1px 4px rgb(0 0 0 / .12); transition: background-color .2s, color .2s, border-color .2s; }
+    .theme-toggle:hover { border-color: #a50404; }
+    .theme-toggle__sun, .theme-toggle__moon { display: grid; width: .95rem; height: .95rem; place-items: center; border-radius: 9999px; font-size: .65rem; line-height: 1; }
+    .theme-toggle__sun { background: #fff1f2; color: #c71d31; box-shadow: 0 1px 3px rgb(0 0 0 / .14); }
+    .theme-toggle__moon { color: #7c7c7c; }
+    .theme-toggle--dark { border-color: #3f3f46; background: #151515; color: #fbbf24; }
+    .theme-toggle--dark .theme-toggle__sun { background: transparent; box-shadow: none; color: #737373; }
+    .theme-toggle--dark .theme-toggle__moon { background: #292524; color: #f8fafc; box-shadow: 0 1px 3px rgb(0 0 0 / .35); }
+
+    .site-dark { background: #000 !important; color: #f5f5f5; }
+    .site-dark .bg-white, .site-dark .bg-stone-50, .site-dark .bg-stone-100, .site-dark .bg-\[\#effaff\], .site-dark .bg-\[\#fff7f7\], .site-dark .bg-\[\#fdfdfc\] { background-color: #090909 !important; }
+    .site-dark .bg-gradient-to-br.from-red-50, .site-dark .bg-gradient-to-br.from-red-50.via-white { background-image: none !important; background-color: #090909 !important; }
+    .site-dark .text-stone-900, .site-dark .text-stone-800, .site-dark .text-stone-700, .site-dark .text-stone-600, .site-dark .text-stone-500, .site-dark .text-\[\#073c61\] { color: #f5f5f5 !important; }
+    .site-dark .border-stone-200, .site-dark .border-stone-300, .site-dark .border-sky-100, .site-dark .divide-stone-200, .site-dark .divide-stone-300 { border-color: #3f3f46 !important; }
+    .site-dark .ring-red-100 { --tw-ring-color: #4b1d25 !important; }
+    .site-dark .rashi-icon { background-color: #171717; border-color: #7f1d1d; }
+    .site-dark input { background: #111 !important; color: #f5f5f5; border-color: #52525b !important; }
     #primary-nav > div > ul { font-size: 20px; }
     #main-content > section { margin-bottom: 2.5rem; }
     #main-content > section:last-child { margin-bottom: 0; }

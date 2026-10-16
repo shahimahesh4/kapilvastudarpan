@@ -23,6 +23,9 @@ class ArticleForm
                 TextInput::make('title')->required()->live(onBlur: true)->columnSpanFull(),
                 TextInput::make('slug')->required()->unique(ignoreRecord: true),
                 TextInput::make('author')->required()->default('कपिलवस्तु दर्पण'),
+                Select::make('province')
+                    ->options(array_combine($provinces = ['कोशी प्रदेश', 'मधेश प्रदेश', 'बागमती प्रदेश', 'गण्डकी प्रदेश', 'लुम्बिनी प्रदेश', 'कर्णाली प्रदेश', 'सुदूरपश्चिम प्रदेश'], $provinces))
+                    ->searchable(),
                 Textarea::make('excerpt')->rows(3)->columnSpanFull(),
                 Textarea::make('body')->rows(10)->columnSpanFull(),
                 TextInput::make('image_path')->label('Image URL or storage path')->columnSpanFull(),

@@ -2,11 +2,18 @@
 
 namespace App\Livewire;
 
+use App\Models\Article;
+use App\Models\Category;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class NewsHomepage extends Component
 {
+    #[Url(as: 'q', except: '')]
     public string $query = '';
+
+    #[Url(except: 'कोशी प्रदेश')]
+    public string $province = 'कोशी प्रदेश';
 
     public bool $menuOpen = false;
 
@@ -15,19 +22,31 @@ class NewsHomepage extends Component
     public function search(): void
     {
         $this->validate(['query' => ['required', 'string', 'min:2']]);
+        $this->redirectRoute('search', ['q' => $this->query], navigate: true);
     }
 
     public function render()
     {
+        $articles = Article::query()
+            ->with('category')
+            ->published()
+            ->latest('published_at')
+            ->take(18)
+            ->get()
+            ->map(fn (Article $article) => [
+                'title' => $article->title,
+                'category' => $article->category->name,
+                'time' => $article->published_at->format('Y-m-d H:i'),
+                'url' => route('articles.show', $article),
+                'featured' => $article->is_featured,
+            ])
+            ->all();
+
         return view('livewire.news-homepage', [
-            'headlines' => [
-                ['category' => 'कपिलवस्तु विशेष', 'title' => 'कपिलवस्तुमा अनौठो भाँडो र तामाको पुरानो सिक्का फेला', 'time' => '२०८३ श्रावण ५, मंगलवार', 'featured' => true],
-                ['category' => 'शिक्षा', 'title' => 'सिद्धार्थ क्याम्पसमा शुल्क वृद्धि विवाद : मासिक र भर्ना शुल्क पुनरावलोकन गर्न विद्यार्थीको माग', 'time' => '२०८३ आश्विन ६, मंगलवार'],
-                ['category' => 'मुख्य समाचार', 'title' => 'बसन्त कालाथोकी हत्या प्रकरणको छानविन गर्न सांसद घिमिरेको माग', 'time' => '२०८३ भाद्र ९, मंगलवार'],
-                ['category' => 'राजनीति', 'title' => 'संविधान संशोधनबारे जनमोर्चा : संघीयता खारेज गर्न र राष्ट्रिय जनावर गैंडा बनाउन प्रस्ताव', 'time' => '२०८३ असार ३०, मंगलवार'],
-                ['category' => 'अर्थ', 'title' => 'राष्ट्रिय वाणिज्य बैंकमा ६ नयाँ सञ्चालक नियुक्त, अर्थमन्त्रीको निर्णयमाथि प्रश्न', 'time' => '२०८३ असार ३०, मंगलवार'],
-                ['category' => 'समाज', 'title' => 'स्थानीय तहमा सार्वजनिक सेवाको पहुँच विस्तार गर्ने तयारी', 'time' => '२०८३ आश्विन ४, शनिवार'],
-            ],
+            'headlines' => $articles,
+            'categories' => Category::query()->orderBy('name')->get(),
+            'provinceArticles' => Article::query()->with('category')->published()
+                ->where('province', $this->province)->latest('published_at')->take(5)->get(),
         ]);
     }
 }
