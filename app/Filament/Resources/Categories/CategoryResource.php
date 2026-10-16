@@ -9,9 +9,11 @@ use App\Models\Category;
 use BackedEnum;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -21,26 +23,101 @@ class CategoryResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
 
+    protected static ?string $navigationLabel = 'Categories';
+
+    protected static ?string $modelLabel = 'Category';
+
+    protected static ?string $pluralModelLabel = 'Categories';
+
+    protected static ?int $navigationSort = 2;
+
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([
-            TextInput::make('name')->required()->live(onBlur: true),
-            TextInput::make('slug')->required()->unique(ignoreRecord: true),
-            Textarea::make('description')->rows(3)->columnSpanFull(),
+        return $schema
+            ->columns(1)
+            ->components([
+                \Filament\Schemas\Components\Section::make('Category Details')
+                    ->columnSpanFull()
+                    ->schema([
+                    \Filament\Schemas\Components\Grid::make(2)->schema([
+                        TextInput::make('name')
+                            ->label('Category Name')
+                            ->required()
+                            ->placeholder('e.g. Politics, Sports, Economy')
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(function (string $operation, $state, callable $set, callable $get) {
+                                if ($operation === 'create' || blank($get('slug'))) {
+                                    $slug = \Illuminate\Support\Str::slug((string) $state);
+                                    $set('slug', $slug ?: 'category-' . time());
+                                }
+                            }),
+
+                        TextInput::make('slug')
+                            ->label('Slug')
+                            ->required()
+                            ->unique(ignoreRecord: true)
+                            ->placeholder('e.g. politics, sports')
+                            ->helperText('URL identifier for this category.'),
+                    ]),
+
+                    \Filament\Schemas\Components\Grid::make(2)->schema([
+                        TextInput::make('order')
+                            ->label('Sort Order')
+                            ->numeric()
+                            ->default(0)
+                            ->helperText('Lower numbers display first in navigation.'),
+
+                        Toggle::make('is_nav')
+                            ->label('Show in Navigation')
+                            ->default(true)
+                            ->helperText('Enable to display in the header menu.'),
+                    ]),
+
+                    Textarea::make('description')
+                        ->label('Description')
+                        ->rows(3)
+                        ->placeholder('Brief description of this category...')
+                        ->columnSpanFull(),
+                ]),
         ]);
     }
 
     public static function table(Table $table): Table
     {
-        return $table->columns([
-            TextColumn::make('name')->searchable()->sortable(),
-            TextColumn::make('slug')->searchable(),
-            TextColumn::make('articles_count')->counts('articles')->label('Articles'),
-        ])->recordActions([\Filament\Actions\EditAction::make()]);
+        return $table
+            ->columns([
+                TextColumn::make('order')
+                    ->label('Order')
+                    ->sortable(),
+
+                TextColumn::make('name')
+                    ->label('Name')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('slug')
+                    ->label('Slug')
+                    ->searchable(),
+
+                IconColumn::make('is_nav')
+                    ->label('In Menu')
+                    ->boolean(),
+
+                TextColumn::make('articles_count')
+                    ->counts('articles')
+                    ->label('Articles Count')
+                    ->badge(),
+            ])
+            ->defaultSort('order')
+            ->recordActions([\Filament\Actions\EditAction::make()]);
     }
 
     public static function getPages(): array
     {
-        return ['index' => ListCategories::route('/'), 'create' => CreateCategory::route('/create'), 'edit' => EditCategory::route('/{record}/edit')];
+        return [
+            'index' => ListCategories::route('/'),
+            'create' => CreateCategory::route('/create'),
+            'edit' => EditCategory::route('/{record}/edit'),
+        ];
     }
 }

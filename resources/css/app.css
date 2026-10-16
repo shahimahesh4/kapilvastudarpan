@@ -20,11 +20,21 @@
     [x-cloak] { display: none !important; }
     html { font-size: 18px; }
     body { @apply bg-white text-stone-900 antialiased; }
+    a, a:hover, a:focus, a:active, .group:hover a { text-decoration: none !important; }
     a, button, input { @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700; }
     a[href], button:not(:disabled) { cursor: pointer; }
 }
 
 @layer components {
+    /* Standard news body container width: around 1200px */
+    .body-container,
+    .site-container {
+        width: 100%;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
     .theme-toggle { display: inline-flex; align-items: center; gap: .15rem; min-height: 1.5rem; padding: .1rem .2rem; border: 1px solid #e7e5e4; border-radius: 9999px; background: #fff; color: #a50404; box-shadow: 0 1px 4px rgb(0 0 0 / .12); transition: background-color .2s, color .2s, border-color .2s; }
     .theme-toggle:hover { border-color: #a50404; }
     .theme-toggle__sun, .theme-toggle__moon { display: grid; width: .95rem; height: .95rem; place-items: center; border-radius: 9999px; font-size: .65rem; line-height: 1; }

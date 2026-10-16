@@ -2,15 +2,29 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Category extends Model
 {
-    protected $fillable = ['name', 'slug', 'description'];
+    protected $fillable = ['name', 'slug', 'description', 'order', 'is_nav'];
 
-    public function articles(): HasMany
+    protected function casts(): array
     {
-        return $this->hasMany(Article::class);
+        return [
+            'is_nav' => 'boolean',
+            'order' => 'integer',
+        ];
+    }
+
+    public function articles(): BelongsToMany
+    {
+        return $this->belongsToMany(Article::class, 'article_category')->withTimestamps();
+    }
+
+    public function scopeNav(Builder $query): Builder
+    {
+        return $query->where('is_nav', true)->orderBy('order')->orderBy('id');
     }
 }

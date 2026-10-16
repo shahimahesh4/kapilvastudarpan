@@ -12,10 +12,7 @@ class NewsHomepage extends Component
     #[Url(as: 'q', except: '')]
     public string $query = '';
 
-    #[Url(except: 'कोशी प्रदेश')]
-    public string $province = 'कोशी प्रदेश';
-
-    public bool $menuOpen = false;
+    public string $activeProvince = 'लुम्बिनी प्रदेश';
 
     public bool $flashOpen = false;
 
@@ -25,28 +22,195 @@ class NewsHomepage extends Component
         $this->redirectRoute('search', ['q' => $this->query], navigate: true);
     }
 
+    public function selectProvince(string $province): void
+    {
+        $this->activeProvince = $province;
+    }
+
     public function render()
     {
-        $articles = Article::query()
-            ->with('category')
+        // 1. Featured Lead Story
+        $leadStory = Article::query()
+            ->with(['category', 'categories'])
+            ->published()
+            ->featured()
+            ->latest('published_at')
+            ->first() ?? Article::query()->with(['category', 'categories'])->published()->latest('published_at')->first();
+
+        // 2. Breaking News Ticker (Breaking or latest)
+        $breakingNews = Article::query()
+            ->published()
+            ->where(function ($q) {
+                $q->where('is_breaking', true)->orWhere('is_featured', true);
+            })
+            ->latest('published_at')
+            ->take(6)
+            ->get();
+
+        if ($breakingNews->isEmpty()) {
+            $breakingNews = Article::query()->published()->latest('published_at')->take(5)->get();
+        }
+
+        // 3. Flash News (Drawer)
+        $flashNews = Article::query()
+            ->with(['category', 'categories'])
             ->published()
             ->latest('published_at')
-            ->take(18)
-            ->get()
-            ->map(fn (Article $article) => [
-                'title' => $article->title,
-                'category' => $article->category->name,
-                'time' => $article->published_at->format('Y-m-d H:i'),
-                'url' => route('articles.show', $article),
-                'featured' => $article->is_featured,
-            ])
-            ->all();
+            ->take(6)
+            ->get();
+
+        // 4. Top Headlines Grid (excluding lead if possible)
+        $headlines = Article::query()
+            ->with(['category', 'categories'])
+            ->published()
+            ->when($leadStory, fn ($q) => $q->where('id', '!=', $leadStory->id))
+            ->latest('published_at')
+            ->take(8)
+            ->get();
+
+        // 5. Trending News (ordered by views)
+        $trendingNews = Article::query()
+            ->with(['category', 'categories'])
+            ->published()
+            ->trending()
+            ->take(5)
+            ->get();
+
+        // 6. Section Articles by Category
+        $kapilvastuSpecial = Article::query()
+            ->with(['category', 'categories'])
+            ->published()
+            ->forCategory('kapilvastu-special')
+            ->latest('published_at')
+            ->take(6)
+            ->get();
+
+        $politicsArticles = Article::query()
+            ->with(['category', 'categories'])
+            ->published()
+            ->forCategory('politics')
+            ->latest('published_at')
+            ->take(4)
+            ->get();
+
+        $economyArticles = Article::query()
+            ->with(['category', 'categories'])
+            ->published()
+            ->forCategory('economy')
+            ->latest('published_at')
+            ->take(5)
+            ->get();
+
+        $sportsArticles = Article::query()
+            ->with(['category', 'categories'])
+            ->published()
+            ->forCategory('sports')
+            ->latest('published_at')
+            ->take(5)
+            ->get();
+
+        $societyArticles = Article::query()
+            ->with(['category', 'categories'])
+            ->published()
+            ->forCategory('society')
+            ->latest('published_at')
+            ->take(4)
+            ->get();
+
+        $securityArticles = Article::query()
+            ->with(['category', 'categories'])
+            ->published()
+            ->forCategory('crime-security')
+            ->latest('published_at')
+            ->take(5)
+            ->get();
+
+        $opinionArticles = Article::query()
+            ->with(['category', 'categories'])
+            ->published()
+            ->forCategory('opinion')
+            ->latest('published_at')
+            ->take(4)
+            ->get();
+
+        $healthArticles = Article::query()
+            ->with(['category', 'categories'])
+            ->published()
+            ->forCategory('health')
+            ->latest('published_at')
+            ->take(4)
+            ->get();
+
+        $videoArticles = Article::query()
+            ->with(['category', 'categories'])
+            ->published()
+            ->forCategory('video')
+            ->latest('published_at')
+            ->take(4)
+            ->get();
+
+        // 7. Provinces Data
+        $provincesList = [
+            'कोशी प्रदेश',
+            'मधेश प्रदेश',
+            'बागमती प्रदेश',
+            'गण्डकी प्रदेश',
+            'लुम्बिनी प्रदेश',
+            'कर्णाली प्रदेश',
+            'सुदूरपश्चिम प्रदेश',
+        ];
+
+        $provinceStories = [];
+        foreach ($provincesList as $prov) {
+            $provArticles = Article::query()
+                ->with(['category', 'categories'])
+                ->published()
+                ->where('province', $prov)
+                ->latest('published_at')
+                ->take(4)
+                ->get();
+
+            if ($provArticles->count() < 4) {
+                $additional = Article::query()
+                    ->with(['category', 'categories'])
+                    ->published()
+                    ->whereNotIn('id', $provArticles->pluck('id'))
+                    ->latest('published_at')
+                    ->take(4 - $provArticles->count())
+                    ->get();
+                $provArticles = $provArticles->concat($additional);
+            }
+
+            $provinceStories[$prov] = $provArticles;
+        }
+
+        $headerMenuItems = \App\Models\MenuItem::query()
+            ->active()
+            ->header()
+            ->root()
+            ->with(['children' => fn ($q) => $q->active()->ordered()->with('category'), 'category'])
+            ->ordered()
+            ->get();
 
         return view('livewire.news-homepage', [
-            'headlines' => $articles,
-            'categories' => Category::query()->orderBy('name')->get(),
-            'provinceArticles' => Article::query()->with('category')->published()
-                ->where('province', $this->province)->latest('published_at')->take(5)->get(),
+            'leadStory' => $leadStory,
+            'breakingNews' => $breakingNews,
+            'flashNews' => $flashNews,
+            'headlines' => $headlines,
+            'trendingNews' => $trendingNews,
+            'kapilvastuSpecial' => $kapilvastuSpecial,
+            'politicsArticles' => $politicsArticles,
+            'economyArticles' => $economyArticles,
+            'sportsArticles' => $sportsArticles,
+            'societyArticles' => $societyArticles,
+            'securityArticles' => $securityArticles,
+            'opinionArticles' => $opinionArticles,
+            'healthArticles' => $healthArticles,
+            'videoArticles' => $videoArticles,
+            'provincesList' => $provincesList,
+            'provinceStories' => $provinceStories,
+            'categories' => Category::nav()->get(),
+            'headerMenuItems' => $headerMenuItems,
         ]);
     }
 }
