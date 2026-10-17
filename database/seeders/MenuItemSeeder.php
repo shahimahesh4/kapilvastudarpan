@@ -35,7 +35,6 @@ class MenuItemSeeder extends Seeder
             ['title' => 'खेलकुद', 'slug' => 'sports', 'order' => 8],
             ['title' => 'विचार', 'slug' => 'opinion', 'order' => 9],
             ['title' => 'स्वास्थ्य', 'slug' => 'health', 'order' => 10],
-            ['title' => 'ई-पेपर', 'url' => '#', 'order' => 11, 'type' => 'custom'],
         ];
 
         foreach ($items as $data) {

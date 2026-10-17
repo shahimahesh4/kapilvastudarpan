@@ -6,7 +6,7 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages\Dashboard;
+use App\Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -33,7 +33,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('कपिलवस्तु दर्पण')
             ->brandLogo(fn () => asset('images/kapilvastu-darpan-logo.png'))
             ->brandLogoHeight('3.2rem')
-            ->favicon(fn () => asset('images/favicon.png'))
+            ->favicon(fn () => asset(setting('site_favicon', 'images/favicon.png')))
             ->colors([
                 'primary' => Color::Red,
             ])
@@ -42,6 +42,11 @@ class AdminPanelProvider extends PanelProvider
                 PanelsRenderHook::HEAD_END,
                 fn () => view('filament.custom-sidebar')
             )
+            ->renderHook(
+                PanelsRenderHook::USER_MENU_BEFORE,
+                fn () => view('filament.topbar-header-actions')
+            )
+
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
@@ -49,8 +54,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
-                AccountWidget::class,
-                FilamentInfoWidget::class,
+                // Default AccountWidget and FilamentInfoWidget removed per user request
             ])
             ->middleware([
                 EncryptCookies::class,

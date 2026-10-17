@@ -135,6 +135,14 @@ class ArticlesTable
                         ->modalDescription('Are you sure you want to unpublish this article? Readers will no longer see it.')
                         ->action(fn (Article $record) => $record->unpublish()),
 
+                    Action::make('view_article')
+                        ->label('View')
+                        ->icon('heroicon-o-arrow-top-right-on-square')
+                        ->color('gray')
+                        ->url(fn (Article $record): string => route('articles.show', $record->slug))
+                        ->openUrlInNewTab()
+                        ->visible(fn (Article $record): bool => ! $record->trashed()),
+
                     DeleteAction::make()
                         ->label('Delete')
                         ->icon('heroicon-o-trash')

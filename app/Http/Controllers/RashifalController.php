@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Rashifal;
 use Illuminate\Http\Request;
 
 class RashifalController extends Controller
@@ -41,7 +42,7 @@ class RashifalController extends Controller
             ->get();
 
         $categories = Category::nav()->get();
-        $activeTab = $request->query('tab', 'varshik'); // Support dainik, saptahik, masik, varshik
+        $activeTab = $request->query('tab', 'dainik'); // Support dainik, saptahik, masik, varshik
 
         return view('rashifal.show', [
             'allRashis' => $allRashis,
@@ -85,8 +86,28 @@ class RashifalController extends Controller
 
     /**
      * Comprehensive astrological data for all 12 Zodiac signs.
+     * Loads from the database (managed via Filament backend), or falls back to defaults.
      */
     protected function getAllRashis(): array
+    {
+        $dbRashis = Rashifal::active()->ordered()->get();
+
+        if ($dbRashis->isNotEmpty()) {
+            $list = [];
+            foreach ($dbRashis as $r) {
+                $list[$r->slug] = $r->toDisplayArray();
+            }
+
+            return $list;
+        }
+
+        return $this->getDefaultRashis();
+    }
+
+    /**
+     * Default astrological data fallback.
+     */
+    protected function getDefaultRashis(): array
     {
         return [
             'mesh' => [

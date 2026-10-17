@@ -23,15 +23,17 @@ class DatabaseSeeder extends Seeder
         User::firstOrCreate(
             ['email' => 'test@example.com'],
             [
-                'name' => 'Test User',
+                'name' => 'कपिलवस्तु दर्पण',
                 'password' => bcrypt('password'),
             ]
         );
 
         $this->call([
+            SettingSeeder::class,
             RatopatiNewsSeeder::class,
             AdvertisementSeeder::class,
             MoreArticlesSeeder::class,
+            PageSeeder::class,
         ]);
     }
 }

@@ -7,7 +7,10 @@ use App\Filament\Resources\MenuItems\Pages\EditMenuItem;
 use App\Filament\Resources\MenuItems\Pages\ListMenuItems;
 use App\Models\MenuItem;
 use BackedEnum;
+use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
@@ -72,6 +75,13 @@ class MenuItemResource extends Resource
                             ->searchable()
                             ->preload()
                             ->visible(fn ($get) => $get('type') === 'category'),
+
+                        Select::make('page_id')
+                            ->label('Page')
+                            ->relationship('page', 'title')
+                            ->searchable()
+                            ->preload()
+                            ->visible(fn ($get) => $get('type') === 'page'),
 
                         TextInput::make('url')
                             ->label('Custom URL')
@@ -139,8 +149,16 @@ class MenuItemResource extends Resource
                 TextColumn::make('type')
                     ->label('Type')
                     ->badge()
-                    ->formatStateUsing(fn ($state) => $state === 'category' ? 'Category' : 'Custom URL')
-                    ->color(fn ($state) => $state === 'category' ? 'success' : 'warning'),
+                    ->formatStateUsing(fn ($state) => match ($state) {
+                        'category' => 'Category',
+                        'page' => 'Page',
+                        default => 'Custom URL',
+                    })
+                    ->color(fn ($state) => match ($state) {
+                        'category' => 'success',
+                        'page' => 'info',
+                        default => 'warning',
+                    }),
 
                 TextColumn::make('children_count')
                     ->counts('allChildren')
@@ -171,7 +189,26 @@ class MenuItemResource extends Resource
                     ]),
             ])
             ->recordActions([
-                EditAction::make(),
+                ActionGroup::make([
+                    EditAction::make(),
+                    Action::make('toggle_active')
+                        ->label(fn (MenuItem $record): string => $record->is_active ? 'Deactivate' : 'Activate')
+                        ->icon(fn (MenuItem $record): string => $record->is_active ? 'heroicon-o-x-circle' : 'heroicon-o-check-circle')
+                        ->color(fn (MenuItem $record): string => $record->is_active ? 'warning' : 'success')
+                        ->action(fn (MenuItem $record) => $record->update(['is_active' => ! $record->is_active])),
+                    Action::make('visit_link')
+                        ->label('Visit Link')
+                        ->icon('heroicon-o-arrow-top-right-on-square')
+                        ->color('gray')
+                        ->url(fn (MenuItem $record): string => $record->link_url)
+                        ->openUrlInNewTab()
+                        ->visible(fn (MenuItem $record): bool => $record->link_url !== '#'),
+                    DeleteAction::make()
+                        ->modalHeading('Delete Menu Item')
+                        ->modalDescription('Are you sure you want to delete this menu item?'),
+                ])
+                ->icon('heroicon-m-ellipsis-vertical')
+                ->tooltip('Options'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

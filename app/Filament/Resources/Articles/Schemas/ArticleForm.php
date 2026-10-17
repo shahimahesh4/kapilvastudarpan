@@ -169,7 +169,7 @@ class ArticleForm
                             TextInput::make('author')
                                 ->label('Author / Reporter')
                                 ->required()
-                                ->default('Kapilvastu Darpan'),
+                                ->default('कपिलवस्तु दर्पण'),
                         ]),
 
                     Section::make('SEO & Source Link')
@@ -179,6 +179,11 @@ class ArticleForm
                                 ->label('Original Source URL')
                                 ->url()
                                 ->placeholder('https://...'),
+
+                            TextInput::make('meta_title')
+                                ->label('SEO Meta Title')
+                                ->placeholder('Custom Google search result title (defaults to article title)')
+                                ->helperText('Leave empty to automatically use the article title'),
 
                             Textarea::make('meta_description')
                                 ->label('Meta Description')

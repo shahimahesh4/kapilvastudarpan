@@ -11,8 +11,10 @@
 
 @php
     $canonicalUrl = $canonical ?? url()->current();
-    $shareImage = $ogImage ?? asset('images/kapilvastu-darpan-logo.png');
-    $siteName = 'कपिलवस्तु दर्पण';
+    $shareImage = $ogImage ?? setting_image_url(setting('site_logo'), 'images/kapilvastu-darpan-logo.png');
+    $siteName = setting('site_name', 'कपिलवस्तु दर्पण');
+    $defaultTitle = setting('meta_title', 'कपिलवस्तु दर्पण | जनताको आवाज - ताजा समाचार, विचार र विश्लेषण');
+    $pageTitle = (!empty($title) && $title !== 'कपिलवस्तु दर्पण | जनताको आवाज - ताजा समाचार, विचार र विश्लेषण') ? $title : $defaultTitle;
 @endphp
 <!DOCTYPE html>
 <html lang="ne" class="scroll-smooth">
@@ -27,14 +29,15 @@
     <meta name="theme-color" content="#c92137">
 
     <link rel="canonical" href="{{ $canonicalUrl }}">
-    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}" sizes="32x32">
-    <link rel="apple-touch-icon" href="{{ asset('images/favicon.png') }}">
+    <link rel="icon" type="image/png" href="{{ setting_image_url(setting('site_favicon'), 'images/favicon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ setting_image_url(setting('site_favicon'), 'images/favicon.png') }}">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:site_name" content="{{ $siteName }}">
     <meta property="og:locale" content="ne_NP">
     <meta property="og:type" content="{{ $ogType }}">
-    <meta property="og:title" content="{{ $title }}">
+    <meta property="og:title" content="{{ $pageTitle }}">
     <meta property="og:description" content="{{ $description }}">
     <meta property="og:url" content="{{ $canonicalUrl }}">
     <meta property="og:image" content="{{ $shareImage }}">
@@ -45,18 +48,16 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@kapilvastudarpan">
     <meta name="twitter:creator" content="@kapilvastudarpan">
-    <meta name="twitter:title" content="{{ $title }}">
+    <meta name="twitter:title" content="{{ $pageTitle }}">
     <meta name="twitter:description" content="{{ $description }}">
     <meta name="twitter:image" content="{{ $shareImage }}">
 
     <!-- DNS Prefetch for Lightning Fast Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://npcdn.ratopati.com">
-    <link rel="dns-prefetch" href="https://rpcdn.ratopati.com">
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
-    <title>{{ $title }}</title>
+    <title>{{ $pageTitle }}</title>
 
     <!-- Schema.org JSON-LD Structured Data for Rich Search Results -->
     <script type="application/ld+json">
@@ -116,7 +117,7 @@
                 "dateModified": "{{ $article->updated_at?->toIso8601String() }}",
                 "author": {
                     "@@type": "Person",
-                    "name": "{{ addslashes($article->author) }}"
+                    "name": "{{ addslashes($article->display_author) }}"
                 },
                 "publisher": {
                     "@@id": "https://www.kapilvastudarpan.com/#organization"
@@ -133,15 +134,19 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+
+    @if(setting('header_scripts'))
+        {!! setting('header_scripts') !!}
+    @endif
 </head>
 <body class="bg-white text-stone-900 antialiased font-sans selection:bg-[#c92137] selection:text-white min-h-screen flex flex-col"
     :class="{ 'site-dark': darkMode }"
     x-data="{
         flashOpen: false,
         sidebarOpen: false,
-        accountOpen: false,
+        accountOpen: {{ (!request()->routeIs('login', 'register', 'password.*', 'dashboard*') && ($errors->any() || session('status_success') || session('status_warning') || session('unverified_email'))) ? 'true' : 'false' }},
         searchOpen: false,
-        authTab: 'login',
+        authTab: '{{ session('auth_tab', ($errors->has('name') || $errors->has('password_confirmation')) ? 'register' : 'login') }}',
         menuPinned: false,
         darkMode: false,
         activeProvince: 'लुम्बिनी प्रदेश',

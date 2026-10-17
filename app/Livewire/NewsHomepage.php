@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Article;
 use App\Models\Category;
+use App\Services\YouTubeService;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
@@ -141,10 +142,14 @@ class NewsHomepage extends Component
             ->take(4)
             ->get();
 
+        $youtubeService = app(YouTubeService::class);
+        $videoSectionData = $youtubeService->getVideosForHomepage(4);
+
         $videoArticles = Article::query()
             ->with(['category', 'categories'])
             ->published()
             ->forCategory('video')
+            ->orderByDesc('is_featured')
             ->latest('published_at')
             ->take(4)
             ->get();
@@ -207,6 +212,7 @@ class NewsHomepage extends Component
             'opinionArticles' => $opinionArticles,
             'healthArticles' => $healthArticles,
             'videoArticles' => $videoArticles,
+            'videoSectionData' => $videoSectionData,
             'provincesList' => $provincesList,
             'provinceStories' => $provinceStories,
             'categories' => Category::nav()->get(),

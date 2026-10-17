@@ -16,6 +16,7 @@ class MenuItem extends Model
 
     public const TYPES = [
         'category' => 'Category',
+        'page' => 'Page',
         'custom' => 'Custom URL',
     ];
 
@@ -28,6 +29,7 @@ class MenuItem extends Model
         'title',
         'type',
         'category_id',
+        'page_id',
         'url',
         'parent_id',
         'is_mega_menu',
@@ -49,6 +51,11 @@ class MenuItem extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function page(): BelongsTo
+    {
+        return $this->belongsTo(Page::class);
     }
 
     public function parent(): BelongsTo
@@ -95,6 +102,10 @@ class MenuItem extends Model
     {
         if ($this->type === 'category' && $this->category) {
             return route('category.show', $this->category->slug);
+        }
+
+        if ($this->type === 'page' && $this->page) {
+            return route('pages.show', $this->page->slug);
         }
 
         if (!empty($this->url)) {

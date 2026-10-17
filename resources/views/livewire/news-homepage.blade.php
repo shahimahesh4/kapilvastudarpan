@@ -7,6 +7,50 @@
             <button type="submit" class="min-h-11 bg-[#c92137] px-5 text-sm font-bold text-white">खोज्नुहोस्</button>
         </form>
 
+        <!-- Super Lead Main Headline Banner (Matches User Reference Image) -->
+        @if($leadStory)
+            <section class="mb-12 border-b border-stone-200/90 pb-10 pt-2" aria-label="मुख्य ब्यानर समाचार">
+                <article class="group">
+                    <h1 class="text-center font-black text-2xl sm:text-3xl md:text-4xl lg:text-[42px] leading-tight sm:leading-snug text-stone-900 tracking-tight max-w-5xl mx-auto">
+                        <a href="{{ route('articles.show', $leadStory->slug) }}" class="group-hover:text-[#c92137] transition-colors duration-200">
+                            {{ $leadStory->title }}
+                        </a>
+                    </h1>
+
+                    <!-- Centered Author & Date Meta (Matching User Screenshot Style) -->
+                    <div class="mt-4 mb-6 flex items-center justify-center gap-3 sm:gap-3.5 text-stone-900 font-medium flex-wrap">
+                        <span class="profile-avatar-dashed rounded-full w-10 h-10 sm:w-11 sm:h-11 shrink-0 overflow-hidden p-0.5 bg-white shadow-2xs">
+                            <img src="{{ setting_image_url(setting('news_profile_photo'), 'images/profile-avatar.png') }}" alt="{{ $leadStory->display_author }}" class="h-full w-full rounded-full object-contain">
+                        </span>
+                        <span class="font-extrabold text-stone-900 text-sm sm:text-base tracking-tight">{{ $leadStory->display_author }}</span>
+                        <span class="inline-flex items-center gap-1.5 font-bold text-stone-800 text-sm sm:text-base">
+                            <svg class="h-4 w-4 sm:h-4.5 sm:w-4.5 text-[#c92137] shrink-0 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                                <circle cx="12" cy="12" r="9.5"></circle>
+                                <polyline points="12 6.5 12 12 15.5 14"></polyline>
+                            </svg>
+                            <time datetime="{{ $leadStory->published_at?->toIso8601String() }}">
+                                {{ $leadStory->nepali_date }}
+                            </time>
+                        </span>
+                    </div>
+
+                    <!-- Large Hero Featured Photo -->
+                    <a href="{{ route('articles.show', $leadStory->slug) }}" class="block w-full max-w-5xl mx-auto rounded-xl sm:rounded-2xl overflow-hidden bg-stone-100 shadow-sm group-hover:shadow-md transition-all duration-300 aspect-[16/9] sm:aspect-[16/10] max-h-[580px]">
+                        <img src="{{ $leadStory->image_url }}" alt="{{ $leadStory->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" loading="eager" class="w-full h-full object-cover group-hover:scale-[1.015] transition-transform duration-500">
+                    </a>
+
+                    <!-- Centered Excerpt Summary Paragraph -->
+                    @if($leadStory->excerpt)
+                        <p class="mt-5 max-w-4xl mx-auto text-center text-sm sm:text-base md:text-lg lg:text-[19px] text-stone-700 leading-relaxed font-normal">
+                            <a href="{{ route('articles.show', $leadStory->slug) }}" class="hover:text-stone-900 transition">
+                                {{ $leadStory->excerpt }}
+                            </a>
+                        </p>
+                    @endif
+                </article>
+            </section>
+        @endif
+
         <!-- Section: मुख्य समाचार & ट्रेन्डिङ (Lead Grid) -->
         <section aria-label="प्रमुख समाचार" class="mb-10 border-b border-stone-200 pb-8">
             <div class="mb-6 flex items-center justify-between border-b-2 border-[#c92137] pb-2.5">
@@ -49,16 +93,16 @@
                         <div class="mt-3 flex items-center gap-3 text-xs text-stone-500 font-medium">
                             @if($headlines[0]->published_at)
                                 <span class="inline-flex items-center gap-1.5">
-                                    <svg class="h-3.5 w-3.5 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <svg class="h-3.5 w-3.5 text-[#c92137]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <circle cx="12" cy="12" r="10"></circle>
                                         <polyline points="12 6 12 12 16 14"></polyline>
                                     </svg>
                                     {{ $headlines[0]->published_at->diffForHumans() }}
                                 </span>
                             @endif
-                            @if($headlines[0]->author)
+                            @if($headlines[0]->display_author)
                                 <span>·</span>
-                                <span>{{ $headlines[0]->author }}</span>
+                                <span>{{ $headlines[0]->display_author }}</span>
                             @endif
                         </div>
                     </article>
@@ -84,7 +128,7 @@
                                     </a>
                                 </h3>
                                 <div class="mt-1.5 flex items-center gap-1.5 text-xs text-stone-400 font-medium">
-                                    <svg class="h-3 w-3 text-stone-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <svg class="h-3 w-3 text-[#c92137] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <circle cx="12" cy="12" r="10"></circle>
                                         <polyline points="12 6 12 12 16 14"></polyline>
                                     </svg>
@@ -109,7 +153,7 @@
                             @foreach($trendingNews->take(4) as $trend)
                                 <li class="group -mx-2 flex gap-3 rounded-xl p-2.5 transition-colors hover:bg-stone-50">
                                     <span class="grid h-7 w-7 shrink-0 place-items-center rounded-lg text-xs font-black bg-[#c92137] text-white shadow-xs">
-                                        {{ $loop->iteration }}
+                                        {{ nepali_number($loop->iteration) }}
                                     </span>
                                     <div class="min-w-0 flex-1">
                                         <a href="{{ route('articles.show', $trend->slug) }}" class="block text-sm font-bold leading-snug text-stone-800 group-hover:text-[#c92137] line-clamp-2 transition-colors">
@@ -120,7 +164,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                             </svg>
-                                            <span>{{ number_format($trend->views) }} पटक हेरियो</span>
+                                            <span>{{ nepali_number(number_format($trend->views)) }} पटक हेरियो</span>
                                         </div>
                                     </div>
                                 </li>
@@ -132,7 +176,7 @@
         </section>
 
         <!-- Section: कपिलवस्तु विशेष (Kapilvastu Special) -->
-        <section class="mb-12 border-b border-stone-200 pb-10" aria-labelledby="kapilvastu-heading">
+        <section class="mb-10" aria-labelledby="kapilvastu-heading">
             <div class="mb-6 flex flex-wrap items-end justify-between gap-4 border-b-2 border-[#c92137] pb-3">
                 <div class="flex items-center gap-3">
                     <span class="inline-block h-7 w-2 rounded-full bg-[#c92137]"></span>
@@ -179,17 +223,13 @@
                             @endif
                             <div class="mt-4 flex items-center justify-between border-t border-stone-100 pt-3 text-xs text-stone-400 font-medium">
                                 <span class="inline-flex items-center gap-1.5">
-                                    <svg class="h-3.5 w-3.5 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <svg class="h-3.5 w-3.5 text-[#c92137]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <circle cx="12" cy="12" r="10"></circle>
                                         <polyline points="12 6 12 12 16 14"></polyline>
                                     </svg>
                                     {{ $art->published_at?->diffForHumans() }}
                                 </span>
-                                @if($art->author)
-                                    <span class="text-stone-500 font-semibold">{{ $art->author }}</span>
-                                @else
-                                    <span class="text-stone-400">कपिलवस्तु संवाददाता</span>
-                                @endif
+                                <span class="text-stone-500 font-semibold">{{ $art->display_author }}</span>
                             </div>
                         </div>
                     </article>
@@ -236,10 +276,10 @@
                             <div class="mt-auto pt-3 flex items-center justify-between text-[11px] font-medium text-stone-600 border-t border-stone-100">
                                 <span class="flex items-center gap-1 text-stone-700 font-semibold truncate max-w-[130px]">
                                     <svg class="h-3 w-3 shrink-0 text-stone-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                                    {{ $art->author ?: 'कपिलवस्तु दर्पण' }}
+                                    {{ $art->display_author }}
                                 </span>
                                 <time class="flex items-center gap-1 text-stone-600 shrink-0 font-medium">
-                                    <svg class="h-3 w-3 text-stone-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    <svg class="h-3 w-3 text-[#c92137]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                     {{ $art->published_at?->diffForHumans() }}
                                 </time>
                             </div>
@@ -461,10 +501,10 @@
                             <div class="mt-auto pt-3 flex items-center justify-between text-[11px] font-medium text-stone-600 border-t border-stone-100">
                                 <span class="flex items-center gap-1 text-stone-700 font-semibold truncate max-w-[130px]">
                                     <svg class="h-3 w-3 shrink-0 text-stone-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                                    {{ $art->author ?: 'कपिलवस्तु दर्पण' }}
+                                    {{ $art->display_author }}
                                 </span>
                                 <time class="flex items-center gap-1 text-stone-600 shrink-0 font-medium">
-                                    <svg class="h-3 w-3 text-stone-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    <svg class="h-3 w-3 text-[#c92137]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                     {{ $art->published_at?->diffForHumans() }}
                                 </time>
                             </div>
@@ -621,11 +661,11 @@
                         @endif
                         <div class="mt-auto pt-4 flex items-center gap-3 border-t border-stone-100">
                             <div class="h-10 w-10 shrink-0 rounded-full bg-linear-to-tr from-[#c92137] to-rose-500 text-white font-black text-sm flex items-center justify-center shadow-xs ring-2 ring-red-100">
-                                {{ mb_substr($art->author ?: 'वि', 0, 1) }}
+                                {{ mb_substr($art->display_author ?: 'क', 0, 1) }}
                             </div>
                             <div class="min-w-0 flex-1">
                                 <span class="block text-xs sm:text-sm font-black text-stone-900 truncate group-hover:text-[#c92137] transition-colors">
-                                    {{ $art->author ?: 'सम्पादक मण्डल' }}
+                                    {{ $art->display_author }}
                                 </span>
                                 <span class="block text-[11px] font-medium text-stone-600 truncate">
                                     स्तम्भकार / विश्लेषक
@@ -676,10 +716,10 @@
                             <div class="mt-auto pt-3 flex items-center justify-between text-[11px] font-medium text-stone-600 border-t border-stone-100">
                                 <span class="flex items-center gap-1 text-stone-700 font-semibold truncate max-w-[130px]">
                                     <svg class="h-3 w-3 shrink-0 text-stone-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                                    {{ $art->author ?: 'कपिलवस्तु दर्पण' }}
+                                    {{ $art->display_author }}
                                 </span>
                                 <time class="flex items-center gap-1 text-stone-600 shrink-0 font-medium">
-                                    <svg class="h-3 w-3 text-stone-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    <svg class="h-3 w-3 text-[#c92137]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                     {{ $art->published_at?->diffForHumans() }}
                                 </time>
                             </div>
@@ -688,31 +728,74 @@
                 @endforeach
             </div>
         </section>
-<!-- Section: भिडियो (Video Section - Studio Broadcast Style) -->
-        <section class="mb-10 rounded-2xl bg-linear-to-b from-stone-900 via-[#161616] to-[#121212] border border-stone-800/80 p-5 sm:p-7 text-white shadow-xl" aria-labelledby="video-heading">
-            <div class="mb-5 flex items-center justify-between border-b border-white/10 pb-3">
-                <div class="flex items-center gap-2.5">
-                    <span class="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-tr from-red-700 to-[#c92137] text-white shadow-lg shadow-red-900/40">
-                        <svg class="h-4 w-4 ml-0.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                    </span>
-                    <h2 id="video-heading" class="text-xl sm:text-2xl font-black text-white tracking-tight">भिडियो विशेष</h2>
+<!-- Section: भिडियो (Video Section - Studio Broadcast Style with YouTube API & Default Fallback) -->
+        @php
+            $vData = $videoSectionData ?? app(\App\Services\YouTubeService::class)->getVideosForHomepage(4);
+            $vShow = $vData['enabled'] ?? true;
+            $vLead = $vData['lead'] ?? null;
+            $vSecondary = $vData['secondary'] ?? [];
+            $vTitle = $vData['title'] ?? 'भिडियो विशेष';
+            $isYouTube = $vData['is_youtube'] ?? false;
+        @endphp
+
+        @if($vShow && $vLead)
+            <section
+                x-data="{
+                    videoModalOpen: false,
+                    activeVideoUrl: '',
+                    activeVideoTitle: '',
+                    openPlayer(url, title, hasEmbed, fallbackUrl) {
+                        if (hasEmbed && url) {
+                            this.activeVideoUrl = url;
+                            this.activeVideoTitle = title;
+                            this.videoModalOpen = true;
+                        } else if (fallbackUrl) {
+                            window.location.href = fallbackUrl;
+                        }
+                    },
+                    closePlayer() {
+                        this.videoModalOpen = false;
+                        this.activeVideoUrl = '';
+                    }
+                }"
+                @keydown.escape.window="closePlayer()"
+                class="mb-10 rounded-2xl bg-linear-to-b from-stone-900 via-[#161616] to-[#121212] border border-stone-800/80 p-5 sm:p-7 text-white shadow-xl relative"
+                aria-labelledby="video-heading"
+            >
+                <div class="mb-5 flex items-center justify-between border-b border-white/10 pb-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-tr from-red-700 to-[#c92137] text-white shadow-lg shadow-red-900/40">
+                            <svg class="h-4 w-4 ml-0.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </span>
+                        <h2 id="video-heading" class="text-xl sm:text-2xl font-black text-white tracking-tight flex items-center gap-2">
+                            <span>{{ $vTitle }}</span>
+                            @if($isYouTube)
+                                <span class="text-[11px] font-extrabold uppercase tracking-wider bg-red-600/90 text-white px-2 py-0.5 rounded shadow-xs">
+                                    यूट्युब
+                                </span>
+                            @endif
+                        </h2>
+                    </div>
+                    <a href="{{ route('category.show', 'video') }}" class="inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-red-400 hover:text-red-300 transition">
+                        <span>सबै भिडियो</span>
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                    </a>
                 </div>
-                <a href="{{ route('category.show', 'video') }}" class="inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-red-400 hover:text-red-300 transition">
-                    <span>सबै भिडियो</span>
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-                </a>
-            </div>
 
-            @php
-                $vLead = $videoArticles->first();
-                $vSecondary = $videoArticles->slice(1, 3);
-            @endphp
-
-            <div class="grid gap-6 lg:grid-cols-12 items-start">
-                @if($vLead)
+                <div class="grid gap-6 lg:grid-cols-12 items-start">
+                    <!-- Left: Large Featured Lead Video -->
                     <article class="lg:col-span-7 group flex flex-col">
-                        <a href="{{ route('articles.show', $vLead->slug) }}" class="relative block aspect-video rounded-xl sm:rounded-2xl overflow-hidden bg-stone-950 shadow-2xl">
-                            <img src="{{ $vLead->image_url }}" alt="{{ $vLead->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" loading="lazy" class="h-full w-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
+                        <div
+                            @click="openPlayer('{{ $vLead['embed_url'] ?? '' }}', '{{ addslashes($vLead['title'] ?? '') }}', {{ !empty($vLead['embed_url']) ? 'true' : 'false' }}, '{{ $vLead['url'] ?? '#' }}')"
+                            class="relative block aspect-video rounded-xl sm:rounded-2xl overflow-hidden bg-stone-950 shadow-2xl cursor-pointer"
+                        >
+                            <img
+                                src="{{ $vLead['image_url'] ?? asset('images/kapilvastu-darpan-logo.png') }}"
+                                alt="{{ $vLead['title'] ?? '' }}"
+                                onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';"
+                                loading="lazy"
+                                class="h-full w-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+                            >
                             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent pointer-events-none"></div>
 
                             <!-- Top Format Pill -->
@@ -732,93 +815,199 @@
                             <!-- Duration Badge -->
                             <div class="absolute bottom-3 right-3 z-10">
                                 <span class="rounded-md bg-black/80 backdrop-blur-xs px-2 py-0.5 text-[11px] font-bold text-stone-300">
-                                    HD ०५:२४
+                                    {{ $vLead['duration'] ?? 'HD भिडियो' }}
                                 </span>
                             </div>
-                        </a>
+                        </div>
 
                         <h3 class="mt-3.5">
-                            <a href="{{ route('articles.show', $vLead->slug) }}" class="block text-lg sm:text-xl lg:text-2xl font-black leading-snug text-white group-hover:text-red-400 transition-colors line-clamp-2">
-                                {{ $vLead->title }}
+                            <a
+                                href="{{ $vLead['url'] ?? '#' }}"
+                                @if(!empty($vLead['is_youtube'])) target="_blank" rel="noopener noreferrer" @endif
+                                class="block text-lg sm:text-xl lg:text-2xl font-black leading-snug text-white group-hover:text-red-400 transition-colors line-clamp-2"
+                            >
+                                {{ $vLead['title'] ?? '' }}
                             </a>
                         </h3>
-                        @if($vLead->excerpt)
+                        @if(!empty($vLead['excerpt']))
                             <p class="mt-2 text-xs sm:text-sm text-stone-400 line-clamp-2 leading-relaxed font-normal">
-                                {{ $vLead->excerpt }}
+                                {{ $vLead['excerpt'] }}
                             </p>
                         @endif
                     </article>
-                @endif
 
-                <div class="lg:col-span-5 flex flex-col justify-between space-y-3">
-                    @forelse($vSecondary as $vArt)
-                        @php $vCat = $vArt->categories->first() ?? $vArt->category; @endphp
-                        <article class="flex items-center gap-3.5 p-2 sm:p-2.5 rounded-xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/10 transition-all duration-200 group">
-                            <a href="{{ route('articles.show', $vArt->slug) }}" class="relative block w-28 sm:w-36 shrink-0 aspect-video rounded-lg overflow-hidden bg-stone-950 shadow-md">
-                                <img src="{{ $vArt->image_url }}" alt="{{ $vArt->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" loading="lazy" class="h-full w-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300">
-                                <div class="absolute inset-0 grid place-items-center">
-                                    <span class="grid h-8 w-8 place-items-center rounded-full bg-[#c92137]/90 text-white shadow-md group-hover:scale-110 group-hover:bg-[#c92137] transition">
-                                        <svg class="h-4 w-4 ml-0.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                                    </span>
+                    <!-- Right: Stacked Secondary Videos -->
+                    <div class="lg:col-span-5 flex flex-col justify-between space-y-3">
+                        @forelse($vSecondary as $vArt)
+                            <article class="flex items-center gap-3.5 p-2 sm:p-2.5 rounded-xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/10 transition-all duration-200 group">
+                                <div
+                                    @click="openPlayer('{{ $vArt['embed_url'] ?? '' }}', '{{ addslashes($vArt['title'] ?? '') }}', {{ !empty($vArt['embed_url']) ? 'true' : 'false' }}, '{{ $vArt['url'] ?? '#' }}')"
+                                    class="relative block w-28 sm:w-36 shrink-0 aspect-video rounded-lg overflow-hidden bg-stone-950 shadow-md cursor-pointer"
+                                >
+                                    <img
+                                        src="{{ $vArt['image_url'] ?? asset('images/kapilvastu-darpan-logo.png') }}"
+                                        alt="{{ $vArt['title'] ?? '' }}"
+                                        onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';"
+                                        loading="lazy"
+                                        class="h-full w-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
+                                    >
+                                    <div class="absolute inset-0 grid place-items-center">
+                                        <span class="grid h-8 w-8 place-items-center rounded-full bg-[#c92137]/90 text-white shadow-md group-hover:scale-110 group-hover:bg-[#c92137] transition">
+                                            <svg class="h-4 w-4 ml-0.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                        </span>
+                                    </div>
                                 </div>
-                            </a>
-                            <div class="min-w-0 flex-1">
-                                @if($vCat)
-                                    <span class="text-[11px] font-black uppercase tracking-wider text-red-400">{{ $vCat->name }}</span>
-                                @endif
-                                <h4 class="mt-0.5">
-                                    <a href="{{ route('articles.show', $vArt->slug) }}" class="block text-xs sm:text-sm font-extrabold leading-snug text-stone-100 group-hover:text-red-400 line-clamp-2 transition-colors">
-                                        {{ $vArt->title }}
-                                    </a>
-                                </h4>
-                                <time class="mt-1.5 flex items-center gap-1 text-[11px] font-medium text-stone-400">
-                                    <svg class="h-3 w-3 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                    {{ $vArt->published_at?->diffForHumans() }}
-                                </time>
-                            </div>
-                        </article>
-                    @empty
-                        <p class="text-xs text-stone-500 py-4">थप भिडियोहरू छिट्टै उपलब्ध हुनेछन्।</p>
-                    @endforelse
+                                <div class="min-w-0 flex-1">
+                                    <span class="text-[11px] font-black uppercase tracking-wider text-red-400">
+                                        {{ $vArt['category_name'] ?? 'भिडियो' }}
+                                    </span>
+                                    <h4 class="mt-0.5">
+                                        <a
+                                            href="{{ $vArt['url'] ?? '#' }}"
+                                            @if(!empty($vArt['is_youtube'])) target="_blank" rel="noopener noreferrer" @endif
+                                            class="block text-xs sm:text-sm font-extrabold leading-snug text-stone-100 group-hover:text-red-400 line-clamp-2 transition-colors"
+                                        >
+                                            {{ $vArt['title'] ?? '' }}
+                                        </a>
+                                    </h4>
+                                    @if(!empty($vArt['published_at']))
+                                        <time class="mt-1.5 flex items-center gap-1 text-[11px] font-medium text-stone-400">
+                                            <svg class="h-3 w-3 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                            {{ is_string($vArt['published_at']) ? $vArt['published_at'] : $vArt['published_at']->diffForHumans() }}
+                                        </time>
+                                    @endif
+                                </div>
+                            </article>
+                        @empty
+                            <p class="text-xs text-stone-500 py-4">थप भिडियोहरू छिट्टै उपलब्ध हुनेछन्।</p>
+                        @endforelse
+                    </div>
                 </div>
-            </div>
-        </section>
+
+                <!-- Interactive Video Modal Player -->
+                <div
+                    x-cloak
+                    x-show="videoModalOpen"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 scale-95"
+                    x-transition:enter-end="opacity-100 scale-100"
+                    x-transition:leave="transition ease-in duration-200"
+                    x-transition:leave-start="opacity-100 scale-100"
+                    x-transition:leave-end="opacity-0 scale-95"
+                    class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md"
+                    @click.self="closePlayer()"
+                    role="dialog"
+                    aria-modal="true"
+                >
+                    <div class="relative w-full max-w-4xl bg-stone-900 border border-stone-700/80 rounded-2xl overflow-hidden shadow-2xl">
+                        <!-- Modal Top Header -->
+                        <div class="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-stone-800 bg-stone-950">
+                            <div class="flex items-center gap-2 min-w-0 pr-3">
+                                <span class="h-2 w-2 rounded-full bg-[#c92137]"></span>
+                                <h3 class="text-xs sm:text-sm font-extrabold text-white truncate" x-text="activeVideoTitle"></h3>
+                            </div>
+                            <button
+                                type="button"
+                                @click="closePlayer()"
+                                class="inline-flex items-center justify-center h-8 w-8 rounded-lg bg-stone-800 hover:bg-[#c92137] text-stone-300 hover:text-white transition cursor-pointer"
+                                title="बन्द गर्नुहोस् (ESC)"
+                            >
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                            </button>
+                        </div>
+
+                        <!-- Modal Video Player Frame -->
+                        <div class="aspect-video w-full bg-black">
+                            <template x-if="videoModalOpen && activeVideoUrl">
+                                <iframe
+                                    :src="activeVideoUrl + '?autoplay=1&rel=0'"
+                                    class="h-full w-full"
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen
+                                ></iframe>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        @endif
 
         <!-- Section: राशिफल (Horoscope - Ratopati 12 Zodiacs) -->
-        @php
-            $rashis = [
-                ['slug' => 'mesh', 'name' => 'मेष राशि', 'letters' => 'चु, चे, चो, ला, लि, लु, ले, लो, अ', 'index' => 0],
-                ['slug' => 'vrish', 'name' => 'वृष राशि', 'letters' => 'इ, उ, ए, ओ, वा, वि, वु, वे, वो', 'index' => 1],
-                ['slug' => 'mithun', 'name' => 'मिथुन राशि', 'letters' => 'का, कि, कु, घ, ङ, छ, के, को, हा', 'index' => 2],
-                ['slug' => 'karkat', 'name' => 'कर्कट राशि', 'letters' => 'हि, हु, हे, हो, डा, डि, डु, डे, डो', 'index' => 3],
-                ['slug' => 'singha', 'name' => 'सिंह राशि', 'letters' => 'मा, मि, मु, मे, मो, टा, टि, टु, टे', 'index' => 4],
-                ['slug' => 'kanya', 'name' => 'कन्या राशि', 'letters' => 'टो, पा, पि, पु, ष, ण, ठ, पे, पो', 'index' => 5],
-                ['slug' => 'tula', 'name' => 'तुला राशि', 'letters' => 'रा, रि, रु, रे, रो, ता, ति, तु, ते', 'index' => 6],
-                ['slug' => 'vrischik', 'name' => 'वृश्चिक राशि', 'letters' => 'तो, ना, नि, नु, ने, नो, या, यि, यु', 'index' => 7],
-                ['slug' => 'dhanu', 'name' => 'धनु राशि', 'letters' => 'ये, यो, भा, भि, भु, धा, फा, ढा, भे', 'index' => 8],
-                ['slug' => 'makar', 'name' => 'मकर राशि', 'letters' => 'भो, जा, जि, जु, जे, जो, खि, खु, खे, खो', 'index' => 9],
-                ['slug' => 'kumbha', 'name' => 'कुम्भ राशि', 'letters' => 'गु, गे, गो, सा, सि, सु, से, सो, दा', 'index' => 10],
-                ['slug' => 'meen', 'name' => 'मीन राशि', 'letters' => 'दि, दु, थ, झ, ञ, दे, दो, चा, चि', 'index' => 11],
-            ];
-        @endphp
-        <section class="mb-10 rounded-xl bg-gradient-to-br from-red-50 via-white to-blue-50 p-6 border border-red-100 shadow-sm" aria-labelledby="rashifal-heading">
-            <div class="mb-5 flex items-center justify-between">
-                <div class="flex items-baseline gap-3">
-                    <h2 id="rashifal-heading" class="text-2xl sm:text-3xl font-extrabold text-[#c92137]">दैनिक राशिफल</h2>
-                    <span class="text-xs text-stone-500 font-semibold">शुक्रबार, ३० असोज २०८३</span>
+        @if(setting_bool('show_rashifal_section', true))
+            @php
+                $dbRashis = \App\Models\Rashifal::active()->ordered()->get();
+                if ($dbRashis->isNotEmpty()) {
+                    $rashis = $dbRashis->map(fn($r) => [
+                        'slug' => $r->slug,
+                        'name' => $r->full_name ?? ($r->name . ' राशि'),
+                        'letters' => $r->letters,
+                        'index' => $r->icon_index ?? $r->order,
+                    ])->all();
+                } else {
+                    $rashis = [
+                        ['slug' => 'mesh', 'name' => 'मेष राशि', 'letters' => 'चु, चे, चो, ला, लि, लु, ले, लो, अ', 'index' => 0],
+                        ['slug' => 'vrish', 'name' => 'वृष राशि', 'letters' => 'इ, उ, ए, ओ, वा, वि, वु, वे, वो', 'index' => 1],
+                        ['slug' => 'mithun', 'name' => 'मिथुन राशि', 'letters' => 'का, कि, कु, घ, ङ, छ, के, को, हा', 'index' => 2],
+                        ['slug' => 'karkat', 'name' => 'कर्कट राशि', 'letters' => 'हि, हु, हे, हो, डा, डि, डु, डे, डो', 'index' => 3],
+                        ['slug' => 'singha', 'name' => 'सिंह राशि', 'letters' => 'मा, मि, मु, मे, मो, टा, टि, टु, टे', 'index' => 4],
+                        ['slug' => 'kanya', 'name' => 'कन्या राशि', 'letters' => 'टो, पा, पि, पु, ष, ण, ठ, पे, पो', 'index' => 5],
+                        ['slug' => 'tula', 'name' => 'तुला राशि', 'letters' => 'रा, रि, रु, रे, रो, ता, ति, तु, ते', 'index' => 6],
+                        ['slug' => 'vrischik', 'name' => 'वृश्चिक राशि', 'letters' => 'तो, ना, नि, नु, ने, नो, या, यि, यु', 'index' => 7],
+                        ['slug' => 'dhanu', 'name' => 'धनु राशि', 'letters' => 'ये, यो, भा, भि, भु, धा, फा, ढा, भे', 'index' => 8],
+                        ['slug' => 'makar', 'name' => 'मकर राशि', 'letters' => 'भो, जा, जि, जु, जे, जो, खि, खु, खे, खो', 'index' => 9],
+                        ['slug' => 'kumbha', 'name' => 'कुम्भ राशि', 'letters' => 'गु, गे, गो, सा, सि, सु, से, सो, दा', 'index' => 10],
+                        ['slug' => 'meen', 'name' => 'मीन राशि', 'letters' => 'दि, दु, थ, झ, ञ, दे, दो, चा, चि', 'index' => 11],
+                    ];
+                }
+            @endphp
+            <section class="mb-10 rounded-2xl bg-gradient-to-br from-amber-50/50 via-white to-stone-50/60 p-5 sm:p-7 border border-amber-200/80 shadow-xs" aria-labelledby="rashifal-heading">
+                <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-amber-200/70 pb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-[#12356b] to-[#1e448a] text-amber-300 shadow-xs">
+                            <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
+                                <path d="M12 2l2.4 6.9 7.1.6-5.3 4.8 1.6 7.1L12 17.8l-5.8 3.6 1.6-7.1-5.3-4.8 7.1-.6L12 2z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2.5">
+                                <h2 id="rashifal-heading" class="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight">
+                                    {{ setting('rashifal_section_title', 'दैनिक राशिफल') }}
+                                </h2>
+                                <span class="inline-flex items-center gap-1.5 rounded-full bg-amber-100/70 px-2.5 py-0.5 text-xs font-bold text-amber-900 border border-amber-200/90 shadow-2xs">
+                                    <svg class="h-3.5 w-3.5 text-amber-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                    <span>{{ nepali_date() }}</span>
+                                </span>
+                            </div>
+                            <p class="text-[12px] sm:text-xs text-stone-500 font-medium mt-0.5">
+                                {{ setting('rashifal_section_subtitle', 'आजको ग्रहगोचर तथा १२ राशिको विस्तृत फलादेश') }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="self-start sm:self-center">
+                        <a href="{{ route('rashifal.show', 'karkat') }}" class="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-xs sm:text-sm font-bold text-[#e25601] border border-amber-300 shadow-2xs hover:bg-[#e25601] hover:text-white hover:border-[#e25601] transition-all duration-200">
+                            <span>विस्तृत राशिफल हेर्नुहोस्</span>
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
-                <a href="{{ route('rashifal.show', 'karkat') }}" class="text-xs font-bold text-stone-700 hover:text-[#c92137] transition">विस्तृत राशिफल ↗</a>
-            </div>
-            <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
-                @foreach($rashis as $r)
-                    <a href="{{ route('rashifal.show', $r['slug']) }}" class="group block rounded-lg bg-white p-4 text-center shadow-sm ring-1 ring-red-100 transition hover:-translate-y-1 hover:shadow-md hover:ring-red-300">
-                        <span class="rashi-icon rashi-icon--{{ $r['index'] }} group-hover:scale-105 transition-transform" aria-hidden="true"></span>
-                        <h3 class="mt-2 text-base font-extrabold text-stone-800 group-hover:text-[#c92137] transition-colors">{{ $r['name'] }}</h3>
-                        <p class="mt-1 text-[11px] text-stone-500 truncate" title="{{ $r['letters'] }}">{{ $r['letters'] }}</p>
-                    </a>
-                @endforeach
-            </div>
-        </section>
+
+                <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+                    @foreach($rashis as $r)
+                        <a href="{{ route('rashifal.show', $r['slug']) }}" class="group block rounded-xl bg-white p-4 text-center shadow-xs ring-1 ring-amber-100/90 transition hover:-translate-y-1 hover:shadow-md hover:ring-2 hover:ring-[#e25601]">
+                            <span class="rashi-icon rashi-icon--{{ $r['index'] }} group-hover:scale-105 transition-transform" aria-hidden="true"></span>
+                            <h3 class="mt-2.5 text-base font-extrabold text-stone-800 group-hover:text-[#e25601] transition-colors">{{ $r['name'] }}</h3>
+                            <p class="mt-1 text-[11px] text-stone-500 truncate" title="{{ $r['letters'] }}">{{ $r['letters'] }}</p>
+                        </a>
+                    @endforeach
+                </div>
+            </section>
+        @endif
 
         <!-- Section: Footer Top Banner Ad (फुटर माथिल्लो ब्यानर) -->
         <aside class="my-10" aria-label="विज्ञापन">

@@ -2,7 +2,7 @@
     /* ========================================================
        Filament Admin Sidebar - Brand Blue Background (#244b92)
        ======================================================== */
-    aside#fi-main-sidebar,
+    #fi-main-sidebar,
     #fi-main-sidebar.fi-sidebar,
     #fi-main-sidebar .fi-sidebar-header-ctn,
     #fi-main-sidebar .fi-sidebar-header,
@@ -13,7 +13,7 @@
     }
 
     /* Right border of the sidebar */
-    aside#fi-main-sidebar {
+    #fi-main-sidebar {
         border-right: 1px solid rgba(255, 255, 255, 0.12) !important;
         box-shadow: 2px 0 8px rgba(0, 0, 0, 0.06);
     }
@@ -47,7 +47,6 @@
     #fi-main-sidebar .fi-sidebar-item:not(.fi-active) > .fi-sidebar-item-btn .fi-icon,
     #fi-main-sidebar .fi-sidebar-item:not(.fi-active) > .fi-sidebar-item-btn svg {
         color: #cbd5e1 !important;
-        fill: currentColor;
     }
 
     /* Inactive Hover & Focus States */
@@ -102,6 +101,14 @@
     }
 
     /* ========================================================
+       Global SVG Safety Constraint
+       ======================================================== */
+    .fi-wi-widget svg:not([width]) {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* ========================================================
        Filament Rich Editor - Spacious Height for Articles
        ======================================================== */
     .fi-fo-rich-editor .fi-fo-rich-editor-content,
@@ -109,5 +116,37 @@
     .fi-fo-rich-editor .fi-fo-rich-editor-content > .ProseMirror,
     .fi-fo-rich-editor .fi-fo-rich-editor-main {
         min-height: 450px !important;
+    }
+
+    /* ========================================================
+       Dashboard Page - Remove redundant heading and eliminate gaps
+       ======================================================== */
+    .kd-compact-dashboard-page .fi-header,
+    .kd-compact-dashboard-page .fi-header-heading,
+    .fi-page:has(.kd-welcome-card) .fi-header,
+    .fi-page:has(.kd-welcome-card) .fi-header-heading {
+        display: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        height: 0 !important;
+        min-height: 0 !important;
+    }
+
+    .kd-compact-dashboard-page,
+    .kd-compact-dashboard-page.fi-page,
+    .fi-page:has(.kd-welcome-card) {
+        padding-top: 0.5rem !important;
+    }
+
+    .kd-compact-dashboard-page .fi-page-header-main-ctn,
+    .fi-page:has(.kd-welcome-card) .fi-page-header-main-ctn {
+        gap: 0.75rem !important;
+        row-gap: 0.75rem !important;
+    }
+
+    .kd-compact-dashboard-page .fi-page-content,
+    .fi-page:has(.kd-welcome-card) .fi-page-content {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
     }
 </style>

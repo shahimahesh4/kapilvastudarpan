@@ -103,7 +103,7 @@
                             <h3 class="text-xs font-extrabold text-stone-800 uppercase tracking-wider mb-3">
                                 🌟 शुभ तत्व र ज्योतिषीय विवरण
                             </h3>
-                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs sm:text-sm">
+                            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs sm:text-sm">
                                 <div class="rounded-lg bg-white p-2.5 border border-red-200 shadow-2xs">
                                     <span class="block text-stone-500 font-medium">शुभ अङ्क</span>
                                     <strong class="text-stone-900 font-extrabold">{{ $currentRashi['lucky_number'] }}</strong>
@@ -120,6 +120,18 @@
                                     <span class="block text-stone-500 font-medium">शुभ वार</span>
                                     <strong class="text-stone-900 font-extrabold">{{ $currentRashi['lucky_day'] }}</strong>
                                 </div>
+                                @if(!empty($currentRashi['element']))
+                                <div class="rounded-lg bg-white p-2.5 border border-red-200 shadow-2xs">
+                                    <span class="block text-stone-500 font-medium">तत्व</span>
+                                    <strong class="text-stone-900 font-extrabold">{{ $currentRashi['element'] }}</strong>
+                                </div>
+                                @endif
+                                @if(!empty($currentRashi['ruler']))
+                                <div class="rounded-lg bg-white p-2.5 border border-red-200 shadow-2xs">
+                                    <span class="block text-stone-500 font-medium">स्वामी ग्रह</span>
+                                    <strong class="text-stone-900 font-extrabold">{{ $currentRashi['ruler'] }}</strong>
+                                </div>
+                                @endif
                             </div>
                         </div>
                     </div>

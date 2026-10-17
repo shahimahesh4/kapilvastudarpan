@@ -918,7 +918,7 @@ class MoreArticlesSeeder extends Seeder
                     'body' => $art['body'],
                     'image_path' => $art['image_path'],
                     'source_url' => $art['source_url'],
-                    'author' => $art['author'],
+                    'author' => 'कपिलवस्तु दर्पण',
                     'province' => $art['province'],
                     'is_featured' => $art['is_featured'],
                     'is_breaking' => $art['is_breaking'],

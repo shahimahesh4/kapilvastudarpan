@@ -7,10 +7,14 @@ use App\Filament\Resources\Advertisements\Pages\EditAdvertisement;
 use App\Filament\Resources\Advertisements\Pages\ListAdvertisements;
 use App\Models\Advertisement;
 use BackedEnum;
+use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -76,10 +80,13 @@ class AdvertisementResource extends Resource
                     ]),
 
                     Grid::make(2)->schema([
-                        TextInput::make('image_path')
-                            ->label('Image Path or URL')
-                            ->placeholder('images/ads/banner-1.gif or https://...')
-                            ->helperText('Local image file (images/ads/banner-1.gif) or external URL'),
+                        FileUpload::make('image_path')
+                            ->label('Banner Ad Image (विज्ञापन फोटो अपलोड)')
+                            ->image()
+                            ->disk('public')
+                            ->directory('advertisements')
+                            ->maxSize(5120)
+                            ->helperText('Upload banner ad image (PNG, JPG, GIF, WebP).'),
 
                         TextInput::make('target_url')
                             ->label('Click Target URL')
@@ -175,7 +182,26 @@ class AdvertisementResource extends Resource
                     ]),
             ])
             ->recordActions([
-                EditAction::make(),
+                ActionGroup::make([
+                    EditAction::make(),
+                    Action::make('toggle_active')
+                        ->label(fn (Advertisement $record): string => $record->is_active ? 'Deactivate' : 'Activate')
+                        ->icon(fn (Advertisement $record): string => $record->is_active ? 'heroicon-o-x-circle' : 'heroicon-o-check-circle')
+                        ->color(fn (Advertisement $record): string => $record->is_active ? 'warning' : 'success')
+                        ->action(fn (Advertisement $record) => $record->update(['is_active' => ! $record->is_active])),
+                    Action::make('visit_url')
+                        ->label('Visit Target URL')
+                        ->icon('heroicon-o-arrow-top-right-on-square')
+                        ->color('gray')
+                        ->url(fn (Advertisement $record): ?string => $record->target_url)
+                        ->openUrlInNewTab()
+                        ->visible(fn (Advertisement $record): bool => ! empty($record->target_url)),
+                    DeleteAction::make()
+                        ->modalHeading('Delete Advertisement')
+                        ->modalDescription('Are you sure you want to delete this advertisement?'),
+                ])
+                ->icon('heroicon-m-ellipsis-vertical')
+                ->tooltip('Options'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

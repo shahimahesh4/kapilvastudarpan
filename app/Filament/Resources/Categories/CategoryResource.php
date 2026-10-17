@@ -7,6 +7,10 @@ use App\Filament\Resources\Categories\Pages\EditCategory;
 use App\Filament\Resources\Categories\Pages\ListCategories;
 use App\Models\Category;
 use BackedEnum;
+use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -79,6 +83,25 @@ class CategoryResource extends Resource
                         ->placeholder('Brief description of this category...')
                         ->columnSpanFull(),
                 ]),
+
+                \Filament\Schemas\Components\Section::make('SEO & Meta Data')
+                    ->collapsed()
+                    ->columnSpanFull()
+                    ->schema([
+                        TextInput::make('meta_title')
+                            ->label('SEO Meta Title')
+                            ->placeholder('Custom Google search result title (defaults to category name)')
+                            ->helperText('Leave empty to automatically use category name'),
+
+                        Textarea::make('meta_description')
+                            ->label('Meta Description')
+                            ->rows(2)
+                            ->placeholder('Short description for search engines...'),
+
+                        TextInput::make('meta_keywords')
+                            ->label('Meta Keywords')
+                            ->placeholder('category keywords, news, nepal'),
+                    ]),
         ]);
     }
 
@@ -109,7 +132,27 @@ class CategoryResource extends Resource
                     ->badge(),
             ])
             ->defaultSort('order')
-            ->recordActions([\Filament\Actions\EditAction::make()]);
+            ->recordActions([
+                ActionGroup::make([
+                    EditAction::make(),
+                    Action::make('view_category')
+                        ->label('View')
+                        ->icon('heroicon-o-arrow-top-right-on-square')
+                        ->color('gray')
+                        ->url(fn (Category $record): string => route('category.show', $record->slug))
+                        ->openUrlInNewTab(),
+                    Action::make('toggle_nav')
+                        ->label(fn (Category $record): string => $record->is_nav ? 'Hide from Nav' : 'Show in Nav')
+                        ->icon(fn (Category $record): string => $record->is_nav ? 'heroicon-o-eye-slash' : 'heroicon-o-eye')
+                        ->color(fn (Category $record): string => $record->is_nav ? 'warning' : 'success')
+                        ->action(fn (Category $record) => $record->update(['is_nav' => ! $record->is_nav])),
+                    DeleteAction::make()
+                        ->modalHeading('Delete Category')
+                        ->modalDescription('Are you sure you want to delete this category?'),
+                ])
+                ->icon('heroicon-m-ellipsis-vertical')
+                ->tooltip('Options'),
+            ]);
     }
 
     public static function getPages(): array

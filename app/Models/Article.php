@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Article extends Model
@@ -41,6 +42,7 @@ class Article extends Model
         'is_featured',
         'is_breaking',
         'views',
+        'meta_title',
         'meta_description',
         'meta_keywords',
     ];
@@ -65,6 +67,26 @@ class Article extends Model
     {
         return $this->belongsToMany(Category::class, 'article_category')->withTimestamps();
     }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class)->latest();
+    }
+
+    public function approvedComments(): HasMany
+    {
+        return $this->hasMany(Comment::class)->where('is_approved', true)->latest();
+    }
+
+    public function approvedRootComments(): HasMany
+    {
+        return $this->hasMany(Comment::class)
+            ->whereNull('parent_id')
+            ->where('is_approved', true)
+            ->with(['user', 'replies.user'])
+            ->latest();
+    }
+
 
     public function scopePublished(Builder $query): Builder
     {
@@ -124,6 +146,16 @@ class Article extends Model
         return max(1, (int) ceil($words / 180));
     }
 
+    public function getNepaliReadingTimeAttribute(): string
+    {
+        return nepali_number($this->estimated_reading_time);
+    }
+
+    public function getNepaliViewsAttribute(): string
+    {
+        return nepali_number(number_format((int) $this->views));
+    }
+
     public function getImageUrlAttribute(): string
     {
         if (empty($this->image_path)) {
@@ -139,5 +171,78 @@ class Article extends Model
         }
 
         return asset($this->image_path);
+    }
+
+    public function getAuthorAttribute(?string $value): ?string
+    {
+        if (app()->bound('request') && request()?->is('admin*')) {
+            return $value;
+        }
+
+        return static::formatAuthorName($value);
+    }
+
+    public function getDisplayAuthorAttribute(): string
+    {
+        return static::formatAuthorName($this->attributes['author'] ?? null);
+    }
+
+    public static function formatAuthorName(?string $rawAuthor): string
+    {
+        return 'कपिलवस्तु दर्पण';
+    }
+
+    public function getNepaliDateAttribute(): string
+    {
+        if (! $this->published_at) {
+            return 'शुक्रबार, ३० असोज २०८३';
+        }
+
+        return static::formatNepaliDate($this->published_at);
+    }
+
+    public static function formatNepaliDate(\Carbon\CarbonInterface $date): string
+    {
+        $days = ['आइतबार', 'सोमबार', 'मंगलबार', 'बुधबार', 'बिहीबार', 'शुक्रबार', 'शनिबार'];
+        $months = [
+            1 => 'वैशाख', 2 => 'जेठ', 3 => 'असार', 4 => 'साउन',
+            5 => 'भदौ', 6 => 'असोज', 7 => 'कात्तिक', 8 => 'मंसिर',
+            9 => 'पुस', 10 => 'माघ', 11 => 'फागुन', 12 => 'चैत'
+        ];
+        $digits = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
+
+        $base = \Carbon\Carbon::create(2026, 4, 14, 0, 0, 0, 'Asia/Kathmandu');
+        $diffDays = (int) $base->diffInDays($date, false);
+
+        $monthDays = [
+            1 => 31, 2 => 31, 3 => 32, 4 => 31,
+            5 => 31, 6 => 31, 7 => 30, 8 => 29,
+            9 => 30, 10 => 29, 11 => 30, 12 => 30
+        ];
+
+        $year = 2083;
+        $month = 1;
+        $day = 1;
+
+        if ($diffDays >= 0) {
+            $rem = $diffDays;
+            for ($m = 1; $m <= 12; $m++) {
+                if ($rem < $monthDays[$m]) {
+                    $month = $m;
+                    $day = $rem + 1;
+                    break;
+                }
+                $rem -= $monthDays[$m];
+            }
+        } else {
+            return 'शुक्रबार, ३० असोज २०८३';
+        }
+
+        $dayName = $days[$date->dayOfWeek];
+        $dayNepali = str_replace(range(0, 9), $digits, (string) $day);
+        $yearNepali = str_replace(range(0, 9), $digits, (string) $year);
+        $monthName = $months[$month];
+
+        return "{$dayName}, {$dayNepali} {$monthName} {$yearNepali}";
     }
 }

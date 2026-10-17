@@ -22,6 +22,28 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        require_once __DIR__ . '/../helpers.php';
+
+        // Configure Carbon with Nepali digits for relative time diffs (e.g. १९ घण्टा अगाडि)
+        \Carbon\Carbon::setLocale('ne');
+        \Carbon\CarbonImmutable::setLocale('ne');
+
+        $toNepaliTime = function ($time, string $suffix = ''): string {
+            return nepali_number($time) . $suffix;
+        };
+
+        \Carbon\Carbon::getTranslator()->setMessages('ne', [
+            'alt_numbers' => ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'],
+            'ago' => fn ($time) => $toNepaliTime($time, ' अगाडि'),
+            'from_now' => fn ($time) => $toNepaliTime($time, 'मा'),
+            'after' => fn ($time) => $toNepaliTime($time, ' पछि'),
+            'before' => fn ($time) => $toNepaliTime($time, ' अघि'),
+        ]);
+
+        \Illuminate\Support\Facades\Blade::directive('nepali', function ($expression) {
+            return "<?php echo nepali_number($expression); ?>";
+        });
+
         View::composer(['livewire.news-homepage', 'articles.*', 'home', 'partials.*', 'components.layouts.*'], function ($view) {
             if (Schema::hasTable('categories')) {
                 $categories = \App\Models\Category::nav()->get();
@@ -34,8 +56,9 @@ class AppServiceProvider extends ServiceProvider
                     ->header()
                     ->root()
                     ->with([
-                        'children' => fn ($q) => $q->active()->ordered()->with('category'),
+                        'children' => fn ($q) => $q->active()->ordered()->with(['category', 'page']),
                         'category',
+                        'page',
                     ])
                     ->ordered()
                     ->get();

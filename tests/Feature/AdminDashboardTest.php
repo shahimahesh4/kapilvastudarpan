@@ -36,6 +36,22 @@ class AdminDashboardTest extends TestCase
         $dashboardResponse = $this->get('/admin');
         $dashboardResponse->assertStatus(200);
         $dashboardResponse->assertSee('कपिलवस्तु दर्पण');
+        $dashboardResponse->assertSee('fi-topbar-custom-actions', false);
+        $dashboardResponse->assertSee('fi-topbar-date-chip', false);
+        $dashboardResponse->assertSee('fi-topbar-website-btn', false);
+        $dashboardResponse->assertSee('वेबसाइट हेर्नुहोस्');
+
+        \Livewire\Livewire::test(\App\Filament\Widgets\DashboardWelcomeWidget::class)->assertSuccessful();
+        \Livewire\Livewire::test(\App\Filament\Widgets\NewsStatsOverviewWidget::class)->assertSuccessful();
+        \Livewire\Livewire::test(\App\Filament\Widgets\ArticlesChartWidget::class)->assertSuccessful();
+        \Livewire\Livewire::test(\App\Filament\Widgets\CategoryDistributionChartWidget::class)->assertSuccessful();
+        \Livewire\Livewire::test(\App\Filament\Widgets\RecentArticlesTableWidget::class)->assertSuccessful();
+        \Livewire\Livewire::test(\App\Filament\Widgets\RecentCommentsTableWidget::class)->assertSuccessful();
+        \Livewire\Livewire::test(\App\Filament\Widgets\PortalQuickOptionsWidget::class)
+            ->assertSuccessful()
+            ->call('clearSystemCache')
+            ->call('clearViewCache');
+        \Livewire\Livewire::test(\Filament\Pages\Dashboard::class)->assertSuccessful();
 
         // Articles List
         $articlesResponse = $this->get('/admin/articles');
@@ -285,4 +301,282 @@ class AdminDashboardTest extends TestCase
         $article->categories()->detach();
         $article->forceDelete();
     }
+
+    public function test_admin_can_access_website_settings_page(): void
+    {
+        $user = User::where('email', 'admin@kapilvastudarpan.com')->first();
+        $this->actingAs($user);
+
+        $response = $this->get('/admin/website-settings');
+        $response->assertStatus(200);
+        $response->assertSee('Website Settings');
+    }
+
+    public function test_admin_can_update_website_settings(): void
+    {
+        $user = User::where('email', 'admin@kapilvastudarpan.com')->first();
+        $this->actingAs($user);
+
+        try {
+            \Livewire\Livewire::test(\App\Filament\Pages\WebsiteSettings::class)
+                ->fillForm([
+                    'site_name' => 'कपिलवस्तु दर्पण नयाँ',
+                    'contact_email' => 'new-contact@kapilvastudarpan.com',
+                    'contact_phone' => '+९७७-९८००००००००',
+                    'website_url' => 'https://kapilvastudarpan.com',
+                    'contact_address' => 'नयाँ ठेगाना, कपिलवस्तु',
+                ])
+                ->call('save')
+                ->assertHasNoFormErrors();
+
+            $this->assertEquals('new-contact@kapilvastudarpan.com', \App\Models\Setting::get('contact_email'));
+            $this->assertEquals('+९७७-९८००००००००', \App\Models\Setting::get('contact_phone'));
+            $this->assertEquals('https://kapilvastudarpan.com', \App\Models\Setting::get('website_url'));
+            $this->assertEquals('कपिलवस्तु दर्पण नयाँ', setting('site_name'));
+
+            // Verify frontend displays updated contact info
+            $response = $this->get(route('home'));
+            $response->assertStatus(200);
+            $response->assertSee('new-contact@kapilvastudarpan.com');
+            $response->assertSee('+९७७-९८००००००००');
+            $response->assertSee('kapilvastudarpan.com');
+        } finally {
+            // Restore official website settings so database maintains production data
+            \App\Models\Setting::set('site_name', 'कपिलवस्तु दर्पण');
+            \App\Models\Setting::set('contact_email', 'kapilvastudarpannews@gmail.com');
+            \App\Models\Setting::set('contact_address', 'कपिलवस्तु–१०, पचेहरा, लुम्बिनी प्रदेश, नेपाल');
+            \App\Models\Setting::set('contact_phone', '+९७७-९७६६२५०४४५');
+            \App\Models\Setting::set('website_url', 'https://kapilvastudarpan.com');
+            \Illuminate\Support\Facades\Cache::flush();
+        }
+    }
+
+    public function test_admin_can_update_video_and_youtube_settings(): void
+    {
+        $user = User::where('email', 'admin@kapilvastudarpan.com')->first();
+        $this->actingAs($user);
+
+        \Livewire\Livewire::test(\App\Filament\Pages\WebsiteSettings::class)
+            ->fillForm([
+                'show_video_section' => true,
+                'video_section_title' => 'नयाँ भिडियो विशेष',
+                'youtube_api_enabled' => true,
+                'youtube_api_key' => 'AIzaSyDemoKey12345',
+                'youtube_channel_id' => 'UC_demo_channel_id',
+                'youtube_featured_video_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+            ])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $this->assertTrue(\App\Models\Setting::getBool('show_video_section'));
+        $this->assertTrue(\App\Models\Setting::getBool('youtube_api_enabled'));
+        $this->assertEquals('AIzaSyDemoKey12345', \App\Models\Setting::get('youtube_api_key'));
+        $this->assertEquals('UC_demo_channel_id', \App\Models\Setting::get('youtube_channel_id'));
+        $this->assertEquals('https://www.youtube.com/watch?v=dQw4w9WgXcQ', \App\Models\Setting::get('youtube_featured_video_url'));
+        $this->assertEquals('नयाँ भिडियो विशेष', \App\Models\Setting::get('video_section_title'));
+
+        // Reset settings
+        \App\Models\Setting::set('youtube_api_enabled', false);
+        \App\Models\Setting::set('youtube_api_key', '');
+        \App\Models\Setting::set('youtube_channel_id', '');
+        \App\Models\Setting::set('youtube_featured_video_url', '');
+        \App\Models\Setting::set('video_section_title', 'भिडियो विशेष');
+    }
+
+    public function test_admin_can_access_rashifals_resource_and_edit_record(): void
+    {
+        $user = User::where('email', 'admin@kapilvastudarpan.com')->first();
+        $this->actingAs($user);
+
+        // List page
+        $listResponse = $this->get('/admin/rashifals');
+        $listResponse->assertStatus(200);
+        $listResponse->assertSee('मेष');
+        $listResponse->assertSee('मीन');
+
+        // Edit page
+        $mesh = \App\Models\Rashifal::where('slug', 'mesh')->first();
+        $this->assertNotNull($mesh);
+
+        $editResponse = $this->get("/admin/rashifals/{$mesh->id}/edit");
+        $editResponse->assertStatus(200);
+        $editResponse->assertSee('राशिको आधारभूत विवरण');
+        $editResponse->assertSee('दैनिक राशिफल');
+        $editResponse->assertSee('वार्षिक राशिफल');
+    }
+
+    public function test_admin_can_update_rashifal_settings_via_website_settings_page(): void
+    {
+        $user = User::where('email', 'admin@kapilvastudarpan.com')->first();
+        $this->actingAs($user);
+
+        \Livewire\Livewire::test(\App\Filament\Pages\WebsiteSettings::class)
+            ->fillForm([
+                'show_rashifal_section' => true,
+                'rashifal_section_title' => 'आजको १२ राशिको फल',
+                'rashifal_section_subtitle' => 'विशेष दैनिक ग्रहगोचर',
+            ])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $this->assertTrue(\App\Models\Setting::getBool('show_rashifal_section'));
+        $this->assertEquals('आजको १२ राशिको फल', \App\Models\Setting::get('rashifal_section_title'));
+        $this->assertEquals('विशेष दैनिक ग्रहगोचर', \App\Models\Setting::get('rashifal_section_subtitle'));
+
+        // Reset settings
+        \App\Models\Setting::set('rashifal_section_title', 'दैनिक राशिफल');
+        \App\Models\Setting::set('rashifal_section_subtitle', 'आजको ग्रहगोचर तथा १२ राशिको विस्तृत फलादेश');
+    }
+
+    public function test_admin_can_upload_leader_photo_via_website_settings(): void
+    {
+        \Illuminate\Support\Facades\Storage::fake('public');
+
+        $user = User::where('email', 'admin@kapilvastudarpan.com')->first();
+        $this->actingAs($user);
+
+        $fakePhoto = \Illuminate\Http\UploadedFile::fake()->image('test-operator-portrait.jpg', 350, 450);
+
+        \Livewire\Livewire::test(\App\Filament\Pages\WebsiteSettings::class)
+            ->set('data.operator_photo', $fakePhoto)
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $savedPhotoPath = \App\Models\Setting::get('operator_photo');
+        $this->assertNotEmpty($savedPhotoPath);
+        $this->assertStringContainsString('team/', $savedPhotoPath);
+        \Illuminate\Support\Facades\Storage::disk('public')->assertExists($savedPhotoPath);
+
+        // Check helper resolution
+        $resolvedUrl = setting_image_url($savedPhotoPath);
+        $this->assertStringContainsString('storage/team/', $resolvedUrl);
+
+        // Reset operator photo back to seeded image
+        \App\Models\Setting::set('operator_photo', 'images/team/taranath-kewat.png');
+    }
+
+    public function test_admin_can_update_social_instagram_and_it_displays_on_header_and_footer(): void
+    {
+        $user = User::where('email', 'admin@kapilvastudarpan.com')->first();
+        $this->actingAs($user);
+
+        $instagramUrl = 'https://instagram.com/kapilvastu_darpan_official';
+
+        try {
+            \Livewire\Livewire::test(\App\Filament\Pages\WebsiteSettings::class)
+                ->fillForm([
+                    'social_instagram' => $instagramUrl,
+                ])
+                ->call('save')
+                ->assertHasNoFormErrors();
+
+            $this->assertEquals($instagramUrl, \App\Models\Setting::get('social_instagram'));
+
+            // Check front page displays the Instagram link in header and footer
+            $response = $this->get('/');
+            $response->assertStatus(200);
+            $response->assertSee($instagramUrl, false);
+        } finally {
+            \App\Models\Setting::set('social_instagram', 'https://instagram.com');
+            \Illuminate\Support\Facades\Cache::flush();
+        }
+    }
+
+    public function test_social_icon_is_hidden_when_social_link_is_not_configured(): void
+    {
+        $origTiktok = \App\Models\Setting::get('social_tiktok', '');
+
+        try {
+            // 1. When empty, TikTok icon should not appear
+            \App\Models\Setting::set('social_tiktok', '');
+            \Illuminate\Support\Facades\Cache::flush();
+
+            $response = $this->get('/');
+            $response->assertStatus(200);
+            $response->assertDontSee('aria-label="TikTok"', false);
+
+            // 2. When filled, TikTok icon should appear
+            $tiktokUrl = 'https://tiktok.com/@kapilvastu_darpan_official';
+            \App\Models\Setting::set('social_tiktok', $tiktokUrl);
+            \Illuminate\Support\Facades\Cache::flush();
+
+            $resWithTiktok = $this->get('/');
+            $resWithTiktok->assertStatus(200);
+            $resWithTiktok->assertSee('aria-label="TikTok"', false);
+            $resWithTiktok->assertSee($tiktokUrl, false);
+        } finally {
+            \App\Models\Setting::set('social_tiktok', $origTiktok ?: 'https://tiktok.com');
+            \Illuminate\Support\Facades\Cache::flush();
+        }
+    }
+
+    public function test_editor_profile_box_is_hidden_by_default_on_article_page(): void
+    {
+        $article = \App\Models\Article::published()->first();
+        $this->assertNotNull($article);
+
+        $origSetting = \App\Models\Setting::get('show_article_editor_box', '0');
+
+        try {
+            // 1. By default or when disabled, editor box is hidden
+            \App\Models\Setting::set('show_article_editor_box', false);
+            \Illuminate\Support\Facades\Cache::flush();
+
+            $response = $this->get(route('articles.show', $article->slug));
+            $response->assertStatus(200);
+            $response->assertDontSee('प्रधान सम्पादक / सम्पादकीय नेतृत्व');
+
+            // 2. When enabled, editor box is displayed
+            \App\Models\Setting::set('show_article_editor_box', true);
+            \Illuminate\Support\Facades\Cache::flush();
+
+            $responseEnabled = $this->get(route('articles.show', $article->slug));
+            $responseEnabled->assertStatus(200);
+            $responseEnabled->assertSee('प्रधान सम्पादक / सम्पादकीय नेतृत्व');
+        } finally {
+            \App\Models\Setting::set('show_article_editor_box', $origSetting);
+            \Illuminate\Support\Facades\Cache::flush();
+        }
+    }
+
+    public function test_admin_can_access_comments_resource(): void
+    {
+        $admin = User::first() ?? User::factory()->create();
+
+        $response = $this->actingAs($admin)->get('/admin/comments');
+        $response->assertStatus(200);
+        $response->assertSee('Comments');
+
+        $article = Article::published()->first() ?? Article::factory()->create();
+        $comment = \App\Models\Comment::create([
+            'article_id' => $article->id,
+            'user_id' => $admin->id,
+            'content' => 'Filament ActionGroup परीक्षण प्रतिक्रिया',
+            'is_approved' => false,
+        ]);
+
+        try {
+            \Livewire\Livewire::test(\App\Filament\Resources\Comments\Pages\ListComments::class)
+                ->assertTableActionExists('approve')
+                ->assertTableActionExists('unapprove')
+                ->assertTableActionExists('edit')
+                ->assertTableActionExists('delete')
+                ->assertTableActionVisible('approve', $comment)
+                ->assertTableActionHidden('unapprove', $comment)
+                ->callTableAction('approve', $comment);
+
+            $this->assertTrue($comment->fresh()->is_approved);
+
+            \Livewire\Livewire::test(\App\Filament\Resources\Comments\Pages\ListComments::class)
+                ->assertTableActionVisible('unapprove', $comment->fresh())
+                ->assertTableActionHidden('approve', $comment->fresh())
+                ->callTableAction('unapprove', $comment->fresh());
+
+            $this->assertFalse($comment->fresh()->is_approved);
+        } finally {
+            $comment->delete();
+        }
+    }
 }
+
+

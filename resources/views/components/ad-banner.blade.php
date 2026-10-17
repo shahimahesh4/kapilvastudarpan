@@ -64,6 +64,6 @@
     <div class="relative flex flex-col items-center justify-center rounded-lg border border-dashed border-stone-300 bg-stone-50/80 p-4 text-center text-xs text-stone-500 {{ $class }}">
         <span class="absolute left-2 top-1.5 text-[9px] font-bold uppercase tracking-wider text-stone-400">विज्ञापन</span>
         <p class="font-extrabold text-stone-700">तपाईंको विज्ञापन यहाँ राख्नुहोस्</p>
-        <p class="mt-1 text-[11px] text-stone-500">सम्पर्क: +९७७-९७६६२५०४४५ | kapilvastudarpannews@gmail.com</p>
+        <p class="mt-1 text-[11px] text-stone-500">सम्पर्क: {{ setting('contact_phone', '+९७७-९७६६२५०४४५') }} | {{ setting('contact_email', 'kapilvastudarpannews@gmail.com') }}</p>
     </div>
 @endif

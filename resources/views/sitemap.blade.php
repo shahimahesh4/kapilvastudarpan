@@ -12,6 +12,16 @@
             <priority>0.8</priority>
         </url>
     @endforeach
+    @if(isset($pages))
+        @foreach ($pages as $p)
+            <url>
+                <loc>{{ route('pages.show', $p->slug) }}</loc>
+                <lastmod>{{ $p->updated_at->toIso8601String() }}</lastmod>
+                <changefreq>monthly</changefreq>
+                <priority>0.7</priority>
+            </url>
+        @endforeach
+    @endif
     @foreach ($articles as $art)
         <url>
             <loc>{{ route('articles.show', $art->slug) }}</loc>

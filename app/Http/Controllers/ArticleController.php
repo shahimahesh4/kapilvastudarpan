@@ -13,7 +13,7 @@ class ArticleController extends Controller
         abort_unless($article->is_published && $article->published_at && $article->published_at->isPast(), 404);
 
         $article->incrementViews();
-        $article->loadMissing(['category', 'categories']);
+        $article->loadMissing(['category', 'categories', 'approvedComments.user']);
 
         $categoryIds = $article->categories->pluck('id')->all();
         if (empty($categoryIds) && $article->category_id) {
@@ -52,6 +52,18 @@ class ArticleController extends Controller
             ->take(6)
             ->get();
 
+        $previousArticle = Article::query()
+            ->published()
+            ->where('published_at', '<', $article->published_at)
+            ->latest('published_at')
+            ->first();
+
+        $nextArticle = Article::query()
+            ->published()
+            ->where('published_at', '>', $article->published_at)
+            ->oldest('published_at')
+            ->first();
+
         $categories = Category::nav()->get();
 
         return view('articles.show', [
@@ -59,6 +71,8 @@ class ArticleController extends Controller
             'relatedArticles' => $relatedArticles,
             'trendingArticles' => $trendingArticles,
             'latestArticles' => $latestArticles,
+            'previousArticle' => $previousArticle,
+            'nextArticle' => $nextArticle,
             'categories' => $categories,
         ]);
     }
@@ -72,9 +86,16 @@ class ArticleController extends Controller
             ->paginate(12);
 
         $trendingArticles = Article::query()
-            ->with('category')
+            ->with(['category', 'categories'])
             ->published()
             ->trending()
+            ->take(5)
+            ->get();
+
+        $latestArticles = Article::query()
+            ->with(['category', 'categories'])
+            ->published()
+            ->latest('published_at')
             ->take(5)
             ->get();
 
@@ -85,6 +106,7 @@ class ArticleController extends Controller
             'heading' => $category->name,
             'articles' => $articles,
             'trendingArticles' => $trendingArticles,
+            'latestArticles' => $latestArticles,
             'categories' => $categories,
         ]);
     }
@@ -114,6 +136,13 @@ class ArticleController extends Controller
             ->take(5)
             ->get();
 
+        $latestArticles = Article::query()
+            ->with(['category', 'categories'])
+            ->published()
+            ->latest('published_at')
+            ->take(5)
+            ->get();
+
         $categories = Category::nav()->get();
 
         return view('articles.index', [
@@ -121,7 +150,73 @@ class ArticleController extends Controller
             'query' => $query,
             'articles' => $articles,
             'trendingArticles' => $trendingArticles,
+            'latestArticles' => $latestArticles,
             'categories' => $categories,
         ]);
+    }
+
+    /**
+     * Store a newly created comment for an article.
+     */
+    public function storeComment(Request $request, Article $article)
+    {
+        abort_unless($article->is_published && $article->published_at && $article->published_at->isPast(), 404);
+
+        if (! auth()->check()) {
+            return redirect()
+                ->to(route('articles.show', $article->slug) . '#comments')
+                ->with('status_warning', 'प्रतिक्रिया लेख्नका लागि कृपया पहिले लगइन गर्नुहोस्।');
+        }
+
+        $validated = $request->validate([
+            'content' => ['required', 'string', 'min:2', 'max:2000'],
+            'parent_id' => ['nullable', 'exists:comments,id'],
+        ], [
+            'content.required' => 'कृपया आफ्नो प्रतिक्रिया लेख्नुहोस्।',
+            'content.min' => 'प्रतिक्रिया कम्तीमा २ अक्षरको हुनुपर्छ।',
+            'content.max' => 'प्रतिक्रिया २,००० अक्षरभन्दा बढी हुन सक्दैन।',
+        ]);
+
+        $parentId = $validated['parent_id'] ?? null;
+        if ($parentId) {
+            $parentComment = \App\Models\Comment::where('id', $parentId)
+                ->where('article_id', $article->id)
+                ->first();
+            if (! $parentComment) {
+                $parentId = null;
+            }
+        }
+
+        $article->comments()->create([
+            'user_id' => $request->user()->id,
+            'parent_id' => $parentId,
+            'content' => strip_tags(trim($validated['content'])),
+            'is_approved' => true,
+        ]);
+
+        $message = $parentId ? 'तपाईंको जवाफ सफलतापूर्वक पोस्ट गरियो।' : 'तपाईंको प्रतिक्रिया सफलतापूर्वक पोस्ट गरियो।';
+
+        return redirect()
+            ->to(route('articles.show', $article->slug) . '#comments')
+            ->with('comment_success', $message);
+    }
+
+    /**
+     * Delete a comment (author or admin only).
+     */
+    public function destroyComment(Request $request, \App\Models\Comment $comment)
+    {
+        abort_unless(auth()->check(), 403);
+
+        if ($comment->user_id !== $request->user()->id) {
+            abort(403);
+        }
+
+        $slug = $comment->article?->slug;
+        $comment->delete();
+
+        $redirectUrl = $slug ? route('articles.show', $slug) . '#comments' : url()->previous();
+
+        return redirect($redirectUrl)->with('comment_success', 'प्रतिक्रिया हटाइयो।');
     }
 }
