@@ -79,7 +79,11 @@ class ArticleController extends Controller
 
     public function category(Category $category)
     {
-        $articles = $category->articles()
+        $articles = Article::query()
+            ->where(function ($q) use ($category) {
+                $q->where('category_id', $category->id)
+                  ->orWhereHas('categories', fn ($catQ) => $catQ->where('categories.id', $category->id));
+            })
             ->with(['category', 'categories'])
             ->published()
             ->latest('published_at')
@@ -99,7 +103,11 @@ class ArticleController extends Controller
             ->take(5)
             ->get();
 
-        $categories = Category::nav()->get();
+        $categories = Category::nav()
+            ->withCount(['articles as published_articles_count' => function ($query) {
+                $query->published();
+            }])
+            ->get();
 
         return view('articles.index', [
             'category' => $category,
@@ -143,7 +151,11 @@ class ArticleController extends Controller
             ->take(5)
             ->get();
 
-        $categories = Category::nav()->get();
+        $categories = Category::nav()
+            ->withCount(['articles as published_articles_count' => function ($query) {
+                $query->published();
+            }])
+            ->get();
 
         return view('articles.index', [
             'heading' => $query === '' ? 'खोज्नुहोस्' : 'खोज नतिजा: '.$query,

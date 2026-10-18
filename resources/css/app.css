@@ -59,9 +59,32 @@
     .site-dark .border-stone-200, .site-dark .border-stone-300, .site-dark .border-sky-100, .site-dark .divide-stone-200, .site-dark .divide-stone-300 { border-color: #3f3f46 !important; }
     .site-dark .ring-red-100 { --tw-ring-color: #4b1d25 !important; }
     .site-dark .rashi-icon { background-color: #1c1810; border-color: #e25601; box-shadow: 0 2px 10px rgba(226, 86, 1, 0.25); }
-    .site-dark input { background: #111 !important; color: #f5f5f5; border-color: #52525b !important; }
-    #primary-nav > div > ul { font-size: 20px; }
-    #main-content > section { margin-bottom: 2.5rem; }
+    #primary-nav ul.kd-main-nav,
+    #primary-nav ul.kd-main-nav > li > a,
+    #primary-nav ul.kd-main-nav > li > a > span,
+    #primary-nav ul.kd-main-nav > li > button,
+    #primary-nav ul.kd-main-nav > li > button > span,
+    #primary-nav > div > ul,
+    #primary-nav > div > ul > li > a,
+    #primary-nav > div > ul > li > a > span,
+    #primary-nav ul li a,
+    #primary-nav ul li a span {
+        font-size: 18px !important;
+        font-weight: 800 !important;
+    }
+    @media (min-width: 1280px) {
+        #primary-nav ul.kd-main-nav,
+        #primary-nav ul.kd-main-nav > li > a,
+        #primary-nav ul.kd-main-nav > li > a > span {
+            font-size: 19px !important;
+        }
+    }
+    #site-sidebar nav ul li a,
+    #site-sidebar nav ul li button,
+    #site-sidebar nav ul li a span,
+    #site-sidebar nav ul li button span {
+        font-size: 17px !important;
+    }
     #main-content > section:last-child { margin-bottom: 0; }
     @media (max-width: 639px) { #main-content > section { margin-bottom: 2rem; } }
     .profile-avatar { display: inline-block; flex: none; overflow: hidden; border-radius: 9999px; background: url('/images/profile-avatar.png') center / cover no-repeat; }

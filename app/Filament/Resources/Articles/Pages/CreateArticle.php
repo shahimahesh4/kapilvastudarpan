@@ -11,6 +11,15 @@ class CreateArticle extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
+        if (auth()->check()) {
+            if (empty($data['user_id']) || auth()->user()->isPublisher()) {
+                $data['user_id'] = auth()->id();
+            }
+            if (empty($data['author']) && auth()->user()->isPublisher()) {
+                $data['author'] = auth()->user()->name ?: 'कपिलवस्तु दर्पण';
+            }
+        }
+
         if (! empty($data['categories']) && is_array($data['categories'])) {
             $data['category_id'] = $data['categories'][0];
         }

@@ -132,6 +132,9 @@
     <!-- SweetAlert2 for Interactive Notifications -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 
+    <!-- Nepali Unicode Converter Engine (Universal) -->
+    <script src="{{ asset('js/nepali-unicode-converter.js') }}"></script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 
@@ -175,6 +178,9 @@
 
     <!-- Unified Global Footer -->
     @include('partials.footer')
+
+    <!-- Left Bottom Browser Notification Subscriber Widget & Popup -->
+    @include('partials.notification-subscriber')
 
     @livewireScripts
 

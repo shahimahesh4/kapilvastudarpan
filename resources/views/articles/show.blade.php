@@ -384,7 +384,7 @@
                 <!-- Featured Image Container -->
                 <figure class="mt-6">
                     <div class="aspect-[16/9] sm:aspect-[16/10] rounded-2xl overflow-hidden bg-stone-100 shadow-md border border-stone-200/80 group">
-                        <img src="{{ $article->image_url }}" alt="{{ $article->title }}" class="h-full w-full object-cover group-hover:scale-[1.015] transition-transform duration-500">
+                        <img src="{{ $article->image_url }}" alt="{{ $article->title }}" class="h-full w-full object-cover group-hover:scale-[1.015] transition-transform duration-500" loading="eager" fetchpriority="high">
                     </div>
                     <figcaption class="mt-2.5 flex items-center justify-between text-xs text-stone-500 italic px-1">
                         <span class="flex items-center gap-1.5">
@@ -426,7 +426,7 @@
                 @if(setting_bool('show_article_editor_box', false))
                 <div class="mt-8 rounded-2xl border border-stone-200/90 bg-gradient-to-br from-stone-50 via-white to-red-50/20 p-5 sm:p-6 shadow-xs flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5">
                     <span class="profile-avatar-dashed w-24 sm:w-28 aspect-[3.5/4.5] shrink-0 shadow-sm !rounded-xl overflow-hidden p-1 bg-white">
-                        <img src="{{ asset(setting('editor_photo', 'images/team/tuklal-gaire.png')) }}" alt="{{ setting('editor_name', 'टुकलाल गैरे') }}" class="h-full w-full !rounded-lg object-cover">
+                        <img src="{{ asset(setting('editor_photo', 'images/team/tuklal-gaire.png')) }}" alt="{{ setting('editor_name', 'टुकलाल गैरे') }}" class="h-full w-full !rounded-lg object-cover" loading="lazy" decoding="async">
                     </span>
                     <div class="text-center sm:text-left flex-1">
                         <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
@@ -766,7 +766,7 @@
                     @if(isset($previousArticle) && $previousArticle)
                         <a href="{{ route('articles.show', $previousArticle->slug) }}" class="group flex gap-3.5 items-center rounded-xl border border-stone-200 bg-white p-3.5 shadow-2xs hover:border-[#c92137] hover:shadow-md transition-all duration-200">
                             <div class="relative h-16 w-20 shrink-0 overflow-hidden rounded-lg bg-stone-100 border border-stone-200/80">
-                                <img src="{{ $previousArticle->image_url }}" alt="{{ $previousArticle->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                <img src="{{ $previousArticle->image_url }}" alt="{{ $previousArticle->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async">
                             </div>
                             <div class="flex-1 min-w-0">
                                 <span class="flex items-center gap-1 text-[11px] font-black text-[#c92137] uppercase tracking-wider mb-1">
@@ -785,7 +785,7 @@
                     @if(isset($nextArticle) && $nextArticle)
                         <a href="{{ route('articles.show', $nextArticle->slug) }}" class="group flex flex-row-reverse gap-3.5 items-center rounded-xl border border-stone-200 bg-white p-3.5 text-right shadow-2xs hover:border-[#c92137] hover:shadow-md transition-all duration-200">
                             <div class="relative h-16 w-20 shrink-0 overflow-hidden rounded-lg bg-stone-100 border border-stone-200/80">
-                                <img src="{{ $nextArticle->image_url }}" alt="{{ $nextArticle->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                <img src="{{ $nextArticle->image_url }}" alt="{{ $nextArticle->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async">
                             </div>
                             <div class="flex-1 min-w-0">
                                 <span class="flex items-center justify-end gap-1 text-[11px] font-black text-[#c92137] uppercase tracking-wider mb-1">
@@ -836,7 +836,7 @@
                             @foreach($relatedArticles as $rel)
                                 <article class="rounded-xl border border-stone-200/90 bg-white p-3.5 shadow-xs hover:shadow-md hover:border-red-200 transition-all duration-300 group">
                                     <a href="{{ route('articles.show', $rel->slug) }}" class="block aspect-[16/9] rounded-lg overflow-hidden bg-stone-100 relative">
-                                        <img src="{{ $rel->image_url }}" alt="{{ $rel->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                        <img src="{{ $rel->image_url }}" alt="{{ $rel->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async">
                                         @php $relCat = $rel->categories->first() ?? $rel->category; @endphp
                                         @if($relCat)
                                             <span class="absolute top-2 left-2 rounded-md bg-[#c92137] px-2 py-0.5 text-[10px] font-black text-white shadow-xs">
@@ -885,7 +885,7 @@
                                         {{ nepali_number($loop->iteration) }}
                                     </span>
                                     <div class="relative h-14 w-18 sm:w-20 shrink-0 overflow-hidden rounded-lg bg-stone-100 border border-stone-200/80 shadow-2xs">
-                                        <img src="{{ $trend->image_url }}" alt="{{ $trend->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                        <img src="{{ $trend->image_url }}" alt="{{ $trend->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async">
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <h4 class="text-xs sm:text-sm font-extrabold leading-snug text-stone-900 group-hover:text-[#c92137] line-clamp-2 transition-colors">
@@ -919,7 +919,7 @@
                             <article class="py-3 group first:pt-1 last:pb-1">
                                 <a href="{{ route('articles.show', $latest->slug) }}" class="flex gap-3 items-center">
                                     <div class="relative h-16 w-20 shrink-0 overflow-hidden rounded-lg bg-stone-100 border border-stone-200/80 shadow-2xs">
-                                        <img src="{{ $latest->image_url }}" alt="{{ $latest->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                        <img src="{{ $latest->image_url }}" alt="{{ $latest->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async">
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         @php $latestCat = $latest->categories->first() ?? $latest->category; @endphp

@@ -17,11 +17,15 @@ class MenuItemSeeder extends Seeder
         $cats = Category::all()->keyBy('slug');
 
         $items = [
-            ['title' => 'मुख्य समाचार', 'slug' => 'main-news', 'order' => 1],
+            ['title' => 'मुख्य समाचार', 'slug' => 'main-news', 'order' => 1, 'children' => [
+                ['title' => 'हेडलाइन', 'url' => '/category/main-news', 'order' => 1],
+                ['title' => 'अदालत/प्रशासन', 'url' => '/category/main-news', 'order' => 2],
+                ['title' => 'सुरक्षा/अपराध', 'url' => '/category/crime-security', 'order' => 3],
+            ]],
             ['title' => 'कपिलवस्तु विशेष', 'slug' => 'kapilvastu-special', 'order' => 2],
             ['title' => 'राजनीति', 'slug' => 'politics', 'order' => 3],
             ['title' => 'अर्थतन्त्र', 'slug' => 'economy', 'order' => 4],
-            ['title' => 'प्रदेश', 'slug' => 'pradesh', 'order' => 5, 'children' => [
+            ['title' => 'प्रदेश', 'slug' => 'pradesh', 'order' => 5, 'is_mega_menu' => true, 'children' => [
                 ['title' => 'लुम्बिनी प्रदेश', 'url' => '/category/pradesh', 'order' => 1],
                 ['title' => 'बागमती प्रदेश', 'url' => '/category/pradesh', 'order' => 2],
                 ['title' => 'कोशी प्रदेश', 'url' => '/category/pradesh', 'order' => 3],
@@ -49,6 +53,7 @@ class MenuItemSeeder extends Seeder
                 'target' => '_self',
                 'order' => $data['order'],
                 'is_active' => true,
+                'is_mega_menu' => $data['is_mega_menu'] ?? false,
             ]);
 
             if (!empty($data['children'])) {

@@ -107,7 +107,7 @@
                             <div class="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6 items-center">
                                 <!-- Big Feature Photo -->
                                 <a href="{{ route('articles.show', $leadStory->slug) }}" class="md:col-span-7 block aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 relative shadow-xs">
-                                    <img src="{{ $leadStory->image_url }}" alt="{{ $leadStory->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                    <img src="{{ $leadStory->image_url }}" alt="{{ $leadStory->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" loading="eager" fetchpriority="high">
                                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
                                     @php $leadCat = $leadStory->categories->first() ?? $leadStory->category; @endphp
                                     @if($leadCat)
@@ -170,7 +170,7 @@
                                 <div>
                                     <!-- Card Image with Hover Zoom -->
                                     <a href="{{ route('articles.show', $article->slug) }}" class="block aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 relative shadow-2xs">
-                                        <img src="{{ $article->image_url }}" alt="{{ $article->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                        <img src="{{ $article->image_url }}" alt="{{ $article->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async">
                                         <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
 
                                         @php $artCat = $article->categories->first() ?? $article->category; @endphp
@@ -223,7 +223,7 @@
                                 class="py-5 first:pt-2 group flex flex-col sm:flex-row gap-4 sm:gap-6 items-start"
                             >
                                 <a href="{{ route('articles.show', $article->slug) }}" class="w-full sm:w-56 aspect-[16/10] shrink-0 rounded-xl overflow-hidden bg-stone-100 relative shadow-2xs">
-                                    <img src="{{ $article->image_url }}" alt="{{ $article->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    <img src="{{ $article->image_url }}" alt="{{ $article->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async">
                                     @php $artCat = $article->categories->first() ?? $article->category; @endphp
                                     @if($artCat)
                                         <span class="absolute bottom-2 left-2 rounded bg-[#c92137] px-2 py-0.5 text-[10px] font-black text-white">
@@ -382,7 +382,7 @@
                                         <span>{{ $c->name }}</span>
                                     </span>
                                     <span class="grid h-5 px-2 place-items-center rounded-full bg-stone-100 text-[11px] font-semibold text-stone-500">
-                                        {{ nepali_number($c->articles()->published()->count()) }}
+                                        {{ nepali_number($c->published_articles_count ?? $c->articles()->published()->count()) }}
                                     </span>
                                 </a>
                             </li>

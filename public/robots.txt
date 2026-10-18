@@ -1,6 +1,8 @@
 User-agent: *
 Disallow: /admin/
 Disallow: /admin/*
+Disallow: /stnapanel/
+Disallow: /stnapanel/*
 Allow: /
 
 Sitemap: https://www.kapilvastudarpan.com/sitemap.xml

@@ -44,13 +44,19 @@ class NewsPortalTest extends TestCase
 
     public function test_category_archive_page_renders_articles(): void
     {
-        $category = Category::where('slug', 'main-news')->first() ?? Category::first();
+        $category = Category::where('slug', 'sports')->first() ?? Category::first();
         $this->assertNotNull($category);
 
         $response = $this->get(route('category.show', $category->slug));
 
         $response->assertStatus(200);
         $response->assertSee($category->name);
+        $response->assertDontSee('कुनै समाचार फेला परेन');
+
+        $firstArticle = Article::forCategory($category->slug)->published()->first();
+        if ($firstArticle) {
+            $response->assertSee($firstArticle->title);
+        }
     }
 
     public function test_search_returns_filtered_articles(): void
@@ -82,7 +88,7 @@ class NewsPortalTest extends TestCase
 
     public function test_admin_login_page_is_accessible(): void
     {
-        $response = $this->get('/admin/login');
+        $response = $this->get('/stnapanel/login');
 
         $response->assertStatus(200);
         $response->assertSee('कपिलवस्तु दर्पण');

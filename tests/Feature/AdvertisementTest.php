@@ -100,9 +100,9 @@ class AdvertisementTest extends TestCase
 
     public function test_unauthenticated_user_redirected_from_admin_advertisements(): void
     {
-        $response = $this->get('/admin/advertisements');
+        $response = $this->get('/stnapanel/advertisements');
 
         // Unauthenticated access should redirect to login
-        $response->assertRedirect('/admin/login');
+        $response->assertRedirect('/stnapanel/login');
     }
 }

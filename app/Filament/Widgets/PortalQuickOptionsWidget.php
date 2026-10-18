@@ -57,6 +57,56 @@ class PortalQuickOptionsWidget extends Widget
         }
     }
 
+    public function toggleShareMarket(): void
+    {
+        try {
+            $current = setting_bool('sharemarket_enabled', true);
+            $new = ! $current;
+            \App\Models\Setting::set('sharemarket_enabled', $new, 'sharemarket');
+            Cache::flush();
+            try {
+                Artisan::call('view:clear');
+            } catch (\Throwable $e) {}
+
+            Notification::make()
+                ->title($new ? 'शेयर बजार फिचर सक्रिय भयो!' : 'शेयर बजार फिचर निष्क्रिय गरियो!')
+                ->body($new ? 'वेबसाइटमा शेयर बजार पृष्ठ र मेनुहरू खुला गरियो।' : 'वेबसाइटमा शेयर बजार पृष्ठ र मेनुहरू बन्द गरियो।')
+                ->color($new ? 'success' : 'warning')
+                ->send();
+        } catch (\Throwable $e) {
+            Notification::make()
+                ->title('त्रुटि')
+                ->body($e->getMessage())
+                ->danger()
+                ->send();
+        }
+    }
+
+    public function toggleShareMarketTicker(): void
+    {
+        try {
+            $current = setting_bool('sharemarket_ticker_enabled', true);
+            $new = ! $current;
+            \App\Models\Setting::set('sharemarket_ticker_enabled', $new, 'sharemarket');
+            Cache::flush();
+            try {
+                Artisan::call('view:clear');
+            } catch (\Throwable $e) {}
+
+            Notification::make()
+                ->title($new ? 'हेडर लाइभ टिकर सक्रिय भयो!' : 'हेडर लाइभ टिकर निष्क्रिय गरियो!')
+                ->body($new ? 'वेबसाइटको हेडरमा नेप्से लाइभ टिकर देखिनेछ।' : 'वेबसाइटको हेडरबाट नेप्से टिकर हटाइयो।')
+                ->color($new ? 'success' : 'warning')
+                ->send();
+        } catch (\Throwable $e) {
+            Notification::make()
+                ->title('त्रुटि')
+                ->body($e->getMessage())
+                ->danger()
+                ->send();
+        }
+    }
+
     public function getSystemInfo(): array
     {
         $dbConnected = true;
@@ -73,5 +123,10 @@ class PortalQuickOptionsWidget extends Widget
             'cache_driver' => config('cache.default', 'file'),
             'nepali_date' => nepali_date(),
         ];
+    }
+
+    public function getDatabaseStats(): array
+    {
+        return app(\App\Services\DatabaseBackupService::class)->getDatabaseStats();
     }
 }

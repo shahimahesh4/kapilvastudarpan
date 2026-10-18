@@ -5,6 +5,8 @@ namespace App\Filament\Pages;
 use App\Models\Setting;
 use BackedEnum;
 use Filament\Actions\Action;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Cache;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
@@ -32,6 +34,11 @@ class WebsiteSettings extends Page
     protected static ?string $title = 'Website Settings';
 
     protected static ?int $navigationSort = 10;
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->isAdmin() ?? false;
+    }
 
     protected string $view = 'filament.pages.website-settings';
 
@@ -516,6 +523,112 @@ class WebsiteSettings extends Page
                                             ->helperText('यदि सक्रिय (enabled) गरेमा नयाँ प्रयोगकर्ता दर्ता गर्दा र लगइन गर्दा इमेल प्रमाणीकरण अनिवार्य हुनेछ। बन्द (disabled) हुँदा प्रयोगकर्ता बिना झन्झट तुरुन्त दर्ता र लगइन हुन सक्छन् (पूर्वनिर्धारित: बन्द)।')
                                             ->default(false),
                                     ]),
+
+                                Section::make('Browser Push Notifications (ब्राउजर सूचना सदस्यता विजेट)')
+                                    ->description('पाठकहरूलाई ताजा तथा ब्रेकिङ समाचारहरूको सूचना दिन स्क्रिनको बायाँ-तल (Left Bottom) कुनामा नोटिफिकेसन सदस्यता विजेट र पपअप नियन्त्रण गर्नुहोस्।')
+                                    ->schema([
+                                        Toggle::make('push_notifications_enabled')
+                                            ->label('Enable Notification Subscriber Widget (सूचना सदस्यता विजेट सक्रिय गर्ने)')
+                                            ->helperText('यदि सक्रिय गरेमा वेबसाइटको बायाँ-तल (Left Bottom) घन्टी (Bell) विजेट र सदस्यता पपअप देखा पर्नेछ।')
+                                            ->default(true),
+                                    ]),
+                            ]),
+
+                        Tab::make('ShareMarket')
+                            ->label('शेयर बजार (NEPSE)')
+                            ->icon('heroicon-o-chart-bar')
+                            ->schema([
+                                Section::make('NEPSE Live Market Display Settings (शेयर बजार फिचर)')
+                                    ->description('कपिलवस्तु दर्पण पोर्टलमा नेपाल स्टक एक्सचेन्ज (NEPSE) लाइभ शेयर बजार फिचर तथा हेडर टिकर नियन्त्रण गर्नुहोस्।')
+                                    ->schema([
+                                        Grid::make(2)->schema([
+                                            Toggle::make('sharemarket_enabled')
+                                                ->label('Enable Share Market Feature (शेयर बजार सक्रिय गर्ने)')
+                                                ->helperText('यदि सक्रिय गरेमा वेबसाइटमा शेयर बजार पृष्ठ (/sharemarket) र मेनु लिंकहरू खुला हुनेछन्।')
+                                                ->default(true),
+
+                                            Toggle::make('sharemarket_ticker_enabled')
+                                                ->label('Show Header Live Ticker (हेडरमा लाइभ टिकर देखाउने)')
+                                                ->helperText('वेबसाइटको हेडर मुनि नेप्से परिसूचकको प्रत्यक्ष स्वचालित स्क्रोलिङ टिकर पट्टी देखाउने।')
+                                                ->default(true),
+                                        ]),
+                                    ]),
+
+                                Section::make('ShareHub Nepal API Credentials (एपीआई सेटिङ्स)')
+                                    ->description('ShareHub Nepal NEPSE Data API मार्फत लाइभ नेप्से डेटा ल्याउन आफ्नो खाता विवरण प्रविष्ट गर्नुहोस् (Documentation: https://sharehubnepal.com/data/nepse-data-documentation/)। खाता नभएको अवस्थामा पनि पोर्टलले स्वचालित रूपमा भरपर्दो वास्तविक बजार विवरण प्रस्तुत गर्दछ।')
+                                    ->schema([
+                                        Grid::make(3)->schema([
+                                            TextInput::make('sharehub_api_email')
+                                                ->label('ShareHub Account Email')
+                                                ->email()
+                                                ->placeholder('user@example.com')
+                                                ->helperText('ShareHub Nepal मा दर्ता आधिकारिक इमेल'),
+
+                                            TextInput::make('sharehub_api_password')
+                                                ->label('ShareHub Account Password')
+                                                ->password()
+                                                ->revealable()
+                                                ->placeholder('••••••••')
+                                                ->helperText('ShareHub Nepal खाताको पासवर्ड'),
+
+                                            TextInput::make('sharehub_cache_ttl')
+                                                ->label('API Cache TTL (Seconds)')
+                                                ->numeric()
+                                                ->default(60)
+                                                ->placeholder('60')
+                                                ->helperText('डेटा क्यास रहने अवधि (सेकेन्डमा, सिफारिस: ६० सेकेन्ड)'),
+                                        ]),
+                                    ]),
+                            ]),
+
+                        Tab::make('Backup')
+                            ->label('डाटाबेस ब्याकअप (Backup)')
+                            ->icon('heroicon-o-arrow-down-tray')
+                            ->visible(fn (): bool => auth()->user()?->isSuperAdmin() ?? false)
+                            ->schema([
+                                Section::make('Database SQL Export & Backup (डाटाबेस ब्याकअप तथा डाउनलोड)')
+                                    ->description('सम्पूर्ण वेबसाइटको डाटाबेस SQL ढाँचामा (database.sql) ब्याकअप डाउनलोड गर्नुहोस्। यो ब्याकअप फाइल स्थानीय वा अन्य सर्भरमा तुरुन्तै पुनर्स्थापना (Restore/Import) गर्न सकिन्छ।')
+                                    ->schema([
+                                        \Filament\Forms\Components\Placeholder::make('database_stats')
+                                            ->label('Current Database Overview (हालको डाटाबेस स्थिति)')
+                                            ->content(function () {
+                                                $stats = app(\App\Services\DatabaseBackupService::class)->getDatabaseStats();
+                                                return new \Illuminate\Support\HtmlString('
+                                                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem; font-size: 0.875rem;">
+                                                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.25rem;">
+                                                            <div style="padding: 0.75rem; background: #ffffff; border-radius: 0.5rem; border: 1px solid #e2e8f0;">
+                                                                <div style="color: #64748b; font-size: 0.75rem; font-weight: 600;">DATABASE ENGINE</div>
+                                                                <div style="font-size: 1.15rem; font-weight: 700; color: #0f172a; margin-top: 2px;">' . e($stats['driver']) . ' (' . e($stats['database']) . ')</div>
+                                                            </div>
+                                                            <div style="padding: 0.75rem; background: #ffffff; border-radius: 0.5rem; border: 1px solid #e2e8f0;">
+                                                                <div style="color: #64748b; font-size: 0.75rem; font-weight: 600;">TOTAL FILE SIZE</div>
+                                                                <div style="font-size: 1.15rem; font-weight: 700; color: #059669; margin-top: 2px;">' . e($stats['formatted_size']) . '</div>
+                                                            </div>
+                                                            <div style="padding: 0.75rem; background: #ffffff; border-radius: 0.5rem; border: 1px solid #e2e8f0;">
+                                                                <div style="color: #64748b; font-size: 0.75rem; font-weight: 600;">DATABASE TABLES</div>
+                                                                <div style="font-size: 1.15rem; font-weight: 700; color: #0284c7; margin-top: 2px;">' . e($stats['tables_count']) . ' Tables</div>
+                                                            </div>
+                                                            <div style="padding: 0.75rem; background: #ffffff; border-radius: 0.5rem; border: 1px solid #e2e8f0;">
+                                                                <div style="color: #64748b; font-size: 0.75rem; font-weight: 600;">PUBLISHED ARTICLES</div>
+                                                                <div style="font-size: 1.15rem; font-weight: 700; color: #dc2626; margin-top: 2px;">' . e($stats['articles_count']) . ' Articles</div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;">
+                                                            <a href="' . route('admin.database.export') . '" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; background: #059669; color: #ffffff; padding: 0.65rem 1.25rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; box-shadow: 0 2px 4px rgba(5, 150, 105, 0.2);">
+                                                                <span>💾 Download database.sql</span>
+                                                            </a>
+                                                            <a href="' . route('admin.database.export', ['filename' => 'timestamped']) . '" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; background: #ffffff; color: #334155; padding: 0.65rem 1.25rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; border: 1px solid #cbd5e1;">
+                                                                <span>📅 Download Timestamped .sql</span>
+                                                            </a>
+                                                        </div>
+                                                        <p style="margin-top: 0.75rem; color: #64748b; font-size: 0.8rem; margin-bottom: 0;">
+                                                            💡 <strong>सिफारिस:</strong> साइटमा ठूला परिवर्तन गर्नु अघि वा हप्ताको एक पटक डाटाबेसको ब्याकअप सुरक्षित राख्नुहोला।
+                                                        </p>
+                                                    </div>
+                                                ');
+                                            }),
+                                    ]),
                             ]),
                     ]),
             ]);
@@ -558,6 +671,11 @@ class WebsiteSettings extends Page
         $state = $this->form->getState();
 
         Setting::setMany($state);
+
+        Cache::flush();
+        try {
+            \Illuminate\Support\Facades\Artisan::call('view:clear');
+        } catch (\Throwable $e) {}
 
         Notification::make()
             ->title('Settings Saved')

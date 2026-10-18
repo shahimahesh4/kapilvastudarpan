@@ -45,27 +45,27 @@
 
         <!-- Quick Action Shortcut Buttons Grid -->
         <div class="kd-shortcuts-grid">
-            <a href="/admin/articles/create" class="kd-shortcut-btn">
+            <a href="/stnapanel/articles/create" class="kd-shortcut-btn">
                 <span class="kd-shortcut-icon">✍️</span>
                 <span class="kd-shortcut-label">नयाँ समाचार थप्नुहोस्</span>
             </a>
 
-            <a href="/admin/pages/create" class="kd-shortcut-btn">
+            <a href="/stnapanel/pages/create" class="kd-shortcut-btn">
                 <span class="kd-shortcut-icon">📄</span>
                 <span class="kd-shortcut-label">नयाँ पृष्ठ बनाउनुहोस्</span>
             </a>
 
-            <a href="/admin/rashifals" class="kd-shortcut-btn">
+            <a href="/stnapanel/rashifals" class="kd-shortcut-btn">
                 <span class="kd-shortcut-icon">🌟</span>
                 <span class="kd-shortcut-label">राशिफल व्यवस्थापन</span>
             </a>
 
-            <a href="/admin/advertisements" class="kd-shortcut-btn">
+            <a href="/stnapanel/advertisements" class="kd-shortcut-btn">
                 <span class="kd-shortcut-icon">📢</span>
                 <span class="kd-shortcut-label">विज्ञापन नियन्त्रण</span>
             </a>
 
-            <a href="/admin/website-settings" class="kd-shortcut-btn">
+            <a href="/stnapanel/website-settings" class="kd-shortcut-btn">
                 <span class="kd-shortcut-icon">⚙️</span>
                 <span class="kd-shortcut-label">वेबसाइट सेटिङ</span>
             </a>

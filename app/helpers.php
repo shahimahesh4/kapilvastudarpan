@@ -83,5 +83,30 @@ if (! function_exists('setting_image_url')) {
     }
 }
 
+if (! function_exists('nepali_format_amount')) {
+    /**
+     * Format a number using the South Asian/Nepali comma numbering system (e.g., 1,37,14,141.90).
+     */
+    function nepali_format_amount(float|int|string|null $number, int $decimals = 2): string
+    {
+        if ($number === null || $number === '') {
+            return '0.00';
+        }
+        $num = (float) $number;
+        $isNegative = $num < 0;
+        $num = abs($num);
 
+        $parts = explode('.', number_format($num, $decimals, '.', ''));
+        $intPart = $parts[0];
+        $decPart = isset($parts[1]) ? '.' . $parts[1] : '';
 
+        if (strlen($intPart) > 3) {
+            $lastThree = substr($intPart, -3);
+            $remaining = substr($intPart, 0, -3);
+            $remainingFormatted = preg_replace('/\B(?=(\d{2})+(?!\d))/', ',', $remaining);
+            $intPart = $remainingFormatted . ',' . $lastThree;
+        }
+
+        return ($isNegative ? '-' : '') . $intPart . ($decimals > 0 ? $decPart : '');
+    }
+}

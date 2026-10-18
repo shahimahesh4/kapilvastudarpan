@@ -7,7 +7,7 @@ use Illuminate\Contracts\Support\Htmlable;
 
 class Dashboard extends BaseDashboard
 {
-    protected static ?string $title = '';
+    protected static ?string $navigationLabel = 'Dashboard';
 
     public function getHeading(): string | Htmlable | null
     {

@@ -38,6 +38,12 @@ class RashifalResource extends Resource
 
     protected static ?int $navigationSort = 5;
 
+    public static function canViewAny(): bool
+    {
+        $user = auth()->user();
+        return $user && ($user->isAdmin() || $user->isEditor());
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema

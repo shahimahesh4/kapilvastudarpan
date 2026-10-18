@@ -14,6 +14,18 @@
             <line x1="10" y1="14" x2="21" y2="3"></line>
         </svg>
     </a>
+
+    @if(auth()->user()?->isSuperAdmin())
+    <!-- Download Database Export (.sql) Button (Super Admin Only) -->
+    <a href="{{ route('admin.database.export') }}" class="fi-topbar-db-btn" title="Download database.sql (पूर्ण डाटाबेस ब्याकअप डाउनलोड)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 13px; height: 13px; min-width: 13px; max-width: 13px; display: inline-block;">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        <span>database.sql</span>
+    </a>
+    @endif
 </div>
 
 <style>
@@ -87,5 +99,41 @@
         min-width: 13px !important;
         max-width: 13px !important;
         stroke: currentColor;
+    }
+
+    .fi-topbar-db-btn {
+        display: none;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 5px 12px;
+        border-radius: 0.5rem;
+        background: #ecfdf5;
+        border: 1px solid rgba(16, 185, 129, 0.4);
+        color: #065f46 !important;
+        font-size: 0.76rem;
+        font-weight: 700;
+        text-decoration: none !important;
+        transition: all 0.15s ease-in-out;
+        white-space: nowrap;
+    }
+
+    @media (min-width: 768px) {
+        .fi-topbar-db-btn {
+            display: inline-flex;
+        }
+    }
+
+    .fi-topbar-db-btn:hover {
+        background: #d1fae5;
+        border-color: #10b981;
+        color: #047857 !important;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 6px rgba(16, 185, 129, 0.15);
+    }
+
+    :is(.dark) .fi-topbar-db-btn {
+        background: #064e3b;
+        border-color: rgba(16, 185, 129, 0.5);
+        color: #6ee7b7 !important;
     }
 </style>

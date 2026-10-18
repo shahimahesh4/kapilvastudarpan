@@ -28,7 +28,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('stnapanel')
             ->login()
             ->brandName('कपिलवस्तु दर्पण')
             ->brandLogo(fn () => asset('images/kapilvastu-darpan-logo.png'))

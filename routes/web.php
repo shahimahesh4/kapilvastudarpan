@@ -4,14 +4,24 @@ use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NotificationSubscriptionController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\RashifalController;
+use App\Http\Controllers\ShareMarketController;
+use App\Http\Controllers\UnicodeConverterController;
+use App\Http\Controllers\DatabaseBackupController;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Page;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
+Route::redirect('/admin', '/stnapanel');
+
+// Admin Database Backup Export / Download (.sql)
+Route::get('/stnapanel/database/export', [DatabaseBackupController::class, 'export'])
+    ->name('admin.database.export')
+    ->middleware(['web', 'auth']);
 
 // Frontend User Authentication & Password Reset
 Route::middleware('guest')->group(function () {
@@ -80,6 +90,32 @@ Route::get('/sitemap.xml', function () {
         ->view('sitemap', compact('articles', 'categories', 'pages'))
         ->header('Content-Type', 'application/xml');
 })->name('sitemap');
+
+// Nepali Unicode Converter (Romanized, Preeti to Unicode, Unicode to Preeti)
+Route::get('/unicode-converter', [UnicodeConverterController::class, 'index'])->name('unicode.converter');
+Route::get('/unicode', function () {
+    return redirect()->route('unicode.converter');
+});
+Route::post('/api/unicode/convert', [UnicodeConverterController::class, 'convert'])->name('api.unicode.convert');
+
+// Nepal Share Market (NEPSE Live Data)
+Route::get('/sharemarket', [ShareMarketController::class, 'index'])->name('sharemarket.index');
+Route::get('/sharemarket/ticker/{symbol}', [ShareMarketController::class, 'showTicker'])->name('sharemarket.ticker');
+Route::get('/markets/ticker/{symbol}', [ShareMarketController::class, 'showTicker'])->name('markets.ticker');
+Route::get('/nepse', function () {
+    if (!setting_bool('sharemarket_enabled', true)) {
+        abort(404);
+    }
+    return redirect()->route('sharemarket.index');
+});
+Route::get('/api/nepse/live', [ShareMarketController::class, 'live'])->name('api.nepse.live');
+Route::get('/api/nepse/ticker', [ShareMarketController::class, 'ticker'])->name('api.nepse.ticker');
+Route::get('/api/nepse/ticker/{symbol}', [ShareMarketController::class, 'tickerDetailApi'])->name('api.nepse.ticker.show');
+
+// Web Push Notification Subscription Endpoints
+Route::post('/api/notifications/subscribe', [NotificationSubscriptionController::class, 'subscribe'])->name('api.notifications.subscribe');
+Route::post('/api/notifications/unsubscribe', [NotificationSubscriptionController::class, 'unsubscribe'])->name('api.notifications.unsubscribe');
+Route::get('/api/notifications/test-payload', [NotificationSubscriptionController::class, 'testPayload'])->name('api.notifications.test-payload');
 
 // Legacy 301 redirect from /page/{slug} to /{slug}
 Route::get('/page/{slug}', function (string $slug) {

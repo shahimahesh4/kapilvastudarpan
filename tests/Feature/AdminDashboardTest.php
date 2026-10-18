@@ -20,7 +20,7 @@ class AdminDashboardTest extends TestCase
             ])
             ->call('authenticate')
             ->assertHasNoFormErrors()
-            ->assertRedirect('/admin');
+            ->assertRedirect('/stnapanel');
 
         $this->assertAuthenticated();
     }
@@ -33,7 +33,7 @@ class AdminDashboardTest extends TestCase
         $this->actingAs($user);
 
         // Dashboard
-        $dashboardResponse = $this->get('/admin');
+        $dashboardResponse = $this->get('/stnapanel');
         $dashboardResponse->assertStatus(200);
         $dashboardResponse->assertSee('कपिलवस्तु दर्पण');
         $dashboardResponse->assertSee('fi-topbar-custom-actions', false);
@@ -54,7 +54,7 @@ class AdminDashboardTest extends TestCase
         \Livewire\Livewire::test(\Filament\Pages\Dashboard::class)->assertSuccessful();
 
         // Articles List
-        $articlesResponse = $this->get('/admin/articles');
+        $articlesResponse = $this->get('/stnapanel/articles');
         $articlesResponse->assertStatus(200);
         $articlesResponse->assertSee('Total Articles');
         $articlesResponse->assertSee('Published');
@@ -67,44 +67,44 @@ class AdminDashboardTest extends TestCase
         // Article Edit Form
         $article = Article::first();
         $this->assertNotNull($article);
-        $editArticleResponse = $this->get("/admin/articles/{$article->id}/edit");
+        $editArticleResponse = $this->get("/stnapanel/articles/{$article->id}/edit");
         $editArticleResponse->assertStatus(200);
 
         // Article Create Form
-        $createArticleResponse = $this->get('/admin/articles/create');
+        $createArticleResponse = $this->get('/stnapanel/articles/create');
         $createArticleResponse->assertStatus(200);
 
         // Categories List
-        $categoriesResponse = $this->get('/admin/categories');
+        $categoriesResponse = $this->get('/stnapanel/categories');
         $categoriesResponse->assertStatus(200);
 
         // Category Edit Form
         $category = Category::first();
         $this->assertNotNull($category);
-        $editCategoryResponse = $this->get("/admin/categories/{$category->id}/edit");
+        $editCategoryResponse = $this->get("/stnapanel/categories/{$category->id}/edit");
         $editCategoryResponse->assertStatus(200);
 
         // Advertisements List
-        $adsResponse = $this->get('/admin/advertisements');
+        $adsResponse = $this->get('/stnapanel/advertisements');
         $adsResponse->assertStatus(200);
 
         // Advertisement Create Form
-        $createAdResponse = $this->get('/admin/advertisements/create');
+        $createAdResponse = $this->get('/stnapanel/advertisements/create');
         $createAdResponse->assertStatus(200);
 
         // Menu Items List (WordPress-Style Menu Manager)
-        $menuItemsResponse = $this->get('/admin/menu-items');
+        $menuItemsResponse = $this->get('/stnapanel/menu-items');
         $menuItemsResponse->assertStatus(200);
         $menuItemsResponse->assertSee('Menus');
 
         // Menu Item Create Form
-        $createMenuResponse = $this->get('/admin/menu-items/create');
+        $createMenuResponse = $this->get('/stnapanel/menu-items/create');
         $createMenuResponse->assertStatus(200);
 
         // Menu Item Edit Form
         $menuItem = \App\Models\MenuItem::first();
         if ($menuItem) {
-            $editMenuResponse = $this->get("/admin/menu-items/{$menuItem->id}/edit");
+            $editMenuResponse = $this->get("/stnapanel/menu-items/{$menuItem->id}/edit");
             $editMenuResponse->assertStatus(200);
         }
     }
@@ -190,38 +190,39 @@ class AdminDashboardTest extends TestCase
             'status' => 'published',
             'published_at' => now()->subMinute(),
         ]);
-        $article->categories()->attach($category->id);
+        $article->categories()->syncWithoutDetaching([$category->id]);
 
-        // Verify published state
-        $this->assertTrue($article->is_published);
-        $this->assertEquals('published', $article->status);
-        $this->assertTrue(Article::published()->where('id', $article->id)->exists());
+        try {
+            // Verify published state
+            $this->assertTrue($article->is_published);
+            $this->assertEquals('published', $article->status);
+            $this->assertTrue(Article::published()->where('id', $article->id)->exists());
 
-        $resPublished = $this->get(route('articles.show', $article->slug));
-        $resPublished->assertStatus(200);
+            $resPublished = $this->get(route('articles.show', $article->slug));
+            $resPublished->assertStatus(200);
 
-        // Unpublish the article
-        $article->unpublish();
-        $this->assertFalse($article->fresh()->is_published);
-        $this->assertEquals('draft', $article->fresh()->status);
-        $this->assertFalse(Article::published()->where('id', $article->id)->exists());
+            // Unpublish the article
+            $article->unpublish();
+            $this->assertFalse($article->fresh()->is_published);
+            $this->assertEquals('draft', $article->fresh()->status);
+            $this->assertFalse(Article::published()->where('id', $article->id)->exists());
 
-        // Unpublished article returns 404 to public readers
-        $resUnpublished = $this->get(route('articles.show', $article->slug));
-        $resUnpublished->assertStatus(404);
+            // Unpublished article returns 404 to public readers
+            $resUnpublished = $this->get(route('articles.show', $article->slug));
+            $resUnpublished->assertStatus(404);
 
-        // Re-publish the article
-        $article->publish();
-        $this->assertTrue($article->fresh()->is_published);
-        $this->assertEquals('published', $article->fresh()->status);
-        $this->assertTrue(Article::published()->where('id', $article->id)->exists());
+            // Re-publish the article
+            $article->publish();
+            $this->assertTrue($article->fresh()->is_published);
+            $this->assertEquals('published', $article->fresh()->status);
+            $this->assertTrue(Article::published()->where('id', $article->id)->exists());
 
-        $resRePublished = $this->get(route('articles.show', $article->slug));
-        $resRePublished->assertStatus(200);
-
-        // Cleanup
-        $article->categories()->detach();
-        $article->forceDelete();
+            $resRePublished = $this->get(route('articles.show', $article->slug));
+            $resRePublished->assertStatus(200);
+        } finally {
+            $article->categories()->detach();
+            $article->forceDelete();
+        }
     }
 
     public function test_article_deletion_moves_to_trash_and_can_be_permanently_deleted(): void
@@ -237,7 +238,7 @@ class AdminDashboardTest extends TestCase
             'is_published' => true,
             'published_at' => now(),
         ]);
-        $article->categories()->attach($category->id);
+        $article->categories()->syncWithoutDetaching([$category->id]);
         $articleId = $article->id;
 
         // 1. Delete moves to trash (soft delete)
@@ -283,7 +284,7 @@ class AdminDashboardTest extends TestCase
             'is_published' => true,
             'published_at' => now(),
         ]);
-        $article->categories()->attach($category->id);
+        $article->categories()->syncWithoutDetaching([$category->id]);
         $article->delete();
 
         \Livewire\Livewire::test(\App\Filament\Resources\Articles\Pages\ListArticles::class)
@@ -307,7 +308,7 @@ class AdminDashboardTest extends TestCase
         $user = User::where('email', 'admin@kapilvastudarpan.com')->first();
         $this->actingAs($user);
 
-        $response = $this->get('/admin/website-settings');
+        $response = $this->get('/stnapanel/website-settings');
         $response->assertStatus(200);
         $response->assertSee('Website Settings');
     }
@@ -389,7 +390,7 @@ class AdminDashboardTest extends TestCase
         $this->actingAs($user);
 
         // List page
-        $listResponse = $this->get('/admin/rashifals');
+        $listResponse = $this->get('/stnapanel/rashifals');
         $listResponse->assertStatus(200);
         $listResponse->assertSee('मेष');
         $listResponse->assertSee('मीन');
@@ -398,7 +399,7 @@ class AdminDashboardTest extends TestCase
         $mesh = \App\Models\Rashifal::where('slug', 'mesh')->first();
         $this->assertNotNull($mesh);
 
-        $editResponse = $this->get("/admin/rashifals/{$mesh->id}/edit");
+        $editResponse = $this->get("/stnapanel/rashifals/{$mesh->id}/edit");
         $editResponse->assertStatus(200);
         $editResponse->assertSee('राशिको आधारभूत विवरण');
         $editResponse->assertSee('दैनिक राशिफल');
@@ -543,7 +544,7 @@ class AdminDashboardTest extends TestCase
     {
         $admin = User::first() ?? User::factory()->create();
 
-        $response = $this->actingAs($admin)->get('/admin/comments');
+        $response = $this->actingAs($admin)->get('/stnapanel/comments');
         $response->assertStatus(200);
         $response->assertSee('Comments');
 

@@ -93,7 +93,7 @@ class PagesTest extends TestCase
             ['name' => 'एडमिन', 'password' => bcrypt('password')]
         );
 
-        $response = $this->actingAs($admin)->get('/admin/pages');
+        $response = $this->actingAs($admin)->get('/stnapanel/pages');
         $response->assertStatus(200);
     }
 

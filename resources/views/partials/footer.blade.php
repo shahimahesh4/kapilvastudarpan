@@ -274,6 +274,20 @@
                             <span>हाम्रो टिम</span>
                         </a>
                     </li>
+                    @if(setting_bool('sharemarket_enabled', true))
+                    <li>
+                        <a href="{{ route('sharemarket.index') }}" class="inline-flex items-center gap-2 font-medium text-white hover:underline hover:translate-x-1 transition-all duration-150 py-0.5" title="नेपाल शेयर बजार (NEPSE)">
+                            <span class="text-white font-bold text-base">›</span>
+                            <span>नेपाल शेयर बजार (NEPSE)</span>
+                        </a>
+                    </li>
+                    @endif
+                    <li>
+                        <a href="{{ route('unicode.converter') }}" class="inline-flex items-center gap-2 font-medium text-white hover:underline hover:translate-x-1 transition-all duration-150 py-0.5" title="नेपाली युनिकोड कन्भर्टर">
+                            <span class="text-white font-bold text-base">›</span>
+                            <span>नेपाली युनिकोड कन्भर्टर</span>
+                        </a>
+                    </li>
                     <li>
                         <a href="{{ route('pages.show', 'advertise') }}" class="inline-flex items-center gap-2 font-medium text-white hover:underline hover:translate-x-1 transition-all duration-150 py-0.5">
                             <span class="text-white font-bold text-base">›</span>

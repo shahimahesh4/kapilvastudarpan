@@ -32,6 +32,19 @@
         font-size: 0.72rem;
     }
 
+    /* Navigation Item Font Size (16px) */
+    #fi-main-sidebar .fi-sidebar-item-btn,
+    #fi-main-sidebar .fi-sidebar-item-label,
+    #fi-main-sidebar .fi-sidebar-sub-group-item-btn,
+    #fi-main-sidebar .fi-sidebar-sub-group-item-label,
+    .fi-sidebar-nav .fi-sidebar-item .fi-sidebar-item-label,
+    .fi-sidebar-nav .fi-sidebar-item .fi-sidebar-item-btn,
+    .fi-topbar-item-btn,
+    .fi-topbar-item-label {
+        font-size: 16px !important;
+        line-height: 1.5 !important;
+    }
+
     /* Inactive Navigation Item Buttons */
     #fi-main-sidebar .fi-sidebar-item:not(.fi-active) > .fi-sidebar-item-btn {
         color: #f1f5f9 !important;

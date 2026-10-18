@@ -1,6 +1,7 @@
 <x-filament-widgets::widget>
     @php
         $info = $this->getSystemInfo();
+        $dbStats = $this->getDatabaseStats();
     @endphp
 
     <div class="kd-options-card">
@@ -55,6 +56,19 @@
                 </div>
             </button>
 
+            @if(auth()->user()?->isSuperAdmin())
+            <!-- Quick Action: Database SQL Export / Download (Super Admin Only) -->
+            <a href="{{ route('admin.database.export') }}" class="kd-opt-btn kd-opt-btn-database" title="Download database.sql">
+                <span class="kd-opt-icon">💾</span>
+                <div class="kd-opt-text">
+                    <span class="kd-opt-main">
+                        डाटाबेस डाउनलोड (database.sql)
+                    </span>
+                    <span class="kd-opt-sub">ब्याकअप: {{ $dbStats['formatted_size'] }} ({{ $dbStats['tables_count'] }} तालिकाहरू)</span>
+                </div>
+            </a>
+            @endif
+
             <!-- Quick Link 1: Sitemap -->
             <a href="{{ url('/sitemap.xml') }}" target="_blank" rel="noopener noreferrer" class="kd-opt-btn kd-opt-btn-link">
                 <span class="kd-opt-icon">🗺️</span>
@@ -67,13 +81,74 @@
             </a>
 
             <!-- Quick Link 2: Menu Items -->
-            <a href="/admin/menu-items" class="kd-opt-btn kd-opt-btn-link">
+            <a href="/stnapanel/menu-items" class="kd-opt-btn kd-opt-btn-link">
                 <span class="kd-opt-icon">🧭</span>
                 <div class="kd-opt-text">
                     <span class="kd-opt-main">
                         नेभिगेसन मेनु व्यवस्थापन
                     </span>
                     <span class="kd-opt-sub">हेडर तथा ड्रपडाउन मेनु मिलाउनुहोस्</span>
+                </div>
+            </a>
+
+            <!-- Quick Link 3: Nepali Unicode Converter -->
+            <a href="/stnapanel/nepali-unicode-converter" class="kd-opt-btn kd-opt-btn-unicode">
+                <span class="kd-opt-icon">⌨️</span>
+                <div class="kd-opt-text">
+                    <span class="kd-opt-main">
+                        नेपाली युनिकोड कन्भर्टर
+                    </span>
+                    <span class="kd-opt-sub">रोमन र प्रीति फन्ट रूपान्तरण</span>
+                </div>
+            </a>
+
+            @php
+                $smEnabled = setting_bool('sharemarket_enabled', true);
+                $tickerEnabled = setting_bool('sharemarket_ticker_enabled', true);
+            @endphp
+
+            <!-- Quick Action: Toggle Share Market Feature -->
+            <button type="button" wire:click="toggleShareMarket" wire:loading.attr="disabled" class="kd-opt-btn {{ $smEnabled ? 'kd-opt-btn-sharemarket' : 'kd-opt-btn-disabled' }}" title="शेयर बजार फिचर अन/अफ गर्नुहोस्">
+                <span class="kd-opt-icon">{{ $smEnabled ? '📈' : '🛑' }}</span>
+                <div class="kd-opt-text">
+                    <span class="kd-opt-main" wire:loading.remove wire:target="toggleShareMarket">
+                        शेयर बजार: {{ $smEnabled ? 'सक्रिय (On)' : 'निष्क्रिय (Off)' }}
+                    </span>
+                    <span class="kd-opt-main" wire:loading wire:target="toggleShareMarket">
+                        अपडेट गर्दैछ...
+                    </span>
+                    <span class="kd-opt-sub">
+                        {{ $smEnabled ? 'क्लिक गरी बन्द (Disable) गर्नुहोस्' : 'क्लिक गरी सुरु (Enable) गर्नुहोस्' }}
+                    </span>
+                </div>
+            </button>
+
+            <!-- Quick Action: Toggle Header Ticker Strip -->
+            <button type="button" wire:click="toggleShareMarketTicker" wire:loading.attr="disabled" class="kd-opt-btn {{ $tickerEnabled ? 'kd-opt-btn-link' : 'kd-opt-btn-disabled' }}" title="हेडर टिकर अन/अफ गर्नुहोस्">
+                <span class="kd-opt-icon">{{ $tickerEnabled ? '📊' : '⏸️' }}</span>
+                <div class="kd-opt-text">
+                    <span class="kd-opt-main" wire:loading.remove wire:target="toggleShareMarketTicker">
+                        हेडर टिकर: {{ $tickerEnabled ? 'सक्रिय (On)' : 'निष्क्रिय (Off)' }}
+                    </span>
+                    <span class="kd-opt-main" wire:loading wire:target="toggleShareMarketTicker">
+                        अपडेट गर्दैछ...
+                    </span>
+                    <span class="kd-opt-sub">
+                        {{ $tickerEnabled ? 'क्लिक गरी टिकर लुकाउनुहोस्' : 'क्लिक गरी टिकर देखाउनुहोस्' }}
+                    </span>
+                </div>
+            </button>
+
+            <!-- Quick Link 4: Share Market Live -->
+            <a href="{{ $smEnabled ? '/sharemarket' : '/stnapanel/website-settings' }}" {{ $smEnabled ? 'target="_blank" rel="noopener noreferrer"' : '' }} class="kd-opt-btn {{ $smEnabled ? 'kd-opt-btn-sharemarket' : 'kd-opt-btn-disabled' }}">
+                <span class="kd-opt-icon">🌐</span>
+                <div class="kd-opt-text">
+                    <span class="kd-opt-main">
+                        {{ $smEnabled ? 'शेयर बजार लाइभ पृष्ठ' : 'शेयर बजार सेटिङ्स' }}
+                    </span>
+                    <span class="kd-opt-sub">
+                        {{ $smEnabled ? '/sharemarket प्रत्यक्ष हेर्नुहोस्' : 'सेटिङ्सबाट फिचर मिलाउनुहोस्' }}
+                    </span>
                 </div>
             </a>
         </div>
@@ -178,7 +253,13 @@
 
         @media (min-width: 1024px) {
             .kd-options-grid {
-                grid-template-columns: repeat(4, minmax(0, 1fr));
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (min-width: 1280px) {
+            .kd-options-grid {
+                grid-template-columns: repeat(5, minmax(0, 1fr));
             }
         }
 
@@ -220,6 +301,41 @@
         .kd-opt-btn-link:hover {
             background: #f0fdf4;
             border-color: #86efac;
+        }
+
+        .kd-opt-btn-unicode:hover {
+            background: #fdf2f8;
+            border-color: #f472b6;
+        }
+
+        .kd-opt-btn-sharemarket:hover {
+            background: #ecfdf5;
+            border-color: #34d399;
+        }
+
+        .kd-opt-btn-database:hover {
+            background: #ecfdf5;
+            border-color: #10b981;
+        }
+
+        :is(.dark) .kd-opt-btn-database:hover {
+            background: #064e3b;
+            border-color: #10b981;
+        }
+
+        .kd-opt-btn-disabled {
+            border-color: #fca5a5;
+            background: #fff5f5;
+        }
+
+        :is(.dark) .kd-opt-btn-disabled {
+            background: #2a1818;
+            border-color: #7f1d1d;
+        }
+
+        .kd-opt-btn-disabled:hover {
+            background: #fee2e2;
+            border-color: #ef4444;
         }
 
         .kd-opt-icon {

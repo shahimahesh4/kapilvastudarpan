@@ -21,69 +21,71 @@ class RecentArticlesTableWidget extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
-            ->heading('ताजा समाचार सामग्री (Recent Articles)')
-            ->description('भर्खरै थपिएका तथा सम्पादित समाचारहरूको सूची')
+            ->heading('Recent Articles')
+            ->description('List of recently created and edited articles')
             ->query(
-                fn (): Builder => Article::query()->orderByRaw('COALESCE(published_at, created_at) DESC')
+                fn (): Builder => Article::query()
+                    ->when(auth()->user()?->isPublisher(), fn ($q) => $q->where('user_id', auth()->id()))
+                    ->orderByRaw('COALESCE(published_at, created_at) DESC')
             )
             ->defaultPaginationPageOption(6)
             ->paginated([6, 12, 24])
             ->headerActions([
                 Action::make('create')
-                    ->label('नयाँ समाचार थप्नुहोस्')
+                    ->label('Add New Article')
                     ->icon('heroicon-m-plus')
-                    ->url('/admin/articles/create')
+                    ->url('/stnapanel/articles/create')
                     ->button(),
 
                 Action::make('all_articles')
-                    ->label('सबै समाचार हेर्नुहोस्')
+                    ->label('View All Articles')
                     ->icon('heroicon-m-arrow-right')
-                    ->url('/admin/articles')
+                    ->url('/stnapanel/articles')
                     ->color('gray'),
             ])
             ->columns([
                 ImageColumn::make('image_path')
-                    ->label('तस्वीर')
+                    ->label('Image')
                     ->circular()
                     ->state(fn (Article $record): string => $record->image_url)
                     ->defaultImageUrl(asset('images/favicon.png')),
 
                 TextColumn::make('title')
-                    ->label('शीर्षक')
+                    ->label('Title')
                     ->weight('bold')
                     ->wrap()
                     ->limit(65)
-                    ->url(fn (Article $record): string => '/admin/articles/' . $record->id . '/edit'),
+                    ->url(fn (Article $record): string => '/stnapanel/articles/' . $record->id . '/edit'),
 
                 TextColumn::make('categories.name')
-                    ->label('विधा')
+                    ->label('Category')
                     ->badge()
                     ->color('danger'),
 
                 TextColumn::make('views')
-                    ->label('भ्युज')
+                    ->label('Views')
                     ->badge()
                     ->color('info')
-                    ->formatStateUsing(fn ($state) => nepali_number(number_format((int) $state))),
+                    ->formatStateUsing(fn ($state) => number_format((int) $state)),
 
                 TextColumn::make('is_published')
-                    ->label('स्थिति')
+                    ->label('Status')
                     ->badge()
-                    ->formatStateUsing(fn (bool $state): string => $state ? 'प्रकाशित' : 'मस्यौदा')
+                    ->formatStateUsing(fn (bool $state): string => $state ? 'Published' : 'Draft')
                     ->color(fn (bool $state): string => $state ? 'success' : 'warning'),
 
                 TextColumn::make('published_at')
-                    ->label('मिति')
-                    ->formatStateUsing(fn ($state) => $state ? nepali_date($state) : '-'),
+                    ->label('Date')
+                    ->formatStateUsing(fn ($state) => $state ? $state->format('M d, Y') : '-'),
             ])
             ->recordActions([
                 Action::make('edit')
-                    ->label('सम्पादन')
+                    ->label('Edit')
                     ->icon('heroicon-m-pencil-square')
-                    ->url(fn (Article $record): string => '/admin/articles/' . $record->id . '/edit'),
+                    ->url(fn (Article $record): string => '/stnapanel/articles/' . $record->id . '/edit'),
 
                 Action::make('view_online')
-                    ->label('हेर्नुहोस्')
+                    ->label('View')
                     ->icon('heroicon-m-arrow-top-right-on-square')
                     ->color('gray')
                     ->visible(fn (Article $record): bool => ! empty($record->slug))

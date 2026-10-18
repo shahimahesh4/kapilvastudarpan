@@ -20,13 +20,24 @@ class Article extends Model
                 $article->category_id = $article->categories->first()->id;
             }
 
+            if (empty($article->user_id) && auth()->check()) {
+                $article->user_id = auth()->id();
+            }
+
             if (isset($article->is_published)) {
                 $article->status = $article->is_published ? 'published' : 'draft';
+            }
+        });
+
+        static::saved(function (Article $article) {
+            if ($article->category_id) {
+                $article->categories()->syncWithoutDetaching([$article->category_id]);
             }
         });
     }
 
     protected $fillable = [
+        'user_id',
         'category_id',
         'title',
         'slug',
@@ -56,6 +67,11 @@ class Article extends Model
             'is_breaking' => 'boolean',
             'views' => 'integer',
         ];
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function category(): BelongsTo
@@ -166,8 +182,12 @@ class Article extends Model
             return $this->image_path;
         }
 
-        if (str_starts_with($this->image_path, 'articles/')) {
+        if (str_starts_with($this->image_path, 'articles/') || str_starts_with($this->image_path, 'media/')) {
             return asset('storage/' . $this->image_path);
+        }
+
+        if (str_starts_with($this->image_path, 'storage/')) {
+            return asset($this->image_path);
         }
 
         return asset($this->image_path);

@@ -20,11 +20,17 @@ class RecentCommentsTableWidget extends BaseWidget
 
     protected int | string | array $columnSpan = 'full';
 
+    public static function canView(): bool
+    {
+        $user = auth()->user();
+        return $user && ($user->isAdmin() || $user->isEditor());
+    }
+
     public function table(Table $table): Table
     {
         return $table
-            ->heading('ताजा पाठक प्रतिक्रियाहरू (Recent Comments)')
-            ->description('पाठकहरूले समाचारमा गरेका टिप्पणीहरू र तत्काल स्वीकृति नियन्त्रण')
+            ->heading('Recent Comments')
+            ->description('Reader comments on news articles and instant moderation')
             ->query(
                 fn (): Builder => Comment::query()->with(['user', 'article'])->latest()
             )
@@ -32,53 +38,53 @@ class RecentCommentsTableWidget extends BaseWidget
             ->paginated([5, 10, 20])
             ->headerActions([
                 Action::make('all_comments')
-                    ->label('सबै प्रतिक्रियाहरू हेर्नुहोस्')
+                    ->label('View All Comments')
                     ->icon('heroicon-m-chat-bubble-left-right')
-                    ->url('/admin/comments')
+                    ->url('/stnapanel/comments')
                     ->color('gray'),
             ])
             ->columns([
                 TextColumn::make('user.name')
-                    ->label('प्रयोगकर्ता')
+                    ->label('User')
                     ->weight('bold')
                     ->searchable(),
 
                 TextColumn::make('article.title')
-                    ->label('समाचार शीर्षक')
+                    ->label('Article Title')
                     ->limit(40)
                     ->tooltip(fn ($record) => $record->article?->title),
 
                 TextColumn::make('content')
-                    ->label('प्रतिक्रिया')
+                    ->label('Comment')
                     ->limit(65)
                     ->wrap(),
 
                 IconColumn::make('is_approved')
-                    ->label('स्वीकृत')
+                    ->label('Approved')
                     ->boolean(),
 
                 TextColumn::make('created_at')
-                    ->label('मिति')
+                    ->label('Date')
                     ->dateTime('M d, Y h:i A'),
             ])
             ->recordActions([
                 ActionGroup::make([
                     Action::make('approve')
-                        ->label('Approve (स्वीकृत गर्नुहोस्)')
+                        ->label('Approve')
                         ->icon('heroicon-o-check-circle')
                         ->color('success')
                         ->visible(fn (Comment $record): bool => ! $record->is_approved)
                         ->action(fn (Comment $record) => $record->update(['is_approved' => true])),
 
                     Action::make('unapprove')
-                        ->label('Unapprove (अस्वीकृत गर्नुहोस्)')
+                        ->label('Unapprove')
                         ->icon('heroicon-o-x-circle')
                         ->color('warning')
                         ->visible(fn (Comment $record): bool => (bool) $record->is_approved)
                         ->action(fn (Comment $record) => $record->update(['is_approved' => false])),
 
                     Action::make('view_article')
-                        ->label('View Article (समाचार हेर्नुहोस्)')
+                        ->label('View Article')
                         ->icon('heroicon-o-arrow-top-right-on-square')
                         ->color('gray')
                         ->url(fn (Comment $record): string => $record->article ? route('articles.show', $record->article->slug) : '#')
@@ -86,9 +92,9 @@ class RecentCommentsTableWidget extends BaseWidget
                         ->visible(fn (Comment $record): bool => ! empty($record->article?->slug)),
 
                     DeleteAction::make()
-                        ->label('Delete (मेटाउनुहोस्)')
+                        ->label('Delete')
                         ->modalHeading('Delete Comment')
-                        ->modalDescription('के तपाईं यो प्रतिक्रिया मेटाउन निश्चित हुनुहुन्छ?'),
+                        ->modalDescription('Are you sure you want to delete this comment?'),
                 ]),
             ]);
     }

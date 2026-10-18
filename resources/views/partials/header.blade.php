@@ -75,6 +75,18 @@
                 </div>
             @endif
 
+            @if(setting_bool('sharemarket_enabled', true))
+            <a href="{{ route('sharemarket.index') }}" class="font-bold text-stone-700 hover:text-[#c92137] transition flex items-center gap-1" title="नेपाल शेयर बजार (NEPSE)">
+                <span>📈</span>
+                <span>शेयर बजार</span>
+            </a>
+            <span class="text-stone-300">|</span>
+            @endif
+            <a href="{{ route('unicode.converter') }}" class="font-bold text-stone-700 hover:text-[#c92137] transition flex items-center gap-1" title="नेपाली युनिकोड कन्भर्टर">
+                <span>⌨</span>
+                <span>युनिकोड</span>
+            </a>
+            <span class="text-stone-300">|</span>
             <a href="{{ route('pages.show', 'contact') }}" class="font-bold text-stone-700 hover:text-[#c92137] transition">सम्पर्क</a>
             <button type="button" @click="darkMode = !darkMode; setTheme()" class="theme-toggle" :class="darkMode ? 'theme-toggle--dark' : ''" :aria-pressed="darkMode ? 'true' : 'false'" :aria-label="darkMode ? 'लाइट मोडमा फर्कनुहोस्' : 'डार्क मोड खोल्नुहोस्'" title="रङ मोड बदल्नुहोस्">
                 <span class="theme-toggle__sun" aria-hidden="true">☀</span>
@@ -108,19 +120,37 @@
     <div x-ref="menuAnchor" class="hidden h-[4.2rem] md:block">
         <div class="inset-x-0 top-0 z-40 bg-[#0955cf] text-white transition-all shadow-md" :class="menuPinned ? 'fixed shadow-xl' : 'relative'">
             <nav id="primary-nav" aria-label="मुख्य नेभिगेसन">
+                <style>
+                    /* Immediate Header Main Menu Font Increase (Bypasses Browser Cache) */
+                    #primary-nav ul.kd-main-nav,
+                    #primary-nav ul.kd-main-nav > li > a,
+                    #primary-nav ul.kd-main-nav > li > a > span,
+                    #primary-nav ul.kd-main-nav > li > button,
+                    #primary-nav ul.kd-main-nav > li > button > span {
+                        font-size: 18px !important;
+                        font-weight: 800 !important;
+                    }
+                    @media (min-width: 1280px) {
+                        #primary-nav ul.kd-main-nav,
+                        #primary-nav ul.kd-main-nav > li > a,
+                        #primary-nav ul.kd-main-nav > li > a > span {
+                            font-size: 19px !important;
+                        }
+                    }
+                </style>
                 <div class="w-full flex items-stretch h-[4.2rem] px-4 sm:px-6 lg:px-8">
                     <a href="{{ route('home') }}" class="grid h-[4.2rem] w-14 shrink-0 place-items-center border-x border-white/15 bg-black/10 hover:bg-black/25 text-white transition duration-200" aria-label="गृहपृष्ठ">
                         <svg viewBox="0 0 24 24" class="h-5 w-5 fill-current" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10Z"/></svg>
                     </a>
 
                     <!-- Dynamic Header Menu Items (Dropdown & Mega Menu Support) -->
-                    <ul class="flex min-w-0 flex-1 items-stretch h-full text-sm lg:text-[15px] xl:text-base font-extrabold text-white overflow-x-auto no-scrollbar">
+                    <ul class="kd-main-nav flex min-w-0 flex-1 items-stretch h-full font-extrabold text-white overflow-visible">
                         @if(isset($headerMenuItems) && $headerMenuItems->isNotEmpty())
                             @foreach ($headerMenuItems as $item)
                                 @if ($item->is_mega_menu)
                                     <!-- Mega Menu Dropdown (Matches Screenshot) -->
                                     <li class="static flex items-stretch h-full shrink-0" x-data="{ open: false, currentProvince: '{{ $item->children->first()?->title ?? 'कोशी प्रदेश' }}' }" @mouseenter="open = true" @mouseleave="open = false" @click.outside="open = false">
-                                        <a href="{{ $item->link_url }}" target="{{ $item->target }}" class="flex items-center gap-1 whitespace-nowrap px-2 lg:px-2.5 xl:px-3 h-full font-extrabold transition duration-150 cursor-pointer" :class="open ? 'bg-white text-[#c92137] shadow-sm' : 'text-white hover:bg-white/15'">
+                                        <a href="{{ $item->link_url }}" target="{{ $item->target }}" class="flex items-center gap-1 whitespace-nowrap px-2 lg:px-2.5 xl:px-3 h-full font-extrabold text-[16px] transition duration-150 cursor-pointer" :class="open ? 'bg-white text-[#c92137] shadow-sm' : 'text-white hover:bg-white/15'">
                                             <span>{{ $item->title }}</span>
                                             <svg viewBox="0 0 20 20" class="h-3.5 w-3.5 fill-none stroke-current stroke-[2.4] transition-transform duration-200" :class="open ? 'rotate-180 text-[#c92137]' : 'text-white/80'" aria-hidden="true">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="m5 7.5 5 5 5-5" />
@@ -143,7 +173,7 @@
                                                             <a href="{{ $child->link_url }}"
                                                                target="{{ $child->target }}"
                                                                @mouseenter="currentProvince = '{{ $child->title }}'"
-                                                               class="block px-3.5 py-1.5 text-[17px] font-bold rounded-lg transition duration-150 cursor-pointer"
+                                                               class="block px-3.5 py-1.5 text-[16px] font-bold rounded-lg transition duration-150 cursor-pointer"
                                                                :class="currentProvince === '{{ $child->title }}' ? 'text-[#c92137] bg-red-50/70 font-extrabold shadow-xs' : 'text-stone-700 hover:text-[#c92137] hover:bg-stone-50'">
                                                                 {{ $child->title }}
                                                             </a>
@@ -152,7 +182,7 @@
 
                                                     <!-- Right Section: 4-Column News Grid -->
                                                     <div class="flex-1 min-w-0">
-                                                        @foreach ($provincesList as $provName)
+                                                        @foreach ($provincesList ?? [] as $provName)
                                                             <div x-cloak x-show="currentProvince === '{{ $provName }}'"
                                                                  x-transition:enter="transition ease-out duration-200"
                                                                  x-transition:enter-start="opacity-0 translate-y-1"
@@ -188,7 +218,7 @@
                                 @elseif ($item->children->isNotEmpty())
                                     <!-- Regular Vertical Dropdown (समाचार, अर्थतन्त्र, etc.) -->
                                     <li class="relative flex items-stretch h-full shrink-0" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" @click.outside="open = false">
-                                        <a href="{{ $item->link_url }}" target="{{ $item->target }}" class="flex items-center gap-1 whitespace-nowrap px-2 lg:px-2.5 xl:px-3 h-full font-extrabold transition duration-150 cursor-pointer" :class="open ? 'bg-white text-[#c92137] shadow-sm' : 'text-white hover:bg-white/15'">
+                                        <a href="{{ $item->link_url }}" target="{{ $item->target }}" class="flex items-center gap-1 whitespace-nowrap px-2 lg:px-2.5 xl:px-3 h-full font-extrabold text-[16px] transition duration-150 cursor-pointer" :class="open ? 'bg-white text-[#c92137] shadow-sm' : 'text-white hover:bg-white/15'">
                                             <span>{{ $item->title }}</span>
                                             <svg viewBox="0 0 20 20" class="h-3.5 w-3.5 fill-none stroke-current stroke-[2.4] transition-transform duration-200" :class="open ? 'rotate-180 text-[#c92137]' : 'text-white/80'" aria-hidden="true">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="m5 7.5 5 5 5-5" />
@@ -214,7 +244,7 @@
                                     </li>
                                 @else
                                     <li class="flex items-stretch h-full shrink-0">
-                                        <a href="{{ $item->link_url }}" target="{{ $item->target }}" class="flex items-center gap-1 whitespace-nowrap px-2 lg:px-2.5 xl:px-3 h-full hover:bg-white/15 transition">
+                                        <a href="{{ $item->link_url }}" target="{{ $item->target }}" class="flex items-center gap-1 whitespace-nowrap px-2 lg:px-2.5 xl:px-3 h-full hover:bg-white/15 transition text-[16px] font-extrabold">
                                             {{ $item->title }}
                                         </a>
                                     </li>
@@ -223,7 +253,7 @@
                         @else
                             @foreach ($categories as $cat)
                                 <li class="flex items-stretch h-full shrink-0">
-                                    <a href="{{ route('category.show', $cat->slug) }}" class="flex items-center gap-1 whitespace-nowrap px-2 lg:px-2.5 xl:px-3 h-full hover:bg-white/15 transition">
+                                    <a href="{{ route('category.show', $cat->slug) }}" class="flex items-center gap-1 whitespace-nowrap px-2 lg:px-2.5 xl:px-3 h-full hover:bg-white/15 transition text-[16px] font-extrabold">
                                         {{ $cat->name }}
                                     </a>
                                 </li>
@@ -332,13 +362,16 @@
     </section>
 @endif
 
+<!-- Live NEPSE Share Market Ticker Strip -->
+<x-nepse-ticker />
+
 <!-- Mobile / Drawer Sidebar Dialog -->
 <div x-cloak x-show="sidebarOpen" x-transition:enter="transition-opacity ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-in duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50" aria-label="साइट मेनु">
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="sidebarOpen = false"></div>
     <aside id="site-sidebar" class="relative flex h-full w-[min(88vw,23rem)] flex-col overflow-y-auto no-scrollbar bg-white shadow-2xl transition-transform duration-300 ease-out" :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" role="dialog" aria-modal="true" aria-label="मुख्य मेनु">
         <div class="flex items-center justify-between border-b border-stone-200 p-5 bg-stone-50">
             <a href="{{ route('home') }}" @click="sidebarOpen = false">
-                <img src="{{ asset('images/kapilvastu-darpan-logo.png') }}" alt="कपिलवस्तु दर्पण" class="h-14 w-auto">
+                <img src="{{ setting_image_url(setting('site_logo'), 'images/kapilvastu-darpan-logo.png') }}" alt="{{ setting('site_name', 'कपिलवस्तु दर्पण') }}" class="h-12 sm:h-14 w-auto object-contain">
             </a>
             <button type="button" @click="sidebarOpen = false" class="grid h-10 w-10 place-items-center rounded-full bg-[#c92137] text-xl font-bold text-white hover:bg-red-800 transition" aria-label="मेनु बन्द गर्नुहोस्">×</button>
         </div>
@@ -357,18 +390,24 @@
                     @foreach ($headerMenuItems as $item)
                         @if ($item->children->isNotEmpty())
                             <li x-data="{ expanded: false }" class="py-1">
-                                <div class="flex items-center justify-between px-4 py-3 text-base font-bold text-stone-800 hover:bg-stone-50 rounded transition">
-                                    <a href="{{ $item->link_url }}" target="{{ $item->target }}" @click="sidebarOpen = false" class="hover:text-[#c92137] flex-1">
-                                        {{ $item->title }}
-                                    </a>
+                                <div class="flex items-center justify-between px-4 py-3 text-[16px] font-bold text-stone-800 hover:bg-stone-50 rounded transition">
+                                    @if($item->link_url === '#' || $item->is_mega_menu)
+                                        <button type="button" @click="expanded = !expanded" class="flex-1 text-left hover:text-[#c92137] flex items-center justify-between">
+                                            <span>{{ $item->title }}</span>
+                                        </button>
+                                    @else
+                                        <a href="{{ $item->link_url }}" target="{{ $item->target }}" @click="sidebarOpen = false" class="hover:text-[#c92137] flex-1">
+                                            {{ $item->title }}
+                                        </a>
+                                    @endif
                                     <button type="button" @click.stop="expanded = !expanded" class="p-1.5 text-stone-500 hover:text-[#c92137] hover:bg-stone-200/50 rounded transition" aria-label="उप-मेनु खोल्नुहोस्">
-                                        <svg viewBox="0 0 20 20" class="h-4 w-4 fill-current transition-transform duration-200" :class="expanded ? 'rotate-180' : ''"><path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg>
+                                        <svg viewBox="0 0 20 20" class="h-4 w-4 fill-current transition-transform duration-200" :class="expanded ? 'rotate-180 text-[#c92137]' : ''"><path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg>
                                     </button>
                                 </div>
                                 <ul x-cloak x-show="expanded" class="mt-1 space-y-1 rounded-lg bg-stone-50 p-2 pl-4 border-l-2 border-[#0955cf]">
                                     @foreach ($item->children as $child)
                                         <li>
-                                            <a href="{{ $child->link_url }}" target="{{ $child->target }}" @click="sidebarOpen = false" class="block px-3 py-2 text-sm font-semibold text-stone-700 hover:text-[#c92137] hover:bg-white rounded transition">
+                                            <a href="{{ $child->link_url }}" target="{{ $child->target }}" @click="sidebarOpen = false" class="block px-3 py-2 text-[16px] font-semibold text-stone-700 hover:text-[#c92137] hover:bg-white rounded transition">
                                                 • {{ $child->title }}
                                             </a>
                                         </li>
@@ -377,7 +416,7 @@
                             </li>
                         @else
                             <li>
-                                <a href="{{ $item->link_url }}" target="{{ $item->target }}" @click="sidebarOpen = false" class="flex items-center justify-between px-4 py-3 text-base font-bold text-stone-800 hover:bg-red-50 hover:text-[#c92137] rounded transition">
+                                <a href="{{ $item->link_url }}" target="{{ $item->target }}" @click="sidebarOpen = false" class="flex items-center justify-between px-4 py-3 text-[16px] font-bold text-stone-800 hover:bg-red-50 hover:text-[#c92137] rounded transition">
                                     <span>{{ $item->title }}</span>
                                     <span class="text-stone-400 text-xs">→</span>
                                 </a>
@@ -387,7 +426,7 @@
                 @else
                     @foreach ($categories ?? [] as $cat)
                         <li>
-                            <a href="{{ route('category.show', $cat->slug) }}" @click="sidebarOpen = false" class="flex items-center justify-between px-4 py-3 text-base font-bold text-stone-800 hover:bg-red-50 hover:text-[#c92137] rounded transition">
+                            <a href="{{ route('category.show', $cat->slug) }}" @click="sidebarOpen = false" class="flex items-center justify-between px-4 py-3 text-[16px] font-bold text-stone-800 hover:bg-red-50 hover:text-[#c92137] rounded transition">
                                 <span>{{ $cat->name }}</span>
                                 <span class="text-stone-400 text-xs">→</span>
                             </a>
@@ -396,6 +435,28 @@
                 @endif
             </ul>
         </nav>
+
+        @if(setting_bool('sharemarket_enabled', true))
+        <div class="px-4 py-2 border-t border-stone-200 bg-emerald-50/40">
+            <a href="{{ route('sharemarket.index') }}" @click="sidebarOpen = false" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-white border border-emerald-200/80 text-emerald-800 font-extrabold text-sm hover:bg-emerald-50 transition shadow-2xs">
+                <span class="flex items-center gap-2">
+                    <span>📈</span>
+                    <span>नेपाल शेयर बजार (NEPSE)</span>
+                </span>
+                <span class="text-[11px] bg-emerald-600 text-white px-2 py-0.5 rounded font-black tracking-wide uppercase">लाइभ</span>
+            </a>
+        </div>
+        @endif
+
+        <div class="px-4 py-2 border-t border-stone-200 bg-red-50/50">
+            <a href="{{ route('unicode.converter') }}" @click="sidebarOpen = false" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-white border border-red-200/80 text-[#c92137] font-extrabold text-sm hover:bg-red-50 transition shadow-2xs">
+                <span class="flex items-center gap-2">
+                    <span>⌨️</span>
+                    <span>नेपाली युनिकोड कन्भर्टर</span>
+                </span>
+                <span class="text-[11px] bg-[#c92137] text-white px-2 py-0.5 rounded font-black tracking-wide uppercase">टुल</span>
+            </a>
+        </div>
 
         <div class="p-4 border-t border-stone-200 space-y-2">
             @auth
@@ -489,16 +550,8 @@
             <div class="space-y-2">
                 <a href="{{ route('dashboard') }}" class="flex items-center justify-center gap-2 w-full rounded-xl bg-gradient-to-r from-[#0955cf] to-[#c92137] px-4 py-2.5 font-bold text-white hover:opacity-95 text-xs transition shadow-xs">
                     <svg viewBox="0 0 24 24" class="h-4 w-4 fill-none stroke-current stroke-2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                    <span>मेरो ड्यासबोर्ड (User Dashboard)</span>
+                    <span>User Dashboard</span>
                 </a>
-
-                @if(auth()->user()->canAccessPanel(Filament\Facades\Filament::getCurrentPanel() ?? Filament\Facades\Filament::getPanel('admin')))
-                    <a href="/admin" class="flex items-center justify-center gap-2 w-full rounded-xl bg-stone-100 hover:bg-stone-200 px-4 py-2 font-bold text-stone-700 text-xs transition shadow-2xs">
-                        <svg viewBox="0 0 24 24" class="h-4 w-4 fill-none stroke-current stroke-2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                        <span>Admin Dashboard (Filament Panel)</span>
-                    </a>
-                @endif
-
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="flex items-center justify-center gap-1.5 w-full rounded-xl border border-red-200 bg-red-50/50 hover:bg-red-100/70 px-4 py-2 font-bold text-red-700 text-xs transition cursor-pointer">
@@ -522,7 +575,7 @@
 
                 <div>
                     <label for="login_email" class="block text-xs font-bold text-stone-700 mb-1">
-                        इमेल ठेगाना (Email Address)
+                        Email Address
                     </label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-stone-400">
@@ -538,7 +591,7 @@
                 <div>
                     <div class="flex items-center justify-between mb-1">
                         <label for="login_password" class="block text-xs font-bold text-stone-700">
-                            पासवर्ड (Password)
+                            Password
                         </label>
                         <button type="button" @click="showLoginPass = !showLoginPass" class="text-[11px] font-semibold text-stone-500 hover:text-stone-800 cursor-pointer" x-text="showLoginPass ? 'Hide' : 'Show'"></button>
                     </div>
@@ -563,7 +616,7 @@
                         <span>Remember Me</span>
                     </label>
                     <a href="{{ route('password.request') }}" class="font-bold text-[#0955cf] hover:text-[#c92137] hover:underline transition">
-                        पासवर्ड बिर्सनुभयो?
+                        Forgot Password?
                     </a>
                 </div>
 
@@ -591,7 +644,7 @@
 
                 <div>
                     <label for="reg_name" class="block text-xs font-bold text-stone-700 mb-1">
-                        पूरा नाम (Full Name)
+                        Full Name
                     </label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-stone-400">
@@ -606,7 +659,7 @@
 
                 <div>
                     <label for="reg_email" class="block text-xs font-bold text-stone-700 mb-1">
-                        इमेल ठेगाना (Email Address)
+                        Email Address
                     </label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-stone-400">
@@ -622,7 +675,7 @@
                 <div>
                     <div class="flex items-center justify-between mb-1">
                         <label for="reg_password" class="block text-xs font-bold text-stone-700">
-                            पासवर्ड (Password)
+                            Password
                         </label>
                         <button type="button" @click="showPass = !showPass" class="text-[11px] font-semibold text-stone-500 hover:text-stone-700 cursor-pointer" x-text="showPass ? 'Hide' : 'Show'"></button>
                     </div>
@@ -662,7 +715,7 @@
 
                 <div>
                     <label for="reg_password_confirmation" class="block text-xs font-bold text-stone-700 mb-1">
-                        पासवर्ड पुष्टि गर्नुहोस् (Confirm Password)
+                        Confirm Password
                     </label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-stone-400">

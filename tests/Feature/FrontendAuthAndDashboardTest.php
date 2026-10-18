@@ -113,7 +113,7 @@ class FrontendAuthAndDashboardTest extends TestCase
 
         // Clean up
         $comment->delete();
-        $article->delete();
+        $article->forceDelete();
         $user->delete();
     }
 

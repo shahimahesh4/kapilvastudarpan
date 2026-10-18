@@ -51,6 +51,7 @@ class ArticleForm
 
                             RichEditor::make('body')
                                 ->label('Content')
+                                ->hint(new \Illuminate\Support\HtmlString('<a href="/stnapanel/nepali-unicode-converter" target="_blank" class="text-xs text-stone-500 hover:text-stone-800 dark:text-stone-400 font-bold ml-2" title="नेपाली युनिकोड कन्भर्टर">⌨️ युनिकोड</a>'))
                                 ->required()
                                 ->minHeight('450px')
                                 ->toolbarButtons([

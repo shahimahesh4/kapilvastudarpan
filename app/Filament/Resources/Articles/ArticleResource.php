@@ -54,19 +54,71 @@ class ArticleResource extends Resource
         ];
     }
 
+    public static function canEdit(\Illuminate\Database\Eloquent\Model $record): bool
+    {
+        $user = auth()->user();
+        if (! $user) {
+            return false;
+        }
+
+        if ($user->isPublisher()) {
+            return $record->user_id === $user->id;
+        }
+
+        return true;
+    }
+
+    public static function canDelete(\Illuminate\Database\Eloquent\Model $record): bool
+    {
+        $user = auth()->user();
+        if (! $user) {
+            return false;
+        }
+
+        if ($user->isPublisher()) {
+            return $record->user_id === $user->id && $record->status === 'draft';
+        }
+
+        return true;
+    }
+
+    public static function canDeleteAny(): bool
+    {
+        $user = auth()->user();
+        if ($user && $user->isPublisher()) {
+            return false;
+        }
+
+        return true;
+    }
+
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
     {
-        return parent::getEloquentQuery()
+        $query = parent::getEloquentQuery()
             ->withoutGlobalScopes([
                 \Illuminate\Database\Eloquent\SoftDeletingScope::class,
             ]);
+
+        $user = auth()->user();
+        if ($user && $user->isPublisher()) {
+            $query->where('user_id', $user->id);
+        }
+
+        return $query;
     }
 
     public static function getRecordRouteBindingEloquentQuery(): \Illuminate\Database\Eloquent\Builder
     {
-        return parent::getRecordRouteBindingEloquentQuery()
+        $query = parent::getRecordRouteBindingEloquentQuery()
             ->withoutGlobalScopes([
                 \Illuminate\Database\Eloquent\SoftDeletingScope::class,
             ]);
+
+        $user = auth()->user();
+        if ($user && $user->isPublisher()) {
+            $query->where('user_id', $user->id);
+        }
+
+        return $query;
     }
 }
