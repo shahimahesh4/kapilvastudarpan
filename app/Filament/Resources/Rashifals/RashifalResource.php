@@ -239,7 +239,9 @@ class RashifalResource extends Resource
                 ActionGroup::make([
                     EditAction::make(),
                     DeleteAction::make(),
-                ]),
+                ])
+                ->icon('heroicon-m-ellipsis-vertical')
+                ->tooltip('Options'),
             ]);
     }
 

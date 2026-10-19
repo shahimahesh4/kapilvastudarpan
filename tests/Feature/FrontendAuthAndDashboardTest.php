@@ -184,4 +184,14 @@ class FrontendAuthAndDashboardTest extends TestCase
 
         $user->delete();
     }
+
+    protected function tearDown(): void
+    {
+        Comment::where('content', 'like', '%यो मेरो ड्यासबोर्डमा देखिने टिप्पणी हो%')->delete();
+        Article::withTrashed()->where('slug', 'like', 'dashboard-article-%')->forceDelete();
+        User::where('email', 'like', '%@test.com')->delete();
+        \Illuminate\Support\Facades\DB::table('password_reset_tokens')->where('email', 'like', '%@test.com')->delete();
+
+        parent::tearDown();
+    }
 }

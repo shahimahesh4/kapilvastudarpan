@@ -34,7 +34,7 @@
          }">
         <div class="mx-auto max-w-[1280px] flex items-center px-4 sm:px-6 lg:px-8 py-1.5 gap-3">
             <!-- Left Fixed Badge & Status -->
-            <a href="{{ route('sharemarket.index') }}" class="shrink-0 flex items-center gap-2 rounded-lg bg-[#0955cf] text-white px-2.5 py-1 font-black shadow-2xs hover:opacity-95 transition" title="नेपाल शेयर बजार (NEPSE) विस्तृत हेर्नुहोस्">
+            <a href="{{ route('sharemarket.index') }}" wire:navigate.hover class="shrink-0 flex items-center gap-2 rounded-lg bg-[#0955cf] text-white px-2.5 py-1 font-black shadow-2xs hover:opacity-95 transition" title="नेपाल शेयर बजार (NEPSE) विस्तृत हेर्नुहोस्">
                 <span class="flex h-2 w-2 relative">
                     <span x-show="isOpen" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-2 w-2" :class="isOpen ? 'bg-emerald-400' : 'bg-rose-400'"></span>
@@ -58,7 +58,7 @@
                                 $isIndex = in_array(strtoupper($item['symbol']), ['NEPSE', 'SEN', 'FLOAT', 'SENFLOAT', 'BANK', 'DEVBANK', 'HYDRO', 'FINANCE', 'HOTEL', 'MF', 'NONLIFE', 'LIFE', 'TRADE', 'OTHER']);
                                 $itemUrl = $isIndex ? route('sharemarket.index') : route('sharemarket.ticker', $item['symbol']);
                             @endphp
-                            <a href="{{ $itemUrl }}" class="inline-flex items-center gap-1.5 hover:text-[#0066cc] transition font-semibold shrink-0" title="{{ $item['name'] }}">
+                            <a href="{{ $itemUrl }}" wire:navigate.hover class="inline-flex items-center gap-1.5 hover:text-[#0066cc] transition font-semibold shrink-0" title="{{ $item['name'] }}">
                                 <span class="font-bold text-stone-900">{{ $item['symbol'] }}</span>
                                 <span class="font-mono text-stone-800">{{ $item['ltp'] }}</span>
                                 <span class="inline-flex items-center text-[11px] font-bold px-1.5 py-0.5 rounded {{ $item['is_positive'] ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700' }}">
@@ -73,7 +73,7 @@
             </div>
 
             <!-- Right Detail Link -->
-            <a href="{{ route('sharemarket.index') }}" class="hidden sm:inline-flex shrink-0 items-center gap-1 font-extrabold text-[#0955cf] hover:text-[#c92137] transition text-xs pl-2 border-l border-stone-200">
+            <a href="{{ route('sharemarket.index') }}" wire:navigate.hover class="hidden sm:inline-flex shrink-0 items-center gap-1 font-extrabold text-[#0955cf] hover:text-[#c92137] transition text-xs pl-2 border-l border-stone-200">
                 <span>विस्तृत बजार</span>
                 <span>↗</span>
             </a>

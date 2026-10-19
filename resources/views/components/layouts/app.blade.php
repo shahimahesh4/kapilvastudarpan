@@ -138,6 +138,16 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 
+    <style>
+        /* Livewire 3 SPA Navigation Progress Bar in Brand Crimson */
+        .livewire-progress-bar {
+            background-color: #c92137 !important;
+            height: 3px !important;
+            box-shadow: 0 0 10px rgba(201, 33, 55, 0.8) !important;
+            z-index: 99999 !important;
+        }
+    </style>
+
     @if(setting('header_scripts'))
         {!! setting('header_scripts') !!}
     @endif
@@ -168,6 +178,14 @@
     }"
     @keydown.escape.window="flashOpen = false; sidebarOpen = false; accountOpen = false; searchOpen = false"
 >
+    <!-- Admin Maintenance Mode Preview Banner -->
+    @if(app()->isDownForMaintenance() && auth()->check() && auth()->user()->isAdmin())
+        <aside aria-label="मेन्टेनेन्स मोड व्यवस्थापक सूचना" class="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white px-4 py-2 text-center text-sm sm:text-base font-bold shadow-md flex flex-wrap items-center justify-center gap-2 relative z-50">
+            <span>⚠️ <strong>मेन्टेनेन्स मोड सक्रिय:</strong> सर्वसाधारण पाठकहरूलाई ५०३ मर्मत सूचना पृष्ठ देखाइएको छ। तपाईं व्यवस्थापक (Admin) भएकोले यो लाइभ साइट देखिरहनु भएको छ।</span>
+            <a href="{{ url('/stnapanel') }}" class="inline-flex items-center gap-1 bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-full text-xs sm:text-sm font-black transition underline">एडमिन प्यानल →</a>
+        </aside>
+    @endif
+
     <!-- Unified Global Header -->
     @include('partials.header')
 
@@ -224,6 +242,23 @@
                 alert(msg);
             }
         };
+
+        // Livewire 3 SPA Navigation Lifecycle Handler
+        document.addEventListener('livewire:navigated', function() {
+            // Scroll to top instantly on page change
+            window.scrollTo({ top: 0, behavior: 'instant' });
+
+            // Close mobile menu / search / flash modals
+            try {
+                const bodyEl = document.querySelector('body');
+                if (bodyEl && bodyEl._x_dataStack && bodyEl._x_dataStack[0]) {
+                    const alpineData = bodyEl._x_dataStack[0];
+                    if (alpineData.sidebarOpen) alpineData.sidebarOpen = false;
+                    if (alpineData.searchOpen) alpineData.searchOpen = false;
+                    if (alpineData.flashOpen) alpineData.flashOpen = false;
+                }
+            } catch(e) {}
+        });
     </script>
 </body>
 </html>

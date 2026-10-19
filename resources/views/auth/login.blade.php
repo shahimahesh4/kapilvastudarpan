@@ -15,7 +15,7 @@
                 <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-black/30 pointer-events-none"></div>
 
                 <div class="relative z-10">
-                    <a href="{{ route('home') }}" class="inline-block transition hover:opacity-90">
+                    <a href="{{ route('home') }}" wire:navigate.hover class="inline-block transition hover:opacity-90">
                         <img src="{{ asset('images/kapilvastu-darpan-logo.png') }}" alt="कपिलवस्तु दर्पण" class="h-14 sm:h-16 w-auto bg-white/95 rounded-xl p-2 shadow-md">
                     </a>
 
@@ -58,7 +58,7 @@
                 <!-- Footer Quote -->
                 <div class="relative z-10 mt-10 pt-6 border-t border-white/20 text-xs text-white/75 flex items-center justify-between">
                     <span>© २०२६ कपिलवस्तु दर्पण</span>
-                    <a href="{{ route('home') }}" class="font-bold text-white hover:underline inline-flex items-center gap-1">
+                    <a href="{{ route('home') }}" wire:navigate.hover class="font-bold text-white hover:underline inline-flex items-center gap-1">
                         <span>गृहपृष्ठमा फर्कनुहोस्</span>
                         <span>←</span>
                     </a>
@@ -71,14 +71,14 @@
                 <!-- Tab Pill Switcher (Red & Blue Combination) -->
                 <div class="mb-8 flex items-center justify-between">
                     <div class="grid grid-cols-2 rounded-xl bg-stone-100 p-1 w-full sm:w-72 border border-stone-200/80 shadow-2xs">
-                        <a href="{{ route('login') }}" class="rounded-lg py-2 text-center text-xs sm:text-sm font-black bg-white text-[#0955cf] shadow-xs transition">
+                        <a href="{{ route('login') }}" wire:navigate.hover class="rounded-lg py-2 text-center text-xs sm:text-sm font-black bg-white text-[#0955cf] shadow-xs transition">
                             लगइन (Log In)
                         </a>
-                        <a href="{{ route('register') }}" class="rounded-lg py-2 text-center text-xs sm:text-sm font-bold text-stone-600 hover:text-[#c92137] transition">
+                        <a href="{{ route('register') }}" wire:navigate.hover class="rounded-lg py-2 text-center text-xs sm:text-sm font-bold text-stone-600 hover:text-[#c92137] transition">
                             दर्ता (Register)
                         </a>
                     </div>
-                    <a href="{{ route('home') }}" class="hidden sm:inline-flex text-xs font-bold text-stone-500 hover:text-[#c92137] transition">
+                    <a href="{{ route('home') }}" wire:navigate.hover class="hidden sm:inline-flex text-xs font-bold text-stone-500 hover:text-[#c92137] transition">
                         गृहपृष्ठ ↗
                     </a>
                 </div>
@@ -158,7 +158,7 @@
                             <label for="login_password" class="block text-xs sm:text-sm font-bold text-stone-700">
                                 पासवर्ड (Password) <span class="text-red-500">*</span>
                             </label>
-                            <a href="{{ route('password.request') }}" class="text-xs font-bold text-[#0955cf] hover:text-[#c92137] hover:underline transition">
+                            <a href="{{ route('password.request') }}" wire:navigate.hover class="text-xs font-bold text-[#0955cf] hover:text-[#c92137] hover:underline transition">
                                 पासवर्ड बिर्सनुभयो? (Forgot Password?)
                             </a>
                         </div>
@@ -211,7 +211,7 @@
                 <div class="mt-8 pt-6 border-t border-stone-200/80 text-center space-y-3">
                     <p class="text-xs sm:text-sm text-stone-600">
                         खाता छैन?
-                        <a href="{{ route('register') }}" class="font-black text-[#c92137] hover:underline ml-1">
+                        <a href="{{ route('register') }}" wire:navigate.hover class="font-black text-[#c92137] hover:underline ml-1">
                             यहाँ नयाँ खाता खोल्नुहोस् (Register) ↗
                         </a>
                     </p>

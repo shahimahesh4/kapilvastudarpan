@@ -7,6 +7,15 @@ use Tests\TestCase;
 
 class AdvertisementTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        Advertisement::where('title', 'like', '%टेस्ट%')
+            ->orWhere('title', 'like', '%परीक्षण%')
+            ->delete();
+
+        parent::tearDown();
+    }
+
     public function test_active_advertisements_scope_filters_correctly(): void
     {
         $activeAd = Advertisement::create([

@@ -4,6 +4,8 @@ namespace App\Filament\Widgets;
 
 use App\Models\Article;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -79,18 +81,48 @@ class RecentArticlesTableWidget extends BaseWidget
                     ->formatStateUsing(fn ($state) => $state ? $state->format('M d, Y') : '-'),
             ])
             ->recordActions([
-                Action::make('edit')
-                    ->label('Edit')
-                    ->icon('heroicon-m-pencil-square')
-                    ->url(fn (Article $record): string => '/stnapanel/articles/' . $record->id . '/edit'),
+                ActionGroup::make([
+                    Action::make('edit')
+                        ->label('Edit')
+                        ->icon('heroicon-o-pencil-square')
+                        ->url(fn (Article $record): string => '/stnapanel/articles/' . $record->id . '/edit'),
 
-                Action::make('view_online')
-                    ->label('View')
-                    ->icon('heroicon-m-arrow-top-right-on-square')
-                    ->color('gray')
-                    ->visible(fn (Article $record): bool => ! empty($record->slug))
-                    ->url(fn (Article $record): string => route('articles.show', $record->slug))
-                    ->openUrlInNewTab(),
+                    Action::make('view_online')
+                        ->label('View')
+                        ->icon('heroicon-o-arrow-top-right-on-square')
+                        ->color('gray')
+                        ->visible(fn (Article $record): bool => ! empty($record->slug))
+                        ->url(fn (Article $record): string => route('articles.show', $record->slug))
+                        ->openUrlInNewTab(),
+
+                    Action::make('publish')
+                        ->label('Publish')
+                        ->icon('heroicon-o-check-circle')
+                        ->color('success')
+                        ->visible(fn (Article $record): bool => ! $record->is_published)
+                        ->requiresConfirmation()
+                        ->modalHeading('Publish Article')
+                        ->modalDescription('Are you sure you want to publish this article?')
+                        ->action(fn (Article $record) => $record->publish()),
+
+                    Action::make('unpublish')
+                        ->label('Unpublish')
+                        ->icon('heroicon-o-x-circle')
+                        ->color('warning')
+                        ->visible(fn (Article $record): bool => (bool) $record->is_published)
+                        ->requiresConfirmation()
+                        ->modalHeading('Unpublish Article')
+                        ->modalDescription('Are you sure you want to unpublish this article?')
+                        ->action(fn (Article $record) => $record->unpublish()),
+
+                    DeleteAction::make()
+                        ->label('Delete')
+                        ->icon('heroicon-o-trash')
+                        ->modalHeading('Delete Article')
+                        ->modalDescription('Are you sure you want to delete this article?'),
+                ])
+                ->icon('heroicon-m-ellipsis-vertical')
+                ->tooltip('Options'),
             ]);
     }
 }

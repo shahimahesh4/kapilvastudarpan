@@ -123,7 +123,9 @@ class CommentResource extends Resource
                     DeleteAction::make()
                         ->modalHeading('Delete Comment')
                         ->modalDescription('Are you sure you want to delete this comment?'),
-                ]),
+                ])
+                ->icon('heroicon-m-ellipsis-vertical')
+                ->tooltip('Options'),
             ])
             ->bulkActions([
                 BulkActionGroup::make([

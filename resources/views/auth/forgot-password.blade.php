@@ -67,7 +67,7 @@
             </form>
 
             <div class="mt-8 pt-6 border-t border-stone-200 text-center">
-                <a href="{{ route('login') }}" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-stone-600 hover:text-[#0955cf] transition">
+                <a href="{{ route('login') }}" wire:navigate.hover class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-stone-600 hover:text-[#0955cf] transition">
                     <span>←</span>
                     <span>लगइन पृष्ठमा फर्कनुहोस् (Back to Login)</span>
                 </a>

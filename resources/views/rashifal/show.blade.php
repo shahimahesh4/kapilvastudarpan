@@ -149,7 +149,7 @@
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                             @foreach($allRashis as $other)
                                 @if($other['slug'] !== $currentRashi['slug'])
-                                    <a href="{{ route('rashifal.show', $other['slug']) }}" class="bg-white rounded-xl p-4 text-center shadow-xs hover:shadow-md hover:-translate-y-1 transition duration-200 block group">
+                                    <a href="{{ route('rashifal.show', $other['slug']) }}" wire:navigate.hover class="bg-white rounded-xl p-4 text-center shadow-xs hover:shadow-md hover:-translate-y-1 transition duration-200 block group">
                                         <span class="rashi-icon rashi-icon--{{ $other['index'] }} !w-16 !h-16 group-hover:scale-105 transition-transform" aria-hidden="true"></span>
                                         <h3 class="mt-2 text-base font-extrabold text-stone-800 group-hover:text-[#c92137] transition-colors">
                                             {{ $other['name'] }}
@@ -184,7 +184,7 @@
                         @foreach($latestArticles as $latest)
                             <li class="flex items-start gap-2.5 group">
                                 <span class="text-[#c92137] text-xl leading-none font-black select-none mt-0.5">•</span>
-                                <a href="{{ route('articles.show', $latest->slug) }}" class="text-sm sm:text-[15px] font-bold leading-snug text-stone-900 group-hover:text-[#c92137] transition line-clamp-2">
+                                <a href="{{ route('articles.show', $latest->slug) }}" wire:navigate.hover class="text-sm sm:text-[15px] font-bold leading-snug text-stone-900 group-hover:text-[#c92137] transition line-clamp-2">
                                     {{ $latest->title }}
                                 </a>
                             </li>
@@ -209,7 +209,7 @@
                                     {{ $num }}.
                                 </span>
                                 <div class="min-w-0 flex-1">
-                                    <a href="{{ route('articles.show', $trend->slug) }}" class="text-sm sm:text-[15px] font-bold leading-snug text-stone-900 group-hover:text-[#c92137] transition line-clamp-2">
+                                    <a href="{{ route('articles.show', $trend->slug) }}" wire:navigate.hover class="text-sm sm:text-[15px] font-bold leading-snug text-stone-900 group-hover:text-[#c92137] transition line-clamp-2">
                                         {{ $trend->title }}
                                     </a>
                                 </div>

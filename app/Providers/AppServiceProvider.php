@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\MenuItem;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +24,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         require_once __DIR__ . '/../helpers.php';
+
+        // Disable Vite preload tags to prevent redundant link preload warnings on Livewire SPA navigation
+        Vite::usePreloadTagAttributes(false);
 
         // Configure Carbon with Nepali digits for relative time diffs (e.g. १९ घण्टा अगाडि)
         \Carbon\Carbon::setLocale('ne');

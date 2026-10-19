@@ -5,7 +5,7 @@
         <div class="mx-auto max-w-[1330px] px-4 sm:px-6 lg:px-8 py-5 flex flex-col md:flex-row items-center justify-between gap-4">
             <!-- Brand Logo & Motto -->
             <div class="flex flex-col sm:flex-row items-center gap-3.5 text-center sm:text-left">
-                <a href="{{ route('home') }}" class="inline-block bg-white rounded-lg px-2.5 py-1.5 shadow-sm hover:opacity-95 transition" aria-label="{{ setting('site_name', 'कपिलवस्तु दर्पण') }} गृहपृष्ठ">
+                <a href="{{ route('home') }}" wire:navigate.hover class="inline-block bg-white rounded-lg px-2.5 py-1.5 shadow-sm hover:opacity-95 transition" aria-label="{{ setting('site_name', 'कपिलवस्तु दर्पण') }} गृहपृष्ठ">
                     <img src="{{ setting_image_url(setting('site_logo'), 'images/kapilvastu-darpan-logo.png') }}" alt="{{ setting('site_name', 'कपिलवस्तु दर्पण') }}" class="h-14 sm:h-16 w-auto object-contain">
                 </a>
                 <div>
@@ -235,7 +235,7 @@
                     @if(isset($categories) && $categories->isNotEmpty())
                         @foreach($categories->take(10) as $cat)
                             <li>
-                                <a href="{{ route('category.show', $cat->slug) }}" class="inline-flex items-center gap-1.5 font-medium text-white hover:underline hover:translate-x-1 transition-all duration-150 py-0.5">
+                                <a href="{{ route('category.show', $cat->slug) }}" wire:navigate.hover class="inline-flex items-center gap-1.5 font-medium text-white hover:underline hover:translate-x-1 transition-all duration-150 py-0.5">
                                     <span class="text-white text-xs">•</span>
                                     <span>{{ $cat->name }}</span>
                                 </a>
@@ -263,51 +263,51 @@
                 </div>
                 <ul class="space-y-2.5 text-[16px] text-white">
                     <li>
-                        <a href="{{ route('pages.show', 'about-us') }}" class="inline-flex items-center gap-2 font-medium text-white hover:underline hover:translate-x-1 transition-all duration-150 py-0.5">
+                        <a href="{{ route('pages.show', 'about-us') }}" wire:navigate.hover class="inline-flex items-center gap-2 font-medium text-white hover:underline hover:translate-x-1 transition-all duration-150 py-0.5">
                             <span class="text-white font-bold text-base">›</span>
                             <span>हाम्रो बारेमा</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('pages.show', 'our-team') }}" class="inline-flex items-center gap-2 font-medium text-white hover:underline hover:translate-x-1 transition-all duration-150 py-0.5">
+                        <a href="{{ route('pages.show', 'our-team') }}" wire:navigate.hover class="inline-flex items-center gap-2 font-medium text-white hover:underline hover:translate-x-1 transition-all duration-150 py-0.5">
                             <span class="text-white font-bold text-base">›</span>
                             <span>हाम्रो टिम</span>
                         </a>
                     </li>
                     @if(setting_bool('sharemarket_enabled', true))
                     <li>
-                        <a href="{{ route('sharemarket.index') }}" class="inline-flex items-center gap-2 font-medium text-white hover:underline hover:translate-x-1 transition-all duration-150 py-0.5" title="नेपाल शेयर बजार (NEPSE)">
+                        <a href="{{ route('sharemarket.index') }}" wire:navigate.hover class="inline-flex items-center gap-2 font-medium text-white hover:underline hover:translate-x-1 transition-all duration-150 py-0.5" title="नेपाल शेयर बजार (NEPSE)">
                             <span class="text-white font-bold text-base">›</span>
                             <span>नेपाल शेयर बजार (NEPSE)</span>
                         </a>
                     </li>
                     @endif
                     <li>
-                        <a href="{{ route('unicode.converter') }}" class="inline-flex items-center gap-2 font-medium text-white hover:underline hover:translate-x-1 transition-all duration-150 py-0.5" title="नेपाली युनिकोड कन्भर्टर">
+                        <a href="{{ route('unicode.converter') }}" wire:navigate.hover class="inline-flex items-center gap-2 font-medium text-white hover:underline hover:translate-x-1 transition-all duration-150 py-0.5" title="नेपाली युनिकोड कन्भर्टर">
                             <span class="text-white font-bold text-base">›</span>
                             <span>नेपाली युनिकोड कन्भर्टर</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('pages.show', 'advertise') }}" class="inline-flex items-center gap-2 font-medium text-white hover:underline hover:translate-x-1 transition-all duration-150 py-0.5">
+                        <a href="{{ route('pages.show', 'advertise') }}" wire:navigate.hover class="inline-flex items-center gap-2 font-medium text-white hover:underline hover:translate-x-1 transition-all duration-150 py-0.5">
                             <span class="text-white font-bold text-base">›</span>
                             <span>विज्ञापन दररेट</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('pages.show', 'privacy-policy') }}" class="inline-flex items-center gap-2 font-medium text-white hover:underline hover:translate-x-1 transition-all duration-150 py-0.5">
+                        <a href="{{ route('pages.show', 'privacy-policy') }}" wire:navigate.hover class="inline-flex items-center gap-2 font-medium text-white hover:underline hover:translate-x-1 transition-all duration-150 py-0.5">
                             <span class="text-white font-bold text-base">›</span>
                             <span>गोपनीयता नीति</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('pages.show', 'code-of-conduct') }}" class="inline-flex items-center gap-2 font-medium text-white hover:underline hover:translate-x-1 transition-all duration-150 py-0.5">
+                        <a href="{{ route('pages.show', 'code-of-conduct') }}" wire:navigate.hover class="inline-flex items-center gap-2 font-medium text-white hover:underline hover:translate-x-1 transition-all duration-150 py-0.5">
                             <span class="text-white font-bold text-base">›</span>
                             <span>आचारसंहिता</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('pages.show', 'contact') }}" class="inline-flex items-center gap-2 font-medium text-white hover:underline hover:translate-x-1 transition-all duration-150 py-0.5">
+                        <a href="{{ route('pages.show', 'contact') }}" wire:navigate.hover class="inline-flex items-center gap-2 font-medium text-white hover:underline hover:translate-x-1 transition-all duration-150 py-0.5">
                             <span class="text-white font-bold text-base">›</span>
                             <span>सम्पर्क कार्यालय</span>
                         </a>
@@ -325,7 +325,7 @@
                 © {{ nepali_number(now()->year) }} <strong class="text-white font-bold">{{ setting('site_name', 'कपिलवस्तु दर्पण न्यूज') }}</strong> - {{ setting('footer_copyright', 'कपिलवस्तु मल्टिपर्पोज मिडिया प्रा.लि. सर्वाधिकार सुरक्षित।') }}
             </p>
             <div class="flex items-center gap-1.5 text-white font-medium justify-center sm:justify-end text-[16px]">
-                <span>Designed &amp; Developed By:</span>
+                <span>Developed By:</span>
                 <a href="https://www.siddhitechnepal.com" target="_blank" rel="noopener noreferrer" class="font-bold text-white hover:underline transition inline-flex items-center gap-1">
                     <span>Siddhi Tech Nepal Pvt. Ltd.</span>
                     <span class="text-xs">↗</span>

@@ -143,6 +143,8 @@ class UsersTable
                             return (bool) $record->delete();
                         }),
                 ])
+                ->icon('heroicon-m-ellipsis-vertical')
+                ->tooltip('Options')
                 ->visible(function (User $record): bool {
                     $user = auth()->user();
                     if (! $user || ! $user->isAdmin()) {

@@ -588,6 +588,20 @@ class AdminDashboardTest extends TestCase
             $comment->delete();
         }
     }
+
+    protected function tearDown(): void
+    {
+        $testPatterns = ['test-multi-category-%', 'trash-test-%', 'test-trash-tab-%'];
+        foreach ($testPatterns as $pattern) {
+            $articles = Article::withTrashed()->where('slug', 'like', $pattern)->get();
+            foreach ($articles as $art) {
+                $art->categories()->detach();
+                $art->forceDelete();
+            }
+        }
+
+        parent::tearDown();
+    }
 }
 
 

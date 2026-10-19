@@ -7,12 +7,12 @@
     <div class="bg-stone-100/90 border-b border-stone-200 py-2.5">
         <div class="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-3">
             <nav class="flex items-center gap-2 text-xs sm:text-sm text-stone-500 font-medium" aria-label="Breadcrumb">
-                <a href="{{ route('home') }}" class="hover:text-[#0066cc] transition flex items-center gap-1">
+                <a href="{{ route('home') }}" wire:navigate.hover class="hover:text-[#0066cc] transition flex items-center gap-1">
                     <svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/></svg>
                     <span>गृहपृष्ठ</span>
                 </a>
                 <span>›</span>
-                <a href="{{ route('sharemarket.index') }}" class="hover:text-[#0066cc] transition">नेपाल शेयर बजार</a>
+                <a href="{{ route('sharemarket.index') }}" wire:navigate.hover class="hover:text-[#0066cc] transition">नेपाल शेयर बजार</a>
                 <span>›</span>
                 <span class="text-[#0066cc] font-bold">{{ $symbol }}</span>
             </nav>
@@ -59,7 +59,7 @@
                      class="absolute z-50 left-0 right-0 mt-1 bg-white border border-stone-200 rounded-lg shadow-xl overflow-hidden py-1"
                      style="display: none;">
                     <template x-for="s in filtered" :key="s.symbol">
-                        <a :href="'/sharemarket/ticker/' + s.symbol" class="flex items-center justify-between px-3 py-1.5 text-xs hover:bg-stone-50 transition">
+                        <a :href="'/sharemarket/ticker/' + s.symbol" wire:navigate.hover class="flex items-center justify-between px-3 py-1.5 text-xs hover:bg-stone-50 transition">
                             <span class="font-bold text-[#0066cc]" x-text="s.symbol"></span>
                             <span class="text-stone-500 truncate ml-2" x-text="s.name"></span>
                         </a>
@@ -194,6 +194,7 @@
             <div class="flex-1 flex items-center gap-4 sm:gap-6 overflow-x-auto no-scrollbar py-1">
                 @foreach($company['trending_stocks'] ?? [] as $tStock)
                     <a href="{{ route('sharemarket.ticker', $tStock['symbol']) }}"
+                       wire:navigate.hover
                        class="shrink-0 flex items-center gap-2 text-xs hover:opacity-80 transition {{ $tStock['symbol'] === $symbol ? 'ring-2 ring-[#0066cc]/40 bg-blue-50/50 px-2 py-1 rounded-md' : '' }}">
                         <img src="https://images.smtmcapital.com.np/logos/{{ $tStock['symbol'] }}.png"
                              alt="{{ $tStock['symbol'] }}"
@@ -212,6 +213,7 @@
                 @endforeach
             </div>
             <a href="{{ route('sharemarket.index') }}"
+               wire:navigate.hover
                class="shrink-0 ml-auto bg-amber-50 hover:bg-amber-100/80 border border-amber-200/80 text-stone-800 text-xs font-bold px-3.5 py-2 rounded-lg flex items-center gap-2 transition shadow-2xs">
                 <span>View Stock Live</span>
                 <span class="flex items-center gap-1 text-[11px] {{ ($marketData['market_status'] ?? 'CLOSED') === 'OPEN' ? 'text-emerald-600' : 'text-rose-600' }}">
@@ -1308,12 +1310,12 @@
         <div x-show="activeTab === 'news'" class="bg-white rounded-2xl border border-stone-200/90 shadow-2xs p-6 space-y-5" style="display: none;">
             <div class="border-b border-stone-100 pb-3 flex items-center justify-between flex-wrap gap-2">
                 <h2 class="text-xl font-black text-stone-900">{{ $company['name'] }} तथा सम्बन्धित बजार समाचार</h2>
-                <a href="{{ route('category.show', 'arthatantra') }}" class="text-xs font-bold text-[#0066cc] hover:underline">थप समाचार हेर्नुहोस् &rarr;</a>
+                <a href="{{ route('category.show', 'arthatantra') }}" wire:navigate.hover class="text-xs font-bold text-[#0066cc] hover:underline">थप समाचार हेर्नुहोस् &rarr;</a>
             </div>
             @if(!empty($businessNews) && $businessNews->isNotEmpty())
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     @foreach($businessNews as $art)
-                        <a href="{{ route('articles.show', $art->slug) }}" class="group block space-y-2">
+                        <a href="{{ route('articles.show', $art->slug) }}" wire:navigate.hover class="group block space-y-2">
                             <div class="aspect-16/10 rounded-xl overflow-hidden bg-stone-100 border border-stone-200">
                                 @if($art->featured_image)
                                     <img src="{{ setting_image_url($art->featured_image) }}" alt="{{ $art->title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
@@ -1355,13 +1357,13 @@
                         <span class="h-2 w-2 rounded-full bg-[#0066cc]"></span>
                         <span>सम्बन्धित अर्थतन्त्र तथा बजार समाचार</span>
                     </h2>
-                    <a href="{{ route('category.show', 'arthatantra') }}" class="text-xs font-bold text-[#0066cc] hover:underline">
+                    <a href="{{ route('category.show', 'arthatantra') }}" wire:navigate.hover class="text-xs font-bold text-[#0066cc] hover:underline">
                         थप समाचार &rarr;
                     </a>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     @foreach($businessNews as $art)
-                        <a href="{{ route('articles.show', $art->slug) }}" class="group block space-y-2">
+                        <a href="{{ route('articles.show', $art->slug) }}" wire:navigate.hover class="group block space-y-2">
                             <div class="aspect-16/10 rounded-xl overflow-hidden bg-stone-100 border border-stone-200">
                                 @if($art->featured_image)
                                     <img src="{{ setting_image_url($art->featured_image) }}" alt="{{ $art->title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">

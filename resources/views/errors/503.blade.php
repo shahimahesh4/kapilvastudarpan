@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>वेबसाइट अद्यावधिक भइरहेको छ | {{ setting('site_name', 'कपिलवस्तु दर्पण') }}</title>
     <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/png" href="{{ setting_image_url(setting('site_favicon'), 'images/favicon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ setting_image_url(setting('site_favicon'), 'images/favicon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">

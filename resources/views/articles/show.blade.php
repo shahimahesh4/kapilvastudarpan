@@ -68,7 +68,7 @@
         <!-- Breadcrumb & Topic Category Bar -->
         <nav class="mb-5 flex flex-wrap items-center justify-between gap-3 text-xs font-bold text-stone-500" aria-label="Breadcrumb">
             <div class="flex items-center gap-2 flex-wrap">
-                <a href="{{ route('home') }}" class="inline-flex items-center gap-1.5 rounded-full bg-stone-100 hover:bg-[#c92137] hover:text-white px-3 py-1 transition-all duration-200">
+                <a href="{{ route('home') }}" wire:navigate.hover class="inline-flex items-center gap-1.5 rounded-full bg-stone-100 hover:bg-[#c92137] hover:text-white px-3 py-1 transition-all duration-200">
                     <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
                     </svg>
@@ -77,7 +77,7 @@
                 <span class="text-stone-300">/</span>
                 @php $primaryCategory = $article->categories->first() ?? $article->category; @endphp
                 @if($primaryCategory)
-                    <a href="{{ route('category.show', $primaryCategory->slug) }}" class="inline-flex items-center gap-1 rounded-full bg-red-50 text-[#c92137] border border-red-200/80 px-3.5 py-1 font-black hover:bg-[#c92137] hover:text-white transition-all duration-200 shadow-2xs">
+                    <a href="{{ route('category.show', $primaryCategory->slug) }}" wire:navigate.hover class="inline-flex items-center gap-1 rounded-full bg-red-50 text-[#c92137] border border-red-200/80 px-3.5 py-1 font-black hover:bg-[#c92137] hover:text-white transition-all duration-200 shadow-2xs">
                         <span>{{ $primaryCategory->name }}</span>
                     </a>
                 @endif
@@ -108,7 +108,7 @@
                 @if($article->categories->count() > 1)
                     <div class="mb-3 flex flex-wrap items-center gap-2">
                         @foreach($article->categories as $cat)
-                            <a href="{{ route('category.show', $cat->slug) }}" class="inline-block rounded-full bg-red-50 px-3 py-0.5 text-xs font-extrabold text-[#c92137] border border-red-200/80 hover:bg-[#c92137] hover:text-white transition">
+                            <a href="{{ route('category.show', $cat->slug) }}" wire:navigate.hover class="inline-block rounded-full bg-red-50 px-3 py-0.5 text-xs font-extrabold text-[#c92137] border border-red-200/80 hover:bg-[#c92137] hover:text-white transition">
                                 {{ $cat->name }}
                             </a>
                         @endforeach
@@ -410,7 +410,7 @@
                             विषयगत ट्यागहरू:
                         </span>
                         @foreach(['कपिलवस्तु दर्पण', 'ताजा समाचार', $article->categories->first()?->name ?? 'समाचार', 'नेपाल', 'राजनीति'] as $tag)
-                            <a href="{{ route('search', ['q' => $tag]) }}" class="rounded-full bg-stone-100 hover:bg-[#c92137] hover:text-white px-3.5 py-1 text-xs font-bold text-stone-700 transition-all duration-200 cursor-pointer shadow-2xs">
+                            <a href="{{ route('search', ['q' => $tag]) }}" wire:navigate.hover class="rounded-full bg-stone-100 hover:bg-[#c92137] hover:text-white px-3.5 py-1 text-xs font-bold text-stone-700 transition-all duration-200 cursor-pointer shadow-2xs">
                                 # {{ $tag }}
                             </a>
                         @endforeach
@@ -764,7 +764,7 @@
                 <!-- Previous & Next Article Navigation Cards -->
                 <div class="mt-8 grid gap-4 sm:grid-cols-2 border-t border-stone-200 pt-6">
                     @if(isset($previousArticle) && $previousArticle)
-                        <a href="{{ route('articles.show', $previousArticle->slug) }}" class="group flex gap-3.5 items-center rounded-xl border border-stone-200 bg-white p-3.5 shadow-2xs hover:border-[#c92137] hover:shadow-md transition-all duration-200">
+                        <a href="{{ route('articles.show', $previousArticle->slug) }}" wire:navigate.hover class="group flex gap-3.5 items-center rounded-xl border border-stone-200 bg-white p-3.5 shadow-2xs hover:border-[#c92137] hover:shadow-md transition-all duration-200">
                             <div class="relative h-16 w-20 shrink-0 overflow-hidden rounded-lg bg-stone-100 border border-stone-200/80">
                                 <img src="{{ $previousArticle->image_url }}" alt="{{ $previousArticle->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async">
                             </div>
@@ -783,7 +783,7 @@
                     @endif
 
                     @if(isset($nextArticle) && $nextArticle)
-                        <a href="{{ route('articles.show', $nextArticle->slug) }}" class="group flex flex-row-reverse gap-3.5 items-center rounded-xl border border-stone-200 bg-white p-3.5 text-right shadow-2xs hover:border-[#c92137] hover:shadow-md transition-all duration-200">
+                        <a href="{{ route('articles.show', $nextArticle->slug) }}" wire:navigate.hover class="group flex flex-row-reverse gap-3.5 items-center rounded-xl border border-stone-200 bg-white p-3.5 text-right shadow-2xs hover:border-[#c92137] hover:shadow-md transition-all duration-200">
                             <div class="relative h-16 w-20 shrink-0 overflow-hidden rounded-lg bg-stone-100 border border-stone-200/80">
                                 <img src="{{ $nextArticle->image_url }}" alt="{{ $nextArticle->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async">
                             </div>
@@ -835,7 +835,7 @@
                         <div class="grid gap-6 sm:grid-cols-2">
                             @foreach($relatedArticles as $rel)
                                 <article class="rounded-xl border border-stone-200/90 bg-white p-3.5 shadow-xs hover:shadow-md hover:border-red-200 transition-all duration-300 group">
-                                    <a href="{{ route('articles.show', $rel->slug) }}" class="block aspect-[16/9] rounded-lg overflow-hidden bg-stone-100 relative">
+                                    <a href="{{ route('articles.show', $rel->slug) }}" wire:navigate.hover class="block aspect-[16/9] rounded-lg overflow-hidden bg-stone-100 relative">
                                         <img src="{{ $rel->image_url }}" alt="{{ $rel->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async">
                                         @php $relCat = $rel->categories->first() ?? $rel->category; @endphp
                                         @if($relCat)
@@ -845,7 +845,7 @@
                                         @endif
                                     </a>
                                     <h3 class="mt-3">
-                                        <a href="{{ route('articles.show', $rel->slug) }}" class="block text-base font-extrabold leading-snug text-stone-900 group-hover:text-[#c92137] hover:underline line-clamp-2 transition-colors">
+                                        <a href="{{ route('articles.show', $rel->slug) }}" wire:navigate.hover class="block text-base font-extrabold leading-snug text-stone-900 group-hover:text-[#c92137] hover:underline line-clamp-2 transition-colors">
                                             {{ $rel->title }}
                                         </a>
                                     </h3>
@@ -880,7 +880,7 @@
                     <ol class="divide-y divide-red-100/80">
                         @foreach($trendingArticles as $trend)
                             <li class="py-3 group first:pt-1 last:pb-1">
-                                <a href="{{ route('articles.show', $trend->slug) }}" class="flex gap-2.5 items-center">
+                                <a href="{{ route('articles.show', $trend->slug) }}" wire:navigate.hover class="flex gap-2.5 items-center">
                                     <span class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#c92137] to-[#a50404] text-xs font-black text-white shadow-2xs group-hover:scale-110 transition-transform">
                                         {{ nepali_number($loop->iteration) }}
                                     </span>
@@ -917,7 +917,7 @@
                     <div class="divide-y divide-stone-100">
                         @foreach($latestArticles as $latest)
                             <article class="py-3 group first:pt-1 last:pb-1">
-                                <a href="{{ route('articles.show', $latest->slug) }}" class="flex gap-3 items-center">
+                                <a href="{{ route('articles.show', $latest->slug) }}" wire:navigate.hover class="flex gap-3 items-center">
                                     <div class="relative h-16 w-20 shrink-0 overflow-hidden rounded-lg bg-stone-100 border border-stone-200/80 shadow-2xs">
                                         <img src="{{ $latest->image_url }}" alt="{{ $latest->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async">
                                     </div>

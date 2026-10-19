@@ -7,7 +7,7 @@
     <div class="bg-stone-100/80 border-b border-stone-200 py-3">
         <div class="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
             <nav class="flex items-center gap-2 text-xs sm:text-sm text-stone-500 font-medium" aria-label="Breadcrumb">
-                <a href="{{ route('home') }}" class="hover:text-[#c92137] transition flex items-center gap-1">
+                <a href="{{ route('home') }}" wire:navigate.hover class="hover:text-[#c92137] transition flex items-center gap-1">
                     <svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/></svg>
                     <span>गृहपृष्ठ</span>
                 </a>

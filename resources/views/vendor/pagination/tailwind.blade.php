@@ -6,13 +6,13 @@
                     « अघिल्लो
                 </span>
             @else
-                <a href="{{ $paginator->previousPageUrl() }}" class="relative inline-flex items-center px-4 py-2 text-sm font-bold text-stone-700 bg-white border border-stone-200 rounded-lg shadow-2xs hover:bg-[#c92137] hover:text-white hover:border-[#c92137] transition">
+                <a href="{{ $paginator->previousPageUrl() }}" wire:navigate.hover class="relative inline-flex items-center px-4 py-2 text-sm font-bold text-stone-700 bg-white border border-stone-200 rounded-lg shadow-2xs hover:bg-[#c92137] hover:text-white hover:border-[#c92137] transition">
                     « अघिल्लो
                 </a>
             @endif
 
             @if ($paginator->hasMorePages())
-                <a href="{{ $paginator->nextPageUrl() }}" class="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-bold text-stone-700 bg-white border border-stone-200 rounded-lg shadow-2xs hover:bg-[#c92137] hover:text-white hover:border-[#c92137] transition">
+                <a href="{{ $paginator->nextPageUrl() }}" wire:navigate.hover class="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-bold text-stone-700 bg-white border border-stone-200 rounded-lg shadow-2xs hover:bg-[#c92137] hover:text-white hover:border-[#c92137] transition">
                     पछिल्लो »
                 </a>
             @else
@@ -45,7 +45,7 @@
                             </span>
                         </span>
                     @else
-                        <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="relative inline-flex items-center px-3 py-2 text-sm font-bold text-stone-600 bg-white border border-stone-200 rounded-l-xl hover:bg-[#c92137] hover:text-white hover:border-[#c92137] transition" aria-label="अघिल्लो पृष्ठ">
+                        <a href="{{ $paginator->previousPageUrl() }}" wire:navigate.hover rel="prev" class="relative inline-flex items-center px-3 py-2 text-sm font-bold text-stone-600 bg-white border border-stone-200 rounded-l-xl hover:bg-[#c92137] hover:text-white hover:border-[#c92137] transition" aria-label="अघिल्लो पृष्ठ">
                             ‹
                         </a>
                     @endif
@@ -71,7 +71,7 @@
                                         </span>
                                     </span>
                                 @else
-                                    <a href="{{ $url }}" class="relative inline-flex items-center px-4 py-2 text-sm font-bold text-stone-700 bg-white border border-stone-200 hover:bg-stone-50 hover:text-[#c92137] transition" aria-label="{{ nepali_number($page) }} पृष्ठमा जानुहोस्">
+                                    <a href="{{ $url }}" wire:navigate.hover class="relative inline-flex items-center px-4 py-2 text-sm font-bold text-stone-700 bg-white border border-stone-200 hover:bg-stone-50 hover:text-[#c92137] transition" aria-label="{{ nepali_number($page) }} पृष्ठमा जानुहोस्">
                                         {{ nepali_number($page) }}
                                     </a>
                                 @endif
@@ -81,7 +81,7 @@
 
                     {{-- Next Page Link --}}
                     @if ($paginator->hasMorePages())
-                        <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="relative inline-flex items-center px-3 py-2 text-sm font-bold text-stone-600 bg-white border border-stone-200 rounded-r-xl hover:bg-[#c92137] hover:text-white hover:border-[#c92137] transition" aria-label="पछिल्लो पृष्ठ">
+                        <a href="{{ $paginator->nextPageUrl() }}" wire:navigate.hover rel="next" class="relative inline-flex items-center px-3 py-2 text-sm font-bold text-stone-600 bg-white border border-stone-200 rounded-r-xl hover:bg-[#c92137] hover:text-white hover:border-[#c92137] transition" aria-label="पछिल्लो पृष्ठ">
                             ›
                         </a>
                     @else

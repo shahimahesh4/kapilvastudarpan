@@ -254,7 +254,7 @@
                             {{ nepali_number((string)$comments->total()) }}
                         </span>
                     </h3>
-                    <a href="{{ route('home') }}" class="text-xs font-bold text-[#0955cf] hover:text-[#c92137] hover:underline transition">
+                    <a href="{{ route('home') }}" wire:navigate.hover class="text-xs font-bold text-[#0955cf] hover:text-[#c92137] hover:underline transition">
                         थप समाचार पढ्नुहोस् ↗
                     </a>
                 </div>
@@ -270,7 +270,7 @@
                             तपाईंले समाचारहरूमा आफ्ना विचार, सल्लाह तथा नागरिक प्रतिक्रिया लेख्न सुरु गर्नुभएको छैन।
                         </p>
                         <div class="mt-5">
-                            <a href="{{ route('home') }}" class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#0955cf] to-[#c92137] px-5 py-2.5 text-xs sm:text-sm font-black text-white shadow-xs hover:opacity-95 transition">
+                            <a href="{{ route('home') }}" wire:navigate.hover class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#0955cf] to-[#c92137] px-5 py-2.5 text-xs sm:text-sm font-black text-white shadow-xs hover:opacity-95 transition">
                                 <span>ताजा समाचार पढ्न जानुहोस्</span>
                                 <span>→</span>
                             </a>
@@ -285,7 +285,7 @@
                                     <div class="min-w-0 flex-1">
                                         <span class="text-[11px] font-bold text-stone-400 uppercase tracking-wider block">समाचार शीर्षक:</span>
                                         @if($comment->article)
-                                            <a href="{{ route('articles.show', $comment->article->slug) }}" class="text-sm sm:text-base font-black text-stone-900 hover:text-[#c92137] transition line-clamp-1">
+                                            <a href="{{ route('articles.show', $comment->article->slug) }}" wire:navigate.hover class="text-sm sm:text-base font-black text-stone-900 hover:text-[#c92137] transition line-clamp-1">
                                                 {{ $comment->article->title }} ↗
                                             </a>
                                         @else
@@ -329,7 +329,7 @@
 
                                     <div class="flex items-center gap-3">
                                         @if($comment->article)
-                                            <a href="{{ route('articles.show', $comment->article->slug) }}#comments" class="font-bold text-[#0955cf] hover:underline">
+                                            <a href="{{ route('articles.show', $comment->article->slug) }}#comments" wire:navigate.hover class="font-bold text-[#0955cf] hover:underline">
                                                 समाचारमा हेर्नुहोस् ↗
                                             </a>
                                         @endif
@@ -573,7 +573,7 @@
                     <h3 class="text-lg font-black text-stone-900">
                         📰 तपाईंको लागि सिफारिस गरिएका ताजा समाचारहरू
                     </h3>
-                    <a href="{{ route('home') }}" class="text-xs font-bold text-[#c92137] hover:underline">
+                    <a href="{{ route('home') }}" wire:navigate.hover class="text-xs font-bold text-[#c92137] hover:underline">
                         सबै समाचार हेर्नुहोस् ↗
                     </a>
                 </div>
@@ -581,7 +581,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                     @foreach($recommendedArticles as $article)
                         <article class="group rounded-2xl border border-stone-200/90 bg-white overflow-hidden shadow-2xs hover:shadow-md transition flex flex-col">
-                            <a href="{{ route('articles.show', $article->slug) }}" class="block aspect-[16/10] overflow-hidden bg-stone-100">
+                            <a href="{{ route('articles.show', $article->slug) }}" wire:navigate.hover class="block aspect-[16/10] overflow-hidden bg-stone-100">
                                 <img src="{{ $article->image_url }}" alt="{{ $article->title }}" class="h-full w-full object-cover group-hover:scale-105 transition duration-300">
                             </a>
                             <div class="p-4 flex-1 flex flex-col justify-between">
@@ -593,7 +593,7 @@
                                         </span>
                                     @endif
                                     <h4 class="text-sm font-bold leading-snug text-stone-900 group-hover:text-[#0955cf] line-clamp-2 transition">
-                                        <a href="{{ route('articles.show', $article->slug) }}">
+                                        <a href="{{ route('articles.show', $article->slug) }}" wire:navigate.hover>
                                             {{ $article->title }}
                                         </a>
                                     </h4>

@@ -11,7 +11,7 @@
         <!-- Breadcrumb Navigation -->
         <nav class="mb-4 flex flex-wrap items-center justify-between gap-3 text-xs font-bold text-stone-500" aria-label="Breadcrumb">
             <div class="flex items-center gap-2 flex-wrap">
-                <a href="{{ route('home') }}" class="inline-flex items-center gap-1.5 rounded-full bg-stone-100 hover:bg-[#c92137] hover:text-white px-3 py-1 transition-all duration-200">
+                <a href="{{ route('home') }}" wire:navigate.hover class="inline-flex items-center gap-1.5 rounded-full bg-stone-100 hover:bg-[#c92137] hover:text-white px-3 py-1 transition-all duration-200">
                     <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
                     </svg>
@@ -364,6 +364,7 @@
                                 @endphp
                                 <a
                                     href="{{ route('pages.show', $navPage->slug) }}"
+                                    wire:navigate.hover
                                     class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm sm:text-[15px] font-bold transition-all duration-150 {{ $isActive ? 'bg-[#c92137] text-white shadow-xs' : 'text-stone-700 hover:bg-stone-50 hover:text-stone-900' }}"
                                 >
                                     <span class="truncate leading-normal">{{ $navPage->clean_title }}</span>
@@ -405,6 +406,7 @@
                     @foreach ($otherPages as $op)
                         <a
                             href="{{ route('pages.show', $op->slug) }}"
+                            wire:navigate.hover
                             class="group p-4 rounded-2xl border border-stone-200/80 bg-white hover:border-[#c92137] hover:shadow-xs transition-all flex flex-col justify-between"
                         >
                             <div>

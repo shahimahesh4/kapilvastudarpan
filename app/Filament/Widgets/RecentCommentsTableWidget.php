@@ -95,7 +95,9 @@ class RecentCommentsTableWidget extends BaseWidget
                         ->label('Delete')
                         ->modalHeading('Delete Comment')
                         ->modalDescription('Are you sure you want to delete this comment?'),
-                ]),
+                ])
+                ->icon('heroicon-m-ellipsis-vertical')
+                ->tooltip('Options'),
             ]);
     }
 }

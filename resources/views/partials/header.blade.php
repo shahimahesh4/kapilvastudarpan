@@ -41,7 +41,7 @@
 
             @if($hasHeaderSocial)
                 <!-- Top Header Social Media Icons -->
-                <div class="flex items-center gap-1.5 border-r border-stone-200/90 pr-3">
+                <div class="hidden md:flex items-center gap-1.5 border-r border-stone-200/90 pr-3">
                     @if($socialFacebook !== '')
                         <a href="{{ $socialFacebook }}" target="_blank" rel="noopener noreferrer" class="grid h-6 w-6 place-items-center rounded-full bg-stone-200/70 text-stone-600 hover:bg-[#1877F2] hover:text-white hover:scale-110 transition shadow-2xs" aria-label="Facebook" title="Facebook">
                             <svg viewBox="0 0 24 24" class="h-3 w-3 fill-current" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -76,18 +76,18 @@
             @endif
 
             @if(setting_bool('sharemarket_enabled', true))
-            <a href="{{ route('sharemarket.index') }}" class="font-bold text-stone-700 hover:text-[#c92137] transition flex items-center gap-1" title="नेपाल शेयर बजार (NEPSE)">
+            <a href="{{ route('sharemarket.index') }}" wire:navigate.hover class="hidden md:flex font-bold text-stone-700 hover:text-[#c92137] transition items-center gap-1" title="नेपाल शेयर बजार (NEPSE)">
                 <span>📈</span>
                 <span>शेयर बजार</span>
             </a>
-            <span class="text-stone-300">|</span>
+            <span class="hidden md:inline text-stone-300">|</span>
             @endif
-            <a href="{{ route('unicode.converter') }}" class="font-bold text-stone-700 hover:text-[#c92137] transition flex items-center gap-1" title="नेपाली युनिकोड कन्भर्टर">
+            <a href="{{ route('unicode.converter') }}" wire:navigate.hover class="hidden md:flex font-bold text-stone-700 hover:text-[#c92137] transition items-center gap-1" title="नेपाली युनिकोड कन्भर्टर">
                 <span>⌨</span>
                 <span>युनिकोड</span>
             </a>
-            <span class="text-stone-300">|</span>
-            <a href="{{ route('pages.show', 'contact') }}" class="font-bold text-stone-700 hover:text-[#c92137] transition">सम्पर्क</a>
+            <span class="hidden md:inline text-stone-300">|</span>
+            <a href="{{ route('pages.show', 'contact') }}" wire:navigate.hover class="hidden md:inline font-bold text-stone-700 hover:text-[#c92137] transition">सम्पर्क</a>
             <button type="button" @click="darkMode = !darkMode; setTheme()" class="theme-toggle" :class="darkMode ? 'theme-toggle--dark' : ''" :aria-pressed="darkMode ? 'true' : 'false'" :aria-label="darkMode ? 'लाइट मोडमा फर्कनुहोस्' : 'डार्क मोड खोल्नुहोस्'" title="रङ मोड बदल्नुहोस्">
                 <span class="theme-toggle__sun" aria-hidden="true">☀</span>
                 <span class="theme-toggle__moon" aria-hidden="true">☾</span>
@@ -99,7 +99,7 @@
 <!-- Main Header Branding Section -->
 <header class="bg-white border-b border-stone-100">
     <div class="mx-auto max-w-[1280px] flex items-center justify-between gap-6 px-4 py-3 sm:py-4 sm:px-6 lg:px-8">
-        <a href="{{ route('home') }}" class="shrink-0 flex items-center gap-3.5 group" aria-label="{{ setting('site_name', 'कपिलवस्तु दर्पण') }} गृहपृष्ठ">
+        <a href="{{ route('home') }}" wire:navigate.hover class="shrink-0 flex items-center gap-3.5 group" aria-label="{{ setting('site_name', 'कपिलवस्तु दर्पण') }} गृहपृष्ठ">
             <img src="{{ setting_image_url(setting('site_logo'), 'images/kapilvastu-darpan-logo.png') }}" alt="{{ setting('site_name', 'कपिलवस्तु दर्पण') }}" class="h-16 sm:h-22 md:h-24 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]">
         </a>
 
@@ -109,7 +109,7 @@
         </div>
 
         <!-- Mobile Hamburger Button -->
-        <button @click="sidebarOpen = true" type="button" class="flex h-11 w-12 flex-col items-center justify-center gap-1.5 rounded-xl bg-[#0955cf] hover:bg-[#0747ad] transition md:hidden shadow-sm p-2 cursor-pointer" :aria-expanded="sidebarOpen ? 'true' : 'false'" aria-controls="site-sidebar" aria-label="मेनु खोल्नुहोस्">
+        <button @click="sidebarOpen = true" type="button" class="flex h-11 w-12 flex-col items-center justify-center gap-1.5 rounded-xl bg-[#c92137] hover:bg-[#a50404] transition md:hidden shadow-sm p-2 cursor-pointer" :aria-expanded="sidebarOpen ? 'true' : 'false'" aria-controls="site-sidebar" aria-label="मेनु खोल्नुहोस्">
             <span class="h-[3px] w-6 rounded-full bg-white shadow-xs"></span>
             <span class="h-[3px] w-6 rounded-full bg-white shadow-xs"></span>
             <span class="h-[3px] w-6 rounded-full bg-white shadow-xs"></span>
@@ -139,7 +139,7 @@
                     }
                 </style>
                 <div class="w-full flex items-stretch h-[4.2rem] px-4 sm:px-6 lg:px-8">
-                    <a href="{{ route('home') }}" class="grid h-[4.2rem] w-14 shrink-0 place-items-center border-x border-white/15 bg-black/10 hover:bg-black/25 text-white transition duration-200" aria-label="गृहपृष्ठ">
+                    <a href="{{ route('home') }}" wire:navigate.hover class="grid h-[4.2rem] w-14 shrink-0 place-items-center border-x border-white/15 bg-black/10 hover:bg-black/25 text-white transition duration-200" aria-label="गृहपृष्ठ">
                         <svg viewBox="0 0 24 24" class="h-5 w-5 fill-current" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10Z"/></svg>
                     </a>
 
@@ -147,10 +147,13 @@
                     <ul class="kd-main-nav flex min-w-0 flex-1 items-stretch h-full font-extrabold text-white overflow-visible">
                         @if(isset($headerMenuItems) && $headerMenuItems->isNotEmpty())
                             @foreach ($headerMenuItems as $item)
+                                @php
+                                    $isItemInternal = $item->target !== '_blank' && (!str_starts_with($item->link_url, 'http://') && !str_starts_with($item->link_url, 'https://') || str_starts_with($item->link_url, url('/')));
+                                @endphp
                                 @if ($item->is_mega_menu)
                                     <!-- Mega Menu Dropdown (Matches Screenshot) -->
                                     <li class="static flex items-stretch h-full shrink-0" x-data="{ open: false, currentProvince: '{{ $item->children->first()?->title ?? 'कोशी प्रदेश' }}' }" @mouseenter="open = true" @mouseleave="open = false" @click.outside="open = false">
-                                        <a href="{{ $item->link_url }}" target="{{ $item->target }}" class="flex items-center gap-1 whitespace-nowrap px-2 lg:px-2.5 xl:px-3 h-full font-extrabold text-[16px] transition duration-150 cursor-pointer" :class="open ? 'bg-white text-[#c92137] shadow-sm' : 'text-white hover:bg-white/15'">
+                                        <a href="{{ $item->link_url }}" target="{{ $item->target }}" {{ $isItemInternal ? 'wire:navigate.hover' : '' }} class="flex items-center gap-1 whitespace-nowrap px-2 lg:px-2.5 xl:px-3 h-full font-extrabold text-[16px] transition duration-150 cursor-pointer" :class="open ? 'bg-white text-[#c92137] shadow-sm' : 'text-white hover:bg-white/15'">
                                             <span>{{ $item->title }}</span>
                                             <svg viewBox="0 0 20 20" class="h-3.5 w-3.5 fill-none stroke-current stroke-[2.4] transition-transform duration-200" :class="open ? 'rotate-180 text-[#c92137]' : 'text-white/80'" aria-hidden="true">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="m5 7.5 5 5 5-5" />
@@ -170,8 +173,12 @@
                                                     <!-- Left Column: Provinces List -->
                                                     <div class="w-52 shrink-0 border-r border-stone-200 pr-4 space-y-0.5">
                                                         @foreach ($item->children as $child)
+                                                            @php
+                                                                $isChildInternal = $child->target !== '_blank' && (!str_starts_with($child->link_url, 'http://') && !str_starts_with($child->link_url, 'https://') || str_starts_with($child->link_url, url('/')));
+                                                            @endphp
                                                             <a href="{{ $child->link_url }}"
                                                                target="{{ $child->target }}"
+                                                               {{ $isChildInternal ? 'wire:navigate.hover' : '' }}
                                                                @mouseenter="currentProvince = '{{ $child->title }}'"
                                                                class="block px-3.5 py-1.5 text-[16px] font-bold rounded-lg transition duration-150 cursor-pointer"
                                                                :class="currentProvince === '{{ $child->title }}' ? 'text-[#c92137] bg-red-50/70 font-extrabold shadow-xs' : 'text-stone-700 hover:text-[#c92137] hover:bg-stone-50'">
@@ -190,11 +197,11 @@
                                                                 <div class="grid grid-cols-4 gap-5">
                                                                     @foreach ($provinceStories[$provName] ?? [] as $story)
                                                                         <article class="group flex flex-col">
-                                                                            <a href="{{ route('articles.show', $story->slug) }}" class="block aspect-[16/10] rounded-lg overflow-hidden bg-stone-100 shadow-sm">
+                                                                            <a href="{{ route('articles.show', $story->slug) }}" wire:navigate.hover class="block aspect-[16/10] rounded-lg overflow-hidden bg-stone-100 shadow-sm">
                                                                                 <img src="{{ $story->image_url }}" alt="{{ $story->title }}" class="h-full w-full object-cover group-hover:scale-105 transition duration-300">
                                                                             </a>
                                                                             <h4 class="mt-3 text-[16px] sm:text-[17px] font-bold leading-snug text-stone-900 group-hover:text-[#c92137] line-clamp-2 transition">
-                                                                                <a href="{{ route('articles.show', $story->slug) }}">
+                                                                                <a href="{{ route('articles.show', $story->slug) }}" wire:navigate.hover>
                                                                                     {{ $story->title }}
                                                                                 </a>
                                                                             </h4>
@@ -203,7 +210,7 @@
                                                                 </div>
                                                                 <!-- थप समाचार ↗ Link on Bottom Right -->
                                                                 <div class="mt-4 flex justify-end border-t border-stone-100 pt-3">
-                                                                    <a href="{{ route('category.show', 'pradesh') }}" class="inline-flex items-center gap-1.5 text-sm font-extrabold text-stone-600 hover:text-[#c92137] transition group">
+                                                                    <a href="{{ route('category.show', 'pradesh') }}" wire:navigate.hover class="inline-flex items-center gap-1.5 text-sm font-extrabold text-stone-600 hover:text-[#c92137] transition group">
                                                                         <span>थप समाचार</span>
                                                                         <span class="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">↗</span>
                                                                     </a>
@@ -218,7 +225,7 @@
                                 @elseif ($item->children->isNotEmpty())
                                     <!-- Regular Vertical Dropdown (समाचार, अर्थतन्त्र, etc.) -->
                                     <li class="relative flex items-stretch h-full shrink-0" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" @click.outside="open = false">
-                                        <a href="{{ $item->link_url }}" target="{{ $item->target }}" class="flex items-center gap-1 whitespace-nowrap px-2 lg:px-2.5 xl:px-3 h-full font-extrabold text-[16px] transition duration-150 cursor-pointer" :class="open ? 'bg-white text-[#c92137] shadow-sm' : 'text-white hover:bg-white/15'">
+                                        <a href="{{ $item->link_url }}" target="{{ $item->target }}" {{ $isItemInternal ? 'wire:navigate.hover' : '' }} class="flex items-center gap-1 whitespace-nowrap px-2 lg:px-2.5 xl:px-3 h-full font-extrabold text-[16px] transition duration-150 cursor-pointer" :class="open ? 'bg-white text-[#c92137] shadow-sm' : 'text-white hover:bg-white/15'">
                                             <span>{{ $item->title }}</span>
                                             <svg viewBox="0 0 20 20" class="h-3.5 w-3.5 fill-none stroke-current stroke-[2.4] transition-transform duration-200" :class="open ? 'rotate-180 text-[#c92137]' : 'text-white/80'" aria-hidden="true">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="m5 7.5 5 5 5-5" />
@@ -235,7 +242,10 @@
                                              class="absolute left-0 top-full z-50 min-w-[220px] rounded-b-2xl bg-white py-3 shadow-[0_16px_36px_rgba(0,0,0,0.16)] border border-stone-100 border-t-0">
                                             <div class="px-1.5 space-y-0.5">
                                                 @foreach ($item->children as $child)
-                                                    <a href="{{ $child->link_url }}" target="{{ $child->target }}" class="block px-5 py-2.5 text-[16px] font-bold text-stone-800 hover:text-[#c92137] hover:bg-red-50/60 rounded-lg transition duration-150 whitespace-nowrap">
+                                                    @php
+                                                        $isChildInternal = $child->target !== '_blank' && (!str_starts_with($child->link_url, 'http://') && !str_starts_with($child->link_url, 'https://') || str_starts_with($child->link_url, url('/')));
+                                                    @endphp
+                                                    <a href="{{ $child->link_url }}" target="{{ $child->target }}" {{ $isChildInternal ? 'wire:navigate.hover' : '' }} class="block px-5 py-2.5 text-[16px] font-bold text-stone-800 hover:text-[#c92137] hover:bg-red-50/60 rounded-lg transition duration-150 whitespace-nowrap">
                                                         {{ $child->title }}
                                                     </a>
                                                 @endforeach
@@ -244,7 +254,7 @@
                                     </li>
                                 @else
                                     <li class="flex items-stretch h-full shrink-0">
-                                        <a href="{{ $item->link_url }}" target="{{ $item->target }}" class="flex items-center gap-1 whitespace-nowrap px-2 lg:px-2.5 xl:px-3 h-full hover:bg-white/15 transition text-[16px] font-extrabold">
+                                        <a href="{{ $item->link_url }}" target="{{ $item->target }}" {{ $isItemInternal ? 'wire:navigate.hover' : '' }} class="flex items-center gap-1 whitespace-nowrap px-2 lg:px-2.5 xl:px-3 h-full hover:bg-white/15 transition text-[16px] font-extrabold">
                                             {{ $item->title }}
                                         </a>
                                     </li>
@@ -253,7 +263,7 @@
                         @else
                             @foreach ($categories as $cat)
                                 <li class="flex items-stretch h-full shrink-0">
-                                    <a href="{{ route('category.show', $cat->slug) }}" class="flex items-center gap-1 whitespace-nowrap px-2 lg:px-2.5 xl:px-3 h-full hover:bg-white/15 transition text-[16px] font-extrabold">
+                                    <a href="{{ route('category.show', $cat->slug) }}" wire:navigate.hover class="flex items-center gap-1 whitespace-nowrap px-2 lg:px-2.5 xl:px-3 h-full hover:bg-white/15 transition text-[16px] font-extrabold">
                                         {{ $cat->name }}
                                     </a>
                                 </li>
@@ -312,15 +322,15 @@
                     <div class="grid gap-x-6 gap-y-5 md:grid-cols-2 lg:grid-cols-3">
                         @foreach($flashNews ?? [] as $flash)
                             <article class="grid grid-cols-[6.5rem_1fr] items-start gap-3 group">
-                                <a href="{{ route('articles.show', $flash->slug) }}" class="block aspect-[4/3] rounded overflow-hidden bg-stone-100">
+                                <a href="{{ route('articles.show', $flash->slug) }}" wire:navigate.hover class="block aspect-[4/3] rounded overflow-hidden bg-stone-100">
                                     <img src="{{ $flash->image_url }}" alt="{{ $flash->title }}" class="h-full w-full object-cover group-hover:scale-105 transition duration-300">
                                 </a>
                                 <div>
                                     @php $flashCat = $flash->categories->first() ?? $flash->category; @endphp
                                     @if($flashCat)
-                                        <a href="{{ route('category.show', $flashCat->slug) }}" class="text-xs font-bold text-[#c92137]">{{ $flashCat->name }}</a>
+                                        <a href="{{ route('category.show', $flashCat->slug) }}" wire:navigate.hover class="text-xs font-bold text-[#c92137]">{{ $flashCat->name }}</a>
                                     @endif
-                                    <a href="{{ route('articles.show', $flash->slug) }}" class="mt-1 block text-base font-bold leading-snug hover:text-[#c92137] line-clamp-2">
+                                    <a href="{{ route('articles.show', $flash->slug) }}" wire:navigate.hover class="mt-1 block text-base font-bold leading-snug hover:text-[#c92137] line-clamp-2">
                                         {{ $flash->title }}
                                     </a>
                                     <time class="mt-1 block text-[11px] text-stone-400">{{ $flash->published_at?->diffForHumans() }}</time>
@@ -351,7 +361,7 @@
             </span>
             <div class="relative h-7 min-w-0 flex-1 overflow-hidden" aria-live="polite">
                 <template x-for="(item, index) in items" :key="index">
-                    <a :href="item.url" x-cloak x-show="current === index" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="-translate-x-full opacity-0" x-transition:enter-end="translate-x-0 opacity-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="translate-x-0 opacity-100" x-transition:leave-end="translate-x-full opacity-0" class="absolute inset-0 flex items-center truncate text-sm font-bold text-stone-800 hover:text-[#c92137]" x-text="item.title"></a>
+                    <a :href="item.url" wire:navigate.hover x-cloak x-show="current === index" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="-translate-x-full opacity-0" x-transition:enter-end="translate-x-0 opacity-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="translate-x-0 opacity-100" x-transition:leave-end="translate-x-full opacity-0" class="absolute inset-0 flex items-center truncate text-sm font-bold text-stone-800 hover:text-[#c92137]" x-text="item.title"></a>
                 </template>
             </div>
             <div class="ml-auto hidden shrink-0 items-center gap-1 sm:flex">
@@ -370,7 +380,7 @@
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="sidebarOpen = false"></div>
     <aside id="site-sidebar" class="relative flex h-full w-[min(88vw,23rem)] flex-col overflow-y-auto no-scrollbar bg-white shadow-2xl transition-transform duration-300 ease-out" :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" role="dialog" aria-modal="true" aria-label="मुख्य मेनु">
         <div class="flex items-center justify-between border-b border-stone-200 p-5 bg-stone-50">
-            <a href="{{ route('home') }}" @click="sidebarOpen = false">
+            <a href="{{ route('home') }}" wire:navigate.hover @click="sidebarOpen = false">
                 <img src="{{ setting_image_url(setting('site_logo'), 'images/kapilvastu-darpan-logo.png') }}" alt="{{ setting('site_name', 'कपिलवस्तु दर्पण') }}" class="h-14 sm:h-16 w-auto object-contain">
             </a>
             <button type="button" @click="sidebarOpen = false" class="grid h-10 w-10 place-items-center rounded-full bg-[#c92137] text-xl font-bold text-white hover:bg-red-800 transition" aria-label="मेनु बन्द गर्नुहोस्">×</button>
@@ -388,6 +398,9 @@
             <ul class="divide-y divide-stone-100">
                 @if(isset($headerMenuItems) && $headerMenuItems->isNotEmpty())
                     @foreach ($headerMenuItems as $item)
+                        @php
+                            $isDrawerItemInternal = $item->target !== '_blank' && (!str_starts_with($item->link_url, 'http://') && !str_starts_with($item->link_url, 'https://') || str_starts_with($item->link_url, url('/')));
+                        @endphp
                         @if ($item->children->isNotEmpty())
                             <li x-data="{ expanded: false }" class="py-1">
                                 <div class="flex items-center justify-between px-4 py-3 text-[16px] font-bold text-stone-800 hover:bg-stone-50 rounded transition">
@@ -396,7 +409,7 @@
                                             <span>{{ $item->title }}</span>
                                         </button>
                                     @else
-                                        <a href="{{ $item->link_url }}" target="{{ $item->target }}" @click="sidebarOpen = false" class="hover:text-[#c92137] flex-1">
+                                        <a href="{{ $item->link_url }}" target="{{ $item->target }}" {{ $isDrawerItemInternal ? 'wire:navigate.hover' : '' }} @click="sidebarOpen = false" class="hover:text-[#c92137] flex-1">
                                             {{ $item->title }}
                                         </a>
                                     @endif
@@ -406,8 +419,11 @@
                                 </div>
                                 <ul x-cloak x-show="expanded" class="mt-1 space-y-1 rounded-lg bg-stone-50 p-2 pl-4 border-l-2 border-[#0955cf]">
                                     @foreach ($item->children as $child)
+                                        @php
+                                            $isDrawerChildInternal = $child->target !== '_blank' && (!str_starts_with($child->link_url, 'http://') && !str_starts_with($child->link_url, 'https://') || str_starts_with($child->link_url, url('/')));
+                                        @endphp
                                         <li>
-                                            <a href="{{ $child->link_url }}" target="{{ $child->target }}" @click="sidebarOpen = false" class="block px-3 py-2 text-[16px] font-semibold text-stone-700 hover:text-[#c92137] hover:bg-white rounded transition">
+                                            <a href="{{ $child->link_url }}" target="{{ $child->target }}" {{ $isDrawerChildInternal ? 'wire:navigate.hover' : '' }} @click="sidebarOpen = false" class="block px-3 py-2 text-[16px] font-semibold text-stone-700 hover:text-[#c92137] hover:bg-white rounded transition">
                                                 • {{ $child->title }}
                                             </a>
                                         </li>
@@ -416,7 +432,7 @@
                             </li>
                         @else
                             <li>
-                                <a href="{{ $item->link_url }}" target="{{ $item->target }}" @click="sidebarOpen = false" class="flex items-center justify-between px-4 py-3 text-[16px] font-bold text-stone-800 hover:bg-red-50 hover:text-[#c92137] rounded transition">
+                                <a href="{{ $item->link_url }}" target="{{ $item->target }}" {{ $isDrawerItemInternal ? 'wire:navigate.hover' : '' }} @click="sidebarOpen = false" class="flex items-center justify-between px-4 py-3 text-[16px] font-bold text-stone-800 hover:bg-red-50 hover:text-[#c92137] rounded transition">
                                     <span>{{ $item->title }}</span>
                                     <span class="text-stone-400 text-xs">→</span>
                                 </a>
@@ -426,7 +442,7 @@
                 @else
                     @foreach ($categories ?? [] as $cat)
                         <li>
-                            <a href="{{ route('category.show', $cat->slug) }}" @click="sidebarOpen = false" class="flex items-center justify-between px-4 py-3 text-[16px] font-bold text-stone-800 hover:bg-red-50 hover:text-[#c92137] rounded transition">
+                            <a href="{{ route('category.show', $cat->slug) }}" wire:navigate.hover @click="sidebarOpen = false" class="flex items-center justify-between px-4 py-3 text-[16px] font-bold text-stone-800 hover:bg-red-50 hover:text-[#c92137] rounded transition">
                                 <span>{{ $cat->name }}</span>
                                 <span class="text-stone-400 text-xs">→</span>
                             </a>
@@ -438,7 +454,7 @@
 
         @if(setting_bool('sharemarket_enabled', true))
         <div class="px-4 py-2 border-t border-stone-200 bg-emerald-50/40">
-            <a href="{{ route('sharemarket.index') }}" @click="sidebarOpen = false" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-white border border-emerald-200/80 text-emerald-800 font-extrabold text-sm hover:bg-emerald-50 transition shadow-2xs">
+            <a href="{{ route('sharemarket.index') }}" wire:navigate.hover @click="sidebarOpen = false" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-white border border-emerald-200/80 text-emerald-800 font-extrabold text-sm hover:bg-emerald-50 transition shadow-2xs">
                 <span class="flex items-center gap-2">
                     <span>📈</span>
                     <span>नेपाल शेयर बजार (NEPSE)</span>
@@ -449,7 +465,7 @@
         @endif
 
         <div class="px-4 py-2 border-t border-stone-200 bg-red-50/50">
-            <a href="{{ route('unicode.converter') }}" @click="sidebarOpen = false" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-white border border-red-200/80 text-[#c92137] font-extrabold text-sm hover:bg-red-50 transition shadow-2xs">
+            <a href="{{ route('unicode.converter') }}" wire:navigate.hover @click="sidebarOpen = false" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-white border border-red-200/80 text-[#c92137] font-extrabold text-sm hover:bg-red-50 transition shadow-2xs">
                 <span class="flex items-center gap-2">
                     <span>⌨️</span>
                     <span>नेपाली युनिकोड कन्भर्टर</span>
@@ -460,12 +476,12 @@
 
         <div class="p-4 border-t border-stone-200 space-y-2">
             @auth
-                <a href="{{ route('dashboard') }}" @click="sidebarOpen = false" class="flex items-center justify-center gap-2 w-full rounded-xl bg-gradient-to-r from-[#0955cf] to-[#c92137] px-4 py-2.5 font-bold text-white hover:opacity-95 text-sm transition shadow-xs">
+                <a href="{{ route('dashboard') }}" wire:navigate.hover @click="sidebarOpen = false" class="flex items-center justify-center gap-2 w-full rounded-xl bg-gradient-to-r from-[#0955cf] to-[#c92137] px-4 py-2.5 font-bold text-white hover:opacity-95 text-sm transition shadow-xs">
                     <svg viewBox="0 0 24 24" class="h-4 w-4 fill-none stroke-current stroke-2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                     <span>मेरो ड्यासबोर्ड (User Dashboard)</span>
                 </a>
             @else
-                <a href="{{ route('login') }}" @click="sidebarOpen = false" class="flex items-center justify-center gap-2 w-full rounded-xl bg-[#0955cf] px-4 py-2.5 font-bold text-white hover:bg-[#0747ad] text-sm transition shadow-xs">
+                <a href="{{ route('login') }}" wire:navigate.hover @click="sidebarOpen = false" class="flex items-center justify-center gap-2 w-full rounded-xl bg-[#0955cf] px-4 py-2.5 font-bold text-white hover:bg-[#0747ad] text-sm transition shadow-xs">
                     <svg viewBox="0 0 24 24" class="h-4.5 w-4.5 fill-current" aria-hidden="true"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0 2c-4.5 0-8 2.3-8 5.2V21h16v-1.8C20 16.3 16.5 14 12 14Z"/></svg>
                     <span>लगइन / नयाँ दर्ता (Login / Register)</span>
                 </a>
@@ -548,7 +564,7 @@
             @endif
 
             <div class="space-y-2">
-                <a href="{{ route('dashboard') }}" class="flex items-center justify-center gap-2 w-full rounded-xl bg-gradient-to-r from-[#0955cf] to-[#c92137] px-4 py-2.5 font-bold text-white hover:opacity-95 text-xs transition shadow-xs">
+                <a href="{{ route('dashboard') }}" wire:navigate.hover class="flex items-center justify-center gap-2 w-full rounded-xl bg-gradient-to-r from-[#0955cf] to-[#c92137] px-4 py-2.5 font-bold text-white hover:opacity-95 text-xs transition shadow-xs">
                     <svg viewBox="0 0 24 24" class="h-4 w-4 fill-none stroke-current stroke-2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                     <span>User Dashboard</span>
                 </a>
@@ -615,7 +631,7 @@
                         <input type="checkbox" name="remember" class="rounded border-stone-300 text-[#0955cf] focus:ring-[#0955cf]">
                         <span>Remember Me</span>
                     </label>
-                    <a href="{{ route('password.request') }}" class="font-bold text-[#0955cf] hover:text-[#c92137] hover:underline transition">
+                    <a href="{{ route('password.request') }}" wire:navigate.hover class="font-bold text-[#0955cf] hover:text-[#c92137] hover:underline transition">
                         Forgot Password?
                     </a>
                 </div>
@@ -629,7 +645,7 @@
             <div class="mt-4 border-t border-stone-100 pt-3">
                 <div class="flex items-center justify-between text-xs text-stone-500">
                     <span>Don't have an account? <button type="button" @click="authTab = 'register'" class="font-extrabold text-[#c92137] hover:underline cursor-pointer">Register here</button></span>
-                    <a href="{{ route('login') }}" class="font-bold text-[#0955cf] hover:underline inline-flex items-center gap-0.5">
+                    <a href="{{ route('login') }}" wire:navigate.hover class="font-bold text-[#0955cf] hover:underline inline-flex items-center gap-0.5">
                         <span>Full Page</span>
                         <span>↗</span>
                     </a>
@@ -743,7 +759,7 @@
             <div class="mt-4 border-t border-stone-100 pt-3">
                 <div class="flex items-center justify-between text-xs text-stone-500">
                     <span>Already have an account? <button type="button" @click="authTab = 'login'" class="font-extrabold text-[#0955cf] hover:underline cursor-pointer">Log in here</button></span>
-                    <a href="{{ route('register') }}" class="font-bold text-[#c92137] hover:underline inline-flex items-center gap-0.5">
+                    <a href="{{ route('register') }}" wire:navigate.hover class="font-bold text-[#c92137] hover:underline inline-flex items-center gap-0.5">
                         <span>Full Page</span>
                         <span>↗</span>
                     </a>
@@ -787,7 +803,7 @@
             <p class="text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">लोकप्रिय खोजीहरू (Trending Topics):</p>
             <div class="flex flex-wrap gap-2">
                 @foreach(['कपिलवस्तु', 'तिलौराकोट', 'लुम्बिनी', 'राजनीति', 'अर्थतन्त्र', 'नेपाल', 'खेलकुद'] as $tag)
-                    <a href="{{ route('search', ['q' => $tag]) }}" class="rounded-full bg-stone-100 px-3 py-1 text-xs font-bold text-stone-700 hover:bg-[#c92137] hover:text-white transition cursor-pointer">
+                    <a href="{{ route('search', ['q' => $tag]) }}" wire:navigate.hover class="rounded-full bg-stone-100 px-3 py-1 text-xs font-bold text-stone-700 hover:bg-[#c92137] hover:text-white transition cursor-pointer">
                         # {{ $tag }}
                     </a>
                 @endforeach

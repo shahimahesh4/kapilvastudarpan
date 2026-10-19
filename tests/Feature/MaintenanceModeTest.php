@@ -15,6 +15,11 @@ class MaintenanceModeTest extends TestCase
         // Always ensure application is brought back up after tests
         try {
             Artisan::call('up');
+            if (file_exists(storage_path('framework/down'))) {
+                @unlink(storage_path('framework/down'));
+            }
+            \Illuminate\Support\Facades\DB::table('sessions')->where('id', 'like', 'test_maint_sess_%')->delete();
+            \App\Models\User::where('email', 'subscriber_maint_test@example.com')->delete();
         } catch (\Throwable $e) {}
 
         parent::tearDown();
@@ -115,5 +120,63 @@ class MaintenanceModeTest extends TestCase
             ->assertHasNoErrors();
 
         $this->assertFalse(app()->isDownForMaintenance());
+    }
+
+    public function test_logged_in_admin_can_view_frontend_during_maintenance_mode(): void
+    {
+        try {
+            Artisan::call('down', [
+                '--render' => 'errors::503',
+                '--secret' => 'darpan-live-bypass',
+            ]);
+
+            // 1. Guest receives 503 maintenance page
+            $guestResponse = $this->get('/');
+            $guestResponse->assertStatus(503);
+
+            // 2. Non-admin logged in user (subscriber) receives 503
+            $subscriber = User::where('role', User::ROLE_SUBSCRIBER)->first();
+            if (! $subscriber) {
+                $subscriber = User::create([
+                    'name' => 'Test Subscriber',
+                    'email' => 'subscriber_maint_test@example.com',
+                    'password' => bcrypt('password'),
+                    'role' => User::ROLE_SUBSCRIBER,
+                ]);
+            }
+            $this->actingAs($subscriber);
+            $subscriberResponse = $this->get('/');
+            $subscriberResponse->assertStatus(503);
+
+            // 3. Admin user can view frontend (200 OK) with preview banner
+            $admin = User::where('role', User::ROLE_ADMIN)->first()
+                ?? User::where('role', User::ROLE_SUPER_ADMIN)->first();
+            $this->actingAs($admin);
+            $adminResponse = $this->get('/');
+            $adminResponse->assertStatus(200);
+            $adminResponse->assertSee('मेन्टेनेन्स मोड सक्रिय');
+
+            // 4. Admin via encrypted browser session cookie directly can view frontend
+            $sessionId = 'test_maint_sess_' . bin2hex(random_bytes(8));
+            \Illuminate\Support\Facades\DB::table('sessions')->insert([
+                'id' => $sessionId,
+                'user_id' => $admin->id,
+                'ip_address' => '127.0.0.1',
+                'user_agent' => 'TestAgent',
+                'payload' => base64_encode(serialize(['login_web_test' => $admin->id])),
+                'last_activity' => time(),
+            ]);
+
+            $cookieName = config('session.cookie');
+            $encryptedCookie = app('encrypter')->encrypt($sessionId, false);
+
+            $this->flushSession();
+            $cookieResponse = $this->withCookie($cookieName, $sessionId)->get('/');
+            $this->assertEquals(200, $cookieResponse->getStatusCode());
+
+            \Illuminate\Support\Facades\DB::table('sessions')->where('id', $sessionId)->delete();
+        } finally {
+            Artisan::call('up');
+        }
     }
 }

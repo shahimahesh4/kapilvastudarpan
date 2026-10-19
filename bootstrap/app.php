@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Http\Middleware\SecurityHeadersMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -13,6 +14,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->append(SecurityHeadersMiddleware::class);
+        $middleware->replace(
+            \Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance::class,
+            PreventRequestsDuringMaintenance::class
+        );
         $middleware->preventRequestsDuringMaintenance(except: [
             'stnapanel*',
             'admin*',
