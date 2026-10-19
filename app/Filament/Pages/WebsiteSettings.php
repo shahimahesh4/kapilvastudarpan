@@ -55,6 +55,7 @@ class WebsiteSettings extends Page
     protected function fillForm(): void
     {
         $settings = Setting::getAll();
+        $settings['maintenance_mode_enabled'] = app()->isDownForMaintenance();
 
         $this->form->fill($settings);
     }
@@ -581,6 +582,52 @@ class WebsiteSettings extends Page
                                     ]),
                             ]),
 
+                        Tab::make('Maintenance')
+                            ->label('मेन्टेनेन्स मोड (Maintenance)')
+                            ->icon('heroicon-o-wrench-screwdriver')
+                            ->schema([
+                                Section::make('Website Maintenance Mode (वेबसाइट मर्मत तथा अद्यावधिक प्रणाली)')
+                                    ->description('वेबसाइटमा ठूलो काम, डिजाइन परिवर्तन वा सर्भर अद्यावधिक गर्दा सर्वसाधारण पाठकहरूका लागि ५०३ मर्मत सूचना पृष्ठ देखाउनुहोस्। एडमिन प्यानल (/stnapanel) व्यवस्थापकहरूका लागि सदैव खुला रहनेछ।')
+                                    ->schema([
+                                        \Filament\Forms\Components\Placeholder::make('maintenance_status_info')
+                                            ->label('Current Website Status (हालको वेबसाइट स्थिति)')
+                                            ->content(function () {
+                                                $isDown = app()->isDownForMaintenance();
+                                                $statusHtml = $isDown
+                                                    ? '<div style="background: #fef2f2; border: 1px solid #f87171; border-radius: 0.5rem; padding: 0.75rem 1rem; color: #991b1b; font-weight: 700; display: inline-flex; align-items: center; gap: 0.5rem;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #ef4444; display: inline-block;"></span> ⚠️ मेन्टेनेन्स मोड सक्रिय छ (Website is Currently DOWN / 503 Active)</div>'
+                                                    : '<div style="background: #f0fdf4; border: 1px solid #86efac; border-radius: 0.5rem; padding: 0.75rem 1rem; color: #166534; font-weight: 700; display: inline-flex; align-items: center; gap: 0.5rem;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #22c55e; display: inline-block;"></span> 🟢 वेबसाइट प्रत्यक्ष सञ्चालनमा छ (Website is LIVE)</div>';
+
+                                                return new \Illuminate\Support\HtmlString($statusHtml . '<div style="margin-top: 0.5rem; font-size: 0.8rem; color: #64748b;">तपाईंले ड्यासबोर्डको "पोर्टल नियन्त्रण तथा मर्मत विकल्पहरू" बाट १-क्लिकमै मेन्टेनेन्स मोड अन वा अफ गर्न सक्नुहुन्छ।</div>');
+                                            }),
+
+                                        Toggle::make('maintenance_mode_enabled')
+                                            ->label('Website Under Maintenance (मेन्टेनेन्स मोड Enable / Disable)')
+                                            ->helperText('Enable गर्दा सर्वसाधारण पाठकहरूलाई ५०३ मर्मत सूचना पृष्ठ देखिनेछ। Disable गर्दा वेबसाइट तुरुन्तै Live हुनेछ। परिवर्तन लागू गर्न तल "Save Settings" थिच्नुहोस्।')
+                                            ->onColor('danger')
+                                            ->offColor('success')
+                                            ->onIcon('heroicon-o-wrench-screwdriver')
+                                            ->offIcon('heroicon-o-check-circle'),
+
+                                        Textarea::make('maintenance_message')
+                                            ->label('Custom Maintenance Message (मर्मत पृष्ठमा देखिने सन्देश)')
+                                            ->rows(3)
+                                            ->placeholder('आदरणीय पाठकवृन्द, तपाईंहरूलाई अझ स्तरीय, सुरक्षित र द्रुत गतिको समाचार वाचन अनुभव प्रदान गर्नका लागि अहिले प्राविधिक मर्मत तथा प्रणाली स्तरोन्नतिको कार्य भइरहेको छ...')
+                                            ->helperText('खाली छोडेमा डिफल्ट सन्देश देखाइनेछ।'),
+
+                                        Grid::make(2)->schema([
+                                            TextInput::make('maintenance_secret')
+                                                ->label('Bypass Secret Key (विशेष पहुँच कुञ्जी)')
+                                                ->default('darpan-live-bypass')
+                                                ->helperText('यो कि प्रयोग गरेर https://yourdomain.com/{secret} मा गइ सिधै वेबसाइट हेर्न सकिन्छ।'),
+
+                                            TextInput::make('maintenance_estimated_time')
+                                                ->label('Estimated Duration (अनुमानित मर्मत समय)')
+                                                ->placeholder('१५ मिनेट / केही बेरमा...')
+                                                ->helperText('मर्मत सम्पन्न हुन लाग्ने अनुमानित समय।'),
+                                        ]),
+                                    ]),
+                            ]),
+
                         Tab::make('Backup')
                             ->label('डाटाबेस ब्याकअप (Backup)')
                             ->icon('heroicon-o-arrow-down-tray')
@@ -669,6 +716,21 @@ class WebsiteSettings extends Page
     public function save(): void
     {
         $state = $this->form->getState();
+
+        // Handle Maintenance Mode Enable / Disable toggle
+        if (array_key_exists('maintenance_mode_enabled', $state)) {
+            $shouldBeDown = (bool) $state['maintenance_mode_enabled'];
+            $currentlyDown = app()->isDownForMaintenance();
+
+            if ($shouldBeDown && ! $currentlyDown) {
+                \Illuminate\Support\Facades\Artisan::call('down', [
+                    '--render' => 'errors::503',
+                    '--secret' => $state['maintenance_secret'] ?? 'darpan-live-bypass',
+                ]);
+            } elseif (! $shouldBeDown && $currentlyDown) {
+                \Illuminate\Support\Facades\Artisan::call('up');
+            }
+        }
 
         Setting::setMany($state);
 

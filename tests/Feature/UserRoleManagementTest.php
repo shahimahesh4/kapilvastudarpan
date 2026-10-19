@@ -16,7 +16,7 @@ class UserRoleManagementTest extends TestCase
         $response = $this->actingAs($superAdmin)->get('/stnapanel/users');
         $response->assertStatus(200);
         $response->assertSee('Users');
-        $response->assertSee('admin@kapilvastudarpan.com');
+        $response->assertSee($superAdmin->email);
     }
 
     public function test_admin_can_access_users_resource(): void

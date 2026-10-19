@@ -107,6 +107,46 @@ class PortalQuickOptionsWidget extends Widget
         }
     }
 
+    public function isMaintenanceMode(): bool
+    {
+        return app()->isDownForMaintenance();
+    }
+
+    public function toggleMaintenanceMode(): void
+    {
+        if (! (auth()->user()?->isSuperAdmin() || auth()->user()?->isAdmin())) {
+            Notification::make()->title('अनधिकृत')->body('केवल एडमिन वा सुपर एडमिनले मात्र मेन्टेनेन्स मोड परिवर्तन गर्न सक्नुहुन्छ।')->danger()->send();
+            return;
+        }
+
+        try {
+            if (app()->isDownForMaintenance()) {
+                Artisan::call('up');
+                Notification::make()
+                    ->title('वेबसाइट पुनः प्रत्यक्ष (Live) भयो!')
+                    ->body('मेन्टेनेन्स मोड बन्द गरियो। सर्वसाधारणले वेबसाइट सामान्य रूपमा हेर्न सक्नेछन्।')
+                    ->success()
+                    ->send();
+            } else {
+                Artisan::call('down', [
+                    '--render' => 'errors::503',
+                    '--secret' => 'darpan-live-bypass',
+                ]);
+                Notification::make()
+                    ->title('मेन्टेनेन्स मोड सक्रिय भयो!')
+                    ->body('वेबसाइट अहिले मर्मत अवस्थामा छ। सर्वसाधारणलाई ५०३ अद्यावधिक पृष्ठ देखिनेछ। व्यवस्थापकले /stnapanel बाट काम जारी राख्न सक्नेछन्।')
+                    ->warning()
+                    ->send();
+            }
+        } catch (\Throwable $e) {
+            Notification::make()
+                ->title('त्रुटि')
+                ->body($e->getMessage())
+                ->danger()
+                ->send();
+        }
+    }
+
     public function getSystemInfo(): array
     {
         $dbConnected = true;

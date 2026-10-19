@@ -13,6 +13,11 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->append(SecurityHeadersMiddleware::class);
+        $middleware->preventRequestsDuringMaintenance(except: [
+            'stnapanel*',
+            'admin*',
+            'livewire*',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

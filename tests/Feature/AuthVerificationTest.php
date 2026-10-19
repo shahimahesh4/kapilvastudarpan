@@ -210,7 +210,7 @@ class AuthVerificationTest extends TestCase
 
     public function test_admin_can_toggle_email_verification_setting_in_filament(): void
     {
-        $admin = User::where('email', 'admin@kapilvastudarpan.com')->first();
+        $admin = User::where('role', User::ROLE_SUPER_ADMIN)->first() ?? User::where('role', User::ROLE_ADMIN)->first();
         $this->actingAs($admin);
 
         // Turn on

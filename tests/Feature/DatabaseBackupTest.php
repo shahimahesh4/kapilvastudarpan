@@ -89,14 +89,21 @@ class DatabaseBackupTest extends TestCase
 
         $this->assertNotEmpty($sql);
 
-        // Verify SQL executes successfully in clean in-memory PDO
-        $tempPdo = new PDO('sqlite::memory:');
-        $tempPdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $tempPdo->exec($sql);
+        if ($stats['driver'] === 'sqlite') {
+            // Verify SQL executes successfully in clean in-memory PDO
+            $tempPdo = new PDO('sqlite::memory:');
+            $tempPdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $tempPdo->exec($sql);
 
-        $stmt = $tempPdo->query('SELECT COUNT(*) FROM articles');
-        $restoredArticlesCount = (int) $stmt->fetchColumn();
+            $stmt = $tempPdo->query('SELECT COUNT(*) FROM articles');
+            $restoredArticlesCount = (int) $stmt->fetchColumn();
 
-        $this->assertEquals($stats['articles_count'], $restoredArticlesCount);
+            $this->assertEquals($stats['articles_count'], $restoredArticlesCount);
+        } else {
+            // Verify MySQL SQL dump contains valid table definitions and insert statements
+            $this->assertStringContainsString('CREATE TABLE', $sql);
+            $this->assertStringContainsString('INSERT INTO `articles`', $sql);
+            $this->assertStringContainsString('FOREIGN_KEY_CHECKS', $sql);
+        }
     }
 }

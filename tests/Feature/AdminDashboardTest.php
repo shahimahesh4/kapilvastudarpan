@@ -11,11 +11,21 @@ use Tests\TestCase;
 
 class AdminDashboardTest extends TestCase
 {
+    protected function getAdminUser(): User
+    {
+        return User::where('role', User::ROLE_SUPER_ADMIN)->first()
+            ?? User::where('role', User::ROLE_ADMIN)->first()
+            ?? User::first();
+    }
+
     public function test_admin_can_login_via_filament_login_page(): void
     {
+        $admin = User::where('email', 'administrator@kapilvastudarpan.com')->first() ?? $this->getAdminUser();
+        $admin->update(['password' => bcrypt('password')]);
+
         Livewire::test(Login::class)
             ->fillForm([
-                'email' => 'admin@kapilvastudarpan.com',
+                'email' => $admin->email,
                 'password' => 'password',
             ])
             ->call('authenticate')
@@ -27,7 +37,7 @@ class AdminDashboardTest extends TestCase
 
     public function test_admin_dashboard_and_pages_render_without_errors(): void
     {
-        $user = User::where('email', 'admin@kapilvastudarpan.com')->first();
+        $user = $this->getAdminUser();
         $this->assertNotNull($user, 'Admin user should exist');
 
         $this->actingAs($user);
@@ -150,7 +160,7 @@ class AdminDashboardTest extends TestCase
 
     public function test_admin_can_create_article_with_multiple_categories_via_filament(): void
     {
-        $user = User::where('email', 'admin@kapilvastudarpan.com')->first();
+        $user = $this->getAdminUser();
         $this->actingAs($user);
 
         $cat1 = Category::first();
@@ -270,7 +280,7 @@ class AdminDashboardTest extends TestCase
 
     public function test_trash_tab_displays_trashed_articles(): void
     {
-        $user = User::where('email', 'admin@kapilvastudarpan.com')->first();
+        $user = $this->getAdminUser();
         $this->actingAs($user);
 
         $category = Category::first();
@@ -305,7 +315,7 @@ class AdminDashboardTest extends TestCase
 
     public function test_admin_can_access_website_settings_page(): void
     {
-        $user = User::where('email', 'admin@kapilvastudarpan.com')->first();
+        $user = $this->getAdminUser();
         $this->actingAs($user);
 
         $response = $this->get('/stnapanel/website-settings');
@@ -315,7 +325,7 @@ class AdminDashboardTest extends TestCase
 
     public function test_admin_can_update_website_settings(): void
     {
-        $user = User::where('email', 'admin@kapilvastudarpan.com')->first();
+        $user = $this->getAdminUser();
         $this->actingAs($user);
 
         try {
@@ -354,7 +364,7 @@ class AdminDashboardTest extends TestCase
 
     public function test_admin_can_update_video_and_youtube_settings(): void
     {
-        $user = User::where('email', 'admin@kapilvastudarpan.com')->first();
+        $user = $this->getAdminUser();
         $this->actingAs($user);
 
         \Livewire\Livewire::test(\App\Filament\Pages\WebsiteSettings::class)
@@ -386,7 +396,7 @@ class AdminDashboardTest extends TestCase
 
     public function test_admin_can_access_rashifals_resource_and_edit_record(): void
     {
-        $user = User::where('email', 'admin@kapilvastudarpan.com')->first();
+        $user = $this->getAdminUser();
         $this->actingAs($user);
 
         // List page
@@ -408,7 +418,7 @@ class AdminDashboardTest extends TestCase
 
     public function test_admin_can_update_rashifal_settings_via_website_settings_page(): void
     {
-        $user = User::where('email', 'admin@kapilvastudarpan.com')->first();
+        $user = $this->getAdminUser();
         $this->actingAs($user);
 
         \Livewire\Livewire::test(\App\Filament\Pages\WebsiteSettings::class)
@@ -433,7 +443,7 @@ class AdminDashboardTest extends TestCase
     {
         \Illuminate\Support\Facades\Storage::fake('public');
 
-        $user = User::where('email', 'admin@kapilvastudarpan.com')->first();
+        $user = $this->getAdminUser();
         $this->actingAs($user);
 
         $fakePhoto = \Illuminate\Http\UploadedFile::fake()->image('test-operator-portrait.jpg', 350, 450);
@@ -458,7 +468,7 @@ class AdminDashboardTest extends TestCase
 
     public function test_admin_can_update_social_instagram_and_it_displays_on_header_and_footer(): void
     {
-        $user = User::where('email', 'admin@kapilvastudarpan.com')->first();
+        $user = $this->getAdminUser();
         $this->actingAs($user);
 
         $instagramUrl = 'https://instagram.com/kapilvastu_darpan_official';

@@ -6,7 +6,7 @@
             <!-- Brand Logo & Motto -->
             <div class="flex flex-col sm:flex-row items-center gap-3.5 text-center sm:text-left">
                 <a href="{{ route('home') }}" class="inline-block bg-white rounded-lg px-2.5 py-1.5 shadow-sm hover:opacity-95 transition" aria-label="{{ setting('site_name', 'कपिलवस्तु दर्पण') }} गृहपृष्ठ">
-                    <img src="{{ setting_image_url(setting('site_logo'), 'images/kapilvastu-darpan-logo.png') }}" alt="{{ setting('site_name', 'कपिलवस्तु दर्पण') }}" class="h-11 sm:h-13 w-auto object-contain">
+                    <img src="{{ setting_image_url(setting('site_logo'), 'images/kapilvastu-darpan-logo.png') }}" alt="{{ setting('site_name', 'कपिलवस्तु दर्पण') }}" class="h-14 sm:h-16 w-auto object-contain">
                 </a>
                 <div>
                     <h3 class="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center justify-center sm:justify-start gap-2.5">

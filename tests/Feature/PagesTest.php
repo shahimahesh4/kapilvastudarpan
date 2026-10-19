@@ -88,10 +88,11 @@ class PagesTest extends TestCase
 
     public function test_admin_can_access_pages_resource(): void
     {
-        $admin = User::firstOrCreate(
-            ['email' => 'admin@kapilvastudarpan.com'],
-            ['name' => 'एडमिन', 'password' => bcrypt('password')]
+        $admin = User::where('role', User::ROLE_ADMIN)->first() ?? User::firstOrCreate(
+            ['email' => 'administrator@kapilvastudarpan.com'],
+            ['name' => 'एडमिन', 'password' => bcrypt('password'), 'role' => User::ROLE_ADMIN]
         );
+        $admin->update(['role' => User::ROLE_ADMIN]);
 
         $response = $this->actingAs($admin)->get('/stnapanel/pages');
         $response->assertStatus(200);

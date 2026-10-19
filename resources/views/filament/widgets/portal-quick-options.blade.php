@@ -24,10 +24,32 @@
                 <span class="kd-diag-pill">
                     PHP v{{ $info['php_version'] }} / Laravel v{{ $info['laravel_version'] }}
                 </span>
+                @if($this->isMaintenanceMode())
+                <span class="kd-diag-pill" style="background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; font-weight: 700;">
+                    <span class="kd-status-dot" style="background: #ef4444;"></span>
+                    ⚠️ मेन्टेनेन्स मोड सक्रिय (503 Active)
+                </span>
+                @endif
             </div>
         </div>
 
         <div class="kd-options-grid">
+            <!-- Maintenance Mode Toggle (Super Admin & Admin) -->
+            @php $isDown = $this->isMaintenanceMode(); @endphp
+            <button type="button" wire:click="toggleMaintenanceMode" wire:confirm="{{ $isDown ? 'के तपाईं वेबसाइटलाई पुनः प्रत्यक्ष (Live) बनाउन चाहनुहुन्छ?' : 'के तपाईं वेबसाइटमा मेन्टेनेन्स मोड सुरु गर्न चाहनुहुन्छ? सर्वसाधारण पाठकलाई ५०३ अद्यावधिक पृष्ठ देखिनेछ।' }}" wire:loading.attr="disabled" class="kd-opt-btn {{ $isDown ? 'kd-opt-btn-danger' : 'kd-opt-btn-warning' }}" title="Toggle Maintenance Mode">
+                <span class="kd-opt-icon">{{ $isDown ? '🚨' : '🛡️' }}</span>
+                <div class="kd-opt-text">
+                    <span class="kd-opt-main" wire:loading.remove wire:target="toggleMaintenanceMode">
+                        {{ $isDown ? 'मेन्टेनेन्स मोड बन्द (Make Live)' : 'मेन्टेनेन्स मोड (Maintenance)' }}
+                    </span>
+                    <span class="kd-opt-main" wire:loading wire:target="toggleMaintenanceMode">
+                        प्रक्रिया जारी छ...
+                    </span>
+                    <span class="kd-opt-sub">
+                        {{ $isDown ? 'स्थिति: बन्द (सर्वसाधारणलाई ५०३)' : 'स्थिति: खुला (प्रत्यक्ष/Live)' }}
+                    </span>
+                </div>
+            </button>
             <!-- Maintenance Action 1: Optimize & Clear Cache -->
             <button type="button" wire:click="clearSystemCache" wire:loading.attr="disabled" class="kd-opt-btn kd-opt-btn-primary">
                 <span class="kd-opt-icon">🧹</span>
@@ -291,6 +313,26 @@
         .kd-opt-btn-primary:hover {
             background: #eff6ff;
             border-color: #93c5fd;
+        }
+
+        .kd-opt-btn-warning:hover {
+            background: #fffbeb;
+            border-color: #f59e0b;
+        }
+
+        .kd-opt-btn-danger {
+            background: #fef2f2;
+            border-color: #f87171;
+        }
+
+        .kd-opt-btn-danger:hover {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+
+        :is(.dark) .kd-opt-btn-danger {
+            background: #450a0a;
+            border-color: #991b1b;
         }
 
         .kd-opt-btn-secondary:hover {
