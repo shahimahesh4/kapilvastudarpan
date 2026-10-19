@@ -149,12 +149,12 @@
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                             @foreach($allRashis as $other)
                                 @if($other['slug'] !== $currentRashi['slug'])
-                                    <a href="{{ route('rashifal.show', $other['slug']) }}" wire:navigate.hover class="bg-white rounded-xl p-4 text-center shadow-xs hover:shadow-md hover:-translate-y-1 transition duration-200 block group">
+                                    <a href="{{ route('rashifal.show', $other['slug']) }}" wire:navigate.hover class="bg-white rounded-xl p-3 sm:p-4 text-center shadow-xs hover:shadow-md hover:-translate-y-1 transition duration-200 block group">
                                         <span class="rashi-icon rashi-icon--{{ $other['index'] }} !w-16 !h-16 group-hover:scale-105 transition-transform" aria-hidden="true"></span>
-                                        <h3 class="mt-2 text-base font-extrabold text-stone-800 group-hover:text-[#c92137] transition-colors">
+                                        <h3 class="mt-2 text-sm sm:text-base font-extrabold text-stone-800 group-hover:text-[#c92137] transition-colors">
                                             {{ $other['name'] }}
                                         </h3>
-                                        <p class="mt-1 text-[11px] text-stone-500 truncate" title="{{ $other['letters'] }}">
+                                        <p class="mt-0.5 sm:mt-1 text-[10px] sm:text-[11px] text-stone-500 truncate" title="{{ $other['letters'] }}">
                                             {{ $other['letters'] }}
                                         </p>
                                     </a>

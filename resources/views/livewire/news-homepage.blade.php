@@ -961,7 +961,7 @@
                     ];
                 }
             @endphp
-            <section class="mb-10 rounded-2xl bg-gradient-to-br from-amber-50/50 via-white to-stone-50/60 p-5 sm:p-7 border border-amber-200/80 shadow-xs" aria-labelledby="rashifal-heading">
+            <section class="mb-10 rounded-2xl bg-gradient-to-br from-amber-50/50 via-white to-stone-50/60 p-4 sm:p-7 border border-amber-200/80 shadow-xs" aria-labelledby="rashifal-heading">
                 <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-amber-200/70 pb-4">
                     <div class="flex items-center gap-3">
                         <div class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-[#12356b] to-[#1e448a] text-amber-300 shadow-xs">
@@ -997,12 +997,12 @@
                     </div>
                 </div>
 
-                <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+                <div class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-6">
                     @foreach($rashis as $r)
-                        <a wire:navigate.hover href="{{ route('rashifal.show', $r['slug']) }}" class="group block rounded-xl bg-white p-4 text-center shadow-xs ring-1 ring-amber-100/90 transition hover:-translate-y-1 hover:shadow-md hover:ring-2 hover:ring-[#e25601]">
-                            <span class="rashi-icon rashi-icon--{{ $r['index'] }} group-hover:scale-105 transition-transform" aria-hidden="true"></span>
-                            <h3 class="mt-2.5 text-base font-extrabold text-stone-800 group-hover:text-[#e25601] transition-colors">{{ $r['name'] }}</h3>
-                            <p class="mt-1 text-[11px] text-stone-500 truncate" title="{{ $r['letters'] }}">{{ $r['letters'] }}</p>
+                        <a wire:navigate.hover href="{{ route('rashifal.show', $r['slug']) }}" class="group block rounded-xl bg-white p-3 sm:p-4 text-center shadow-xs ring-1 ring-amber-100/90 transition hover:-translate-y-1 hover:shadow-md hover:ring-2 hover:ring-[#e25601]">
+                            <span class="rashi-icon rashi-icon--{{ $r['index'] }} !w-16 !h-16 sm:!w-20 sm:!h-20 group-hover:scale-105 transition-transform" aria-hidden="true"></span>
+                            <h3 class="mt-2 text-sm sm:text-base font-extrabold text-stone-800 group-hover:text-[#e25601] transition-colors">{{ $r['name'] }}</h3>
+                            <p class="mt-0.5 sm:mt-1 text-[10px] sm:text-[11px] text-stone-500 truncate" title="{{ $r['letters'] }}">{{ $r['letters'] }}</p>
                         </a>
                     @endforeach
                 </div>

@@ -92,6 +92,26 @@
                 <span class="theme-toggle__sun" aria-hidden="true">☀</span>
                 <span class="theme-toggle__moon" aria-hidden="true">☾</span>
             </button>
+            <style>
+                .theme-toggle {
+                    display: inline-flex !important;
+                    align-items: center !important;
+                    gap: 0.35rem !important;
+                    min-height: 1.85rem !important;
+                    padding: 0.15rem 0.35rem !important;
+                    border-radius: 9999px !important;
+                    cursor: pointer !important;
+                }
+                .theme-toggle__sun, .theme-toggle__moon {
+                    display: grid !important;
+                    width: 1.3rem !important;
+                    height: 1.3rem !important;
+                    place-items: center !important;
+                    border-radius: 9999px !important;
+                    font-size: 0.85rem !important;
+                    line-height: 1 !important;
+                }
+            </style>
         </div>
     </div>
 </div>
