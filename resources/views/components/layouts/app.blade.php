@@ -52,9 +52,7 @@
     <meta name="twitter:description" content="{{ $description }}">
     <meta name="twitter:image" content="{{ $shareImage }}">
 
-    <!-- DNS Prefetch for Lightning Fast Performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Avoid a render-blocking remote font stylesheet; use the system Nepali font stack. -->
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
     <title>{{ $pageTitle }}</title>

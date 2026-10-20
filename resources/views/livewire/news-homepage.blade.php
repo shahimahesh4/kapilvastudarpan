@@ -36,7 +36,7 @@
 
                     <!-- Large Hero Featured Photo -->
                     <a wire:navigate.hover href="{{ route('articles.show', $leadStory->slug) }}" class="block w-full max-w-5xl mx-auto rounded-xl sm:rounded-2xl overflow-hidden bg-stone-100 shadow-sm group-hover:shadow-md transition-all duration-300 aspect-[16/9] sm:aspect-[16/10] max-h-[580px]">
-                        <img src="{{ $leadStory->image_url }}" alt="{{ $leadStory->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" loading="eager" class="w-full h-full object-cover group-hover:scale-[1.015] transition-transform duration-500">
+                        <img src="{{ $leadStory->image_url }}" alt="{{ $leadStory->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" width="1280" height="800" loading="eager" fetchpriority="high" decoding="async" class="w-full h-full object-cover group-hover:scale-[1.015] transition-transform duration-500">
                     </a>
 
                     <!-- Centered Excerpt Summary Paragraph -->

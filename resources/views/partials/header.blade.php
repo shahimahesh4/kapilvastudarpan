@@ -133,7 +133,7 @@
 <header class="bg-white border-b border-stone-100">
     <div class="mx-auto max-w-[1280px] flex items-center justify-between gap-6 px-4 py-3 sm:py-4 sm:px-6 lg:px-8">
         <a href="{{ route('home') }}" wire:navigate.hover class="shrink-0 flex items-center gap-3.5 group" aria-label="{{ setting('site_name', 'कपिलवस्तु दर्पण') }} गृहपृष्ठ">
-            <img src="{{ setting_image_url(setting('site_logo'), 'images/kapilvastu-darpan-logo.png') }}" alt="{{ setting('site_name', 'कपिलवस्तु दर्पण') }}" class="h-16 sm:h-22 md:h-24 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]">
+            <img src="{{ setting_image_url(setting('site_logo'), 'images/kapilvastu-darpan-logo.png') }}" alt="{{ setting('site_name', 'कपिलवस्तु दर्पण') }}" width="320" height="96" decoding="async" class="h-16 sm:h-22 md:h-24 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]">
         </a>
 
         <!-- Header Banner Ad Space -->
@@ -414,7 +414,7 @@
     <aside id="site-sidebar" class="relative flex h-full w-[min(88vw,23rem)] flex-col overflow-y-auto no-scrollbar bg-white shadow-2xl transition-transform duration-300 ease-out" :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" role="dialog" aria-modal="true" aria-label="मुख्य मेनु">
         <div class="flex items-center justify-between border-b border-stone-200 p-5 bg-stone-50">
             <a href="{{ route('home') }}" wire:navigate.hover @click="sidebarOpen = false">
-                <img src="{{ setting_image_url(setting('site_logo'), 'images/kapilvastu-darpan-logo.png') }}" alt="{{ setting('site_name', 'कपिलवस्तु दर्पण') }}" class="h-14 sm:h-16 w-auto object-contain">
+                <img src="{{ setting_image_url(setting('site_logo'), 'images/kapilvastu-darpan-logo.png') }}" alt="{{ setting('site_name', 'कपिलवस्तु दर्पण') }}" width="320" height="64" loading="lazy" decoding="async" class="h-14 sm:h-16 w-auto object-contain">
             </a>
             <button type="button" @click="sidebarOpen = false" class="grid h-10 w-10 place-items-center rounded-full bg-[#c92137] text-xl font-bold text-white hover:bg-red-800 transition" aria-label="मेनु बन्द गर्नुहोस्">×</button>
         </div>

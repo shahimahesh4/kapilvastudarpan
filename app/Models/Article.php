@@ -189,6 +189,14 @@ class Article extends Model
 
     public function getImageUrlAttribute(): string
     {
+        return $this->imageUrl();
+    }
+
+    /**
+     * Return a size-appropriate image rendition for local uploads.
+     */
+    public function imageUrl(int $width = 1280): string
+    {
         if (empty($this->image_path)) {
             return asset('images/kapilvastu-darpan-logo.png');
         }
@@ -198,7 +206,7 @@ class Article extends Model
         }
 
         if (str_starts_with($this->image_path, 'articles/') || str_starts_with($this->image_path, 'media/')) {
-            return asset('storage/'.$this->image_path);
+            return route('images.optimized', ['path' => $this->image_path, 'w' => $width]);
         }
 
         if (str_starts_with($this->image_path, 'storage/')) {

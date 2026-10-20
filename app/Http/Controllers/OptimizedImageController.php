@@ -1,0 +1,63 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
+
+class OptimizedImageController extends Controller
+{
+    /**
+     * Create and serve a cached WebP rendition of a public article upload.
+     */
+    public function show(Request $request, string $path): Response
+    {
+        abort_unless(str_starts_with($path, 'articles/') || str_starts_with($path, 'media/'), 404);
+
+        $disk = Storage::disk('public');
+        abort_unless($disk->exists($path), 404);
+
+        $source = $disk->path($path);
+        $width = min(1600, max(160, (int) $request->integer('w', 960)));
+        $cachePath = storage_path('app/image-cache/'.sha1($path.'|'.filemtime($source).'|'.$width).'.webp');
+
+        if (! File::exists($cachePath)) {
+            File::ensureDirectoryExists(dirname($cachePath));
+            $this->createWebp($source, $cachePath, $width);
+        }
+
+        return response()->file($cachePath, [
+            'Content-Type' => 'image/webp',
+            'Cache-Control' => 'public, max-age=604800, immutable',
+        ]);
+    }
+
+    private function createWebp(string $source, string $destination, int $targetWidth): void
+    {
+        $imageInfo = @getimagesize($source);
+        abort_unless($imageInfo, 404);
+
+        $image = match ($imageInfo['mime']) {
+            'image/jpeg' => @imagecreatefromjpeg($source),
+            'image/png' => @imagecreatefrompng($source),
+            'image/webp' => @imagecreatefromwebp($source),
+            default => null,
+        };
+        abort_unless($image, 415);
+
+        $sourceWidth = imagesx($image);
+        $sourceHeight = imagesy($image);
+        $width = min($targetWidth, $sourceWidth);
+        $height = max(1, (int) round($sourceHeight * ($width / $sourceWidth)));
+        $canvas = imagecreatetruecolor($width, $height);
+        imagealphablending($canvas, false);
+        imagesavealpha($canvas, true);
+        imagefilledrectangle($canvas, 0, 0, $width, $height, imagecolorallocatealpha($canvas, 0, 0, 0, 127));
+        imagecopyresampled($canvas, $image, 0, 0, 0, 0, $width, $height, $sourceWidth, $sourceHeight);
+        imagewebp($canvas, $destination, 82);
+        imagedestroy($canvas);
+        imagedestroy($image);
+    }
+}

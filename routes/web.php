@@ -5,6 +5,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotificationSubscriptionController;
+use App\Http\Controllers\OptimizedImageController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\RashifalController;
 use App\Http\Controllers\ShareMarketController;
@@ -16,6 +17,9 @@ use App\Models\Page;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
+Route::get('/optimized-image/{path}', [OptimizedImageController::class, 'show'])
+    ->where('path', '.*')
+    ->name('images.optimized');
 Route::redirect('/admin', '/stnapanel');
 
 // Admin Database Backup Export / Download (.sql)
