@@ -1,5 +1,11 @@
 <?php
 
+use App\Models\Article;
+use App\Models\Setting;
+use Carbon\Carbon;
+use Carbon\CarbonInterface;
+use Illuminate\Support\Facades\Storage;
+
 if (! function_exists('nepali_number')) {
     /**
      * Convert English digits (0-9) to Nepali Devanagari digits (०-९).
@@ -12,6 +18,7 @@ if (! function_exists('nepali_number')) {
         }
 
         $digits = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
+
         return str_replace(range(0, 9), $digits, (string) $value);
     }
 }
@@ -20,15 +27,35 @@ if (! function_exists('nepali_date')) {
     /**
      * Format a date into Bikram Sambat Nepali date string.
      */
-    function nepali_date(\Carbon\CarbonInterface|\DateTimeInterface|string|null $date = null): string
+    function nepali_date(CarbonInterface|DateTimeInterface|string|null $date = null): string
     {
         if (! $date) {
             $date = now();
         } elseif (is_string($date)) {
-            $date = \Carbon\Carbon::parse($date);
+            $date = Carbon::parse($date);
         }
 
-        return \App\Models\Article::formatNepaliDate($date);
+        return Article::formatNepaliDate($date);
+    }
+}
+
+if (! function_exists('nepali_time')) {
+    /**
+     * Format a time into Nepali Devanagari digits with optional बजे suffix.
+     */
+    function nepali_time(CarbonInterface|DateTimeInterface|string|null $date = null, bool $withSuffix = true): string
+    {
+        if (! $date) {
+            $date = now('Asia/Kathmandu');
+        } elseif (is_string($date)) {
+            $date = Carbon::parse($date)->timezone('Asia/Kathmandu');
+        } else {
+            $date = Carbon::instance($date)->timezone('Asia/Kathmandu');
+        }
+
+        $formatted = nepali_number($date->format('g:i'));
+
+        return $withSuffix ? $formatted.' बजे' : $formatted;
     }
 }
 
@@ -38,7 +65,7 @@ if (! function_exists('setting')) {
      */
     function setting(string $key, mixed $default = null): mixed
     {
-        return \App\Models\Setting::get($key, $default);
+        return Setting::get($key, $default);
     }
 }
 
@@ -48,7 +75,7 @@ if (! function_exists('setting_bool')) {
      */
     function setting_bool(string $key, bool $default = false): bool
     {
-        return \App\Models\Setting::getBool($key, $default);
+        return Setting::getBool($key, $default);
     }
 }
 
@@ -75,11 +102,11 @@ if (! function_exists('setting_image_url')) {
             return asset($target);
         }
 
-        if (\Illuminate\Support\Facades\Storage::disk('public')->exists($target)) {
-            return \Illuminate\Support\Facades\Storage::disk('public')->url($target);
+        if (Storage::disk('public')->exists($target)) {
+            return Storage::disk('public')->url($target);
         }
 
-        return asset('storage/' . ltrim($target, '/'));
+        return asset('storage/'.ltrim($target, '/'));
     }
 }
 
@@ -98,15 +125,15 @@ if (! function_exists('nepali_format_amount')) {
 
         $parts = explode('.', number_format($num, $decimals, '.', ''));
         $intPart = $parts[0];
-        $decPart = isset($parts[1]) ? '.' . $parts[1] : '';
+        $decPart = isset($parts[1]) ? '.'.$parts[1] : '';
 
         if (strlen($intPart) > 3) {
             $lastThree = substr($intPart, -3);
             $remaining = substr($intPart, 0, -3);
             $remainingFormatted = preg_replace('/\B(?=(\d{2})+(?!\d))/', ',', $remaining);
-            $intPart = $remainingFormatted . ',' . $lastThree;
+            $intPart = $remainingFormatted.','.$lastThree;
         }
 
-        return ($isNegative ? '-' : '') . $intPart . ($decimals > 0 ? $decPart : '');
+        return ($isNegative ? '-' : '').$intPart.($decimals > 0 ? $decPart : '');
     }
 }

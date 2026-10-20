@@ -4,19 +4,32 @@
 <div class="border-b border-stone-200/90 bg-stone-50/80 text-xs text-stone-600 transition-colors">
     <div class="mx-auto max-w-[1280px] flex items-center justify-between px-4 sm:px-6 lg:px-8 py-2">
         <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
-            <div class="flex items-center gap-1.5 font-bold text-stone-700">
-                <span class="relative flex h-2 w-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
-                <span class="text-[11px] font-black uppercase tracking-wider text-emerald-700">लाइभ</span>
-            </div>
-            <span class="text-stone-300">|</span>
-            <div class="flex items-center gap-1.5 font-medium text-stone-700">
+            <div class="flex items-center gap-1.5 font-medium text-stone-700" x-data="{
+                currentTime: '{{ nepali_time() }}',
+                init() {
+                    const toNepali = (num) => {
+                        const digits = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
+                        return String(num).replace(/[0-9]/g, d => digits[d]);
+                    };
+                    const update = () => {
+                        const d = new Date();
+                        let h = d.getHours() % 12 || 12;
+                        let m = String(d.getMinutes()).padStart(2, '0');
+                        this.currentTime = toNepali(h) + ':' + toNepali(m) + ' बजे';
+                    };
+                    update();
+                    setInterval(update, 10000);
+                }
+            }">
                 <svg class="h-3.5 w-3.5 text-stone-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
                 <span>{{ nepali_date() }}</span>
+                <span class="text-stone-300">,</span>
+                <svg class="h-3.5 w-3.5 text-stone-400 shrink-0 ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span x-text="currentTime">{{ nepali_time() }}</span>
             </div>
             <span class="hidden sm:inline text-stone-300">|</span>
             <div class="hidden sm:flex items-center gap-1 font-medium text-stone-600">

@@ -2,7 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\Article;
+use App\Models\Category;
 use App\Models\MenuItem;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
@@ -23,20 +29,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        require_once __DIR__ . '/../helpers.php';
+        require_once __DIR__.'/../helpers.php';
 
         // Disable Vite preload tags to prevent redundant link preload warnings on Livewire SPA navigation
         Vite::usePreloadTagAttributes(false);
 
         // Configure Carbon with Nepali digits for relative time diffs (e.g. १९ घण्टा अगाडि)
-        \Carbon\Carbon::setLocale('ne');
-        \Carbon\CarbonImmutable::setLocale('ne');
+        Carbon::setLocale('ne');
+        CarbonImmutable::setLocale('ne');
 
         $toNepaliTime = function ($time, string $suffix = ''): string {
-            return nepali_number($time) . $suffix;
+            return nepali_number($time).$suffix;
         };
 
-        \Carbon\Carbon::getTranslator()->setMessages('ne', [
+        Carbon::getTranslator()->setMessages('ne', [
             'alt_numbers' => ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'],
             'ago' => fn ($time) => $toNepaliTime($time, ' अगाडि'),
             'from_now' => fn ($time) => $toNepaliTime($time, 'मा'),
@@ -44,18 +50,18 @@ class AppServiceProvider extends ServiceProvider
             'before' => fn ($time) => $toNepaliTime($time, ' अघि'),
         ]);
 
-        \Illuminate\Support\Facades\Blade::directive('nepali', function ($expression) {
+        Blade::directive('nepali', function ($expression) {
             return "<?php echo nepali_number($expression); ?>";
         });
 
         View::composer(['livewire.news-homepage', 'articles.*', 'home', 'partials.*', 'components.layouts.*'], function ($view) {
             if (Schema::hasTable('categories')) {
-                $categories = \App\Models\Category::nav()->get();
+                $categories = Cache::remember('portal.navigation.categories', now()->addMinutes(15), fn () => Category::nav()->get());
                 $view->with('categories', $categories);
             }
 
             if (Schema::hasTable('menu_items')) {
-                $headerMenuItems = MenuItem::query()
+                $headerMenuItems = Cache::remember('portal.navigation.menu', now()->addMinutes(15), fn () => MenuItem::query()
                     ->active()
                     ->header()
                     ->root()
@@ -65,21 +71,21 @@ class AppServiceProvider extends ServiceProvider
                         'page',
                     ])
                     ->ordered()
-                    ->get();
+                    ->get());
 
                 $view->with('headerMenuItems', $headerMenuItems);
             }
 
             if (Schema::hasTable('articles')) {
-                $flashNews = \App\Models\Article::query()
+                // Article bodies can exceed the MySQL database cache packet limit.
+                // Keep this data uncached until a Redis/file cache store is configured.
+                $flashNews = Article::query()
                     ->with(['category', 'categories'])
                     ->published()
                     ->latest('published_at')
                     ->take(6)
                     ->get();
-                $view->with('flashNews', $flashNews);
-
-                $breakingNews = \App\Models\Article::query()
+                $breakingNews = Article::query()
                     ->published()
                     ->where(function ($q) {
                         $q->where('is_breaking', true)->orWhere('is_featured', true);
@@ -88,10 +94,8 @@ class AppServiceProvider extends ServiceProvider
                     ->take(6)
                     ->get();
                 if ($breakingNews->isEmpty()) {
-                    $breakingNews = \App\Models\Article::query()->published()->latest('published_at')->take(5)->get();
+                    $breakingNews = Article::query()->published()->latest('published_at')->take(5)->get();
                 }
-                $view->with('breakingNews', $breakingNews);
-
                 $provincesList = [
                     'कोशी प्रदेश',
                     'मधेश प्रदेश',
@@ -104,7 +108,7 @@ class AppServiceProvider extends ServiceProvider
 
                 $provinceStories = [];
                 foreach ($provincesList as $prov) {
-                    $provArticles = \App\Models\Article::query()
+                    $provArticles = Article::query()
                         ->with('category')
                         ->published()
                         ->where('province', $prov)
@@ -113,7 +117,7 @@ class AppServiceProvider extends ServiceProvider
                         ->get();
 
                     if ($provArticles->count() < 4) {
-                        $additional = \App\Models\Article::query()
+                        $additional = Article::query()
                             ->with('category')
                             ->published()
                             ->whereNotIn('id', $provArticles->pluck('id'))
@@ -126,8 +130,8 @@ class AppServiceProvider extends ServiceProvider
                     $provinceStories[$prov] = $provArticles;
                 }
 
-                $view->with('provincesList', $provincesList);
-                $view->with('provinceStories', $provinceStories);
+                $headerNews = compact('flashNews', 'breakingNews', 'provincesList', 'provinceStories');
+                $view->with($headerNews);
             }
         });
     }

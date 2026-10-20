@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 
 class Article extends Model
 {
@@ -33,7 +36,12 @@ class Article extends Model
             if ($article->category_id) {
                 $article->categories()->syncWithoutDetaching([$article->category_id]);
             }
+
+            static::clearPortalCache();
         });
+
+        static::deleted(fn () => static::clearPortalCache());
+        static::restored(fn () => static::clearPortalCache());
     }
 
     protected $fillable = [
@@ -103,7 +111,6 @@ class Article extends Model
             ->latest();
     }
 
-
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('is_published', true)
@@ -147,7 +154,7 @@ class Article extends Model
     {
         return $query->where(function (Builder $q) use ($categorySlug) {
             $q->whereHas('categories', fn (Builder $sub) => $sub->where('slug', $categorySlug))
-              ->orWhereHas('category', fn (Builder $sub) => $sub->where('slug', $categorySlug));
+                ->orWhereHas('category', fn (Builder $sub) => $sub->where('slug', $categorySlug));
         });
     }
 
@@ -156,9 +163,17 @@ class Article extends Model
         $this->increment('views');
     }
 
+    /** Remove cached news lists after content changes. */
+    public static function clearPortalCache(): void
+    {
+        Cache::forget('portal.homepage.v1');
+        Cache::forget('portal.header-news.v1');
+    }
+
     public function getEstimatedReadingTimeAttribute(): int
     {
         $words = str_word_count(strip_tags((string) $this->body));
+
         return max(1, (int) ceil($words / 180));
     }
 
@@ -183,7 +198,7 @@ class Article extends Model
         }
 
         if (str_starts_with($this->image_path, 'articles/') || str_starts_with($this->image_path, 'media/')) {
-            return asset('storage/' . $this->image_path);
+            return asset('storage/'.$this->image_path);
         }
 
         if (str_starts_with($this->image_path, 'storage/')) {
@@ -221,23 +236,23 @@ class Article extends Model
         return static::formatNepaliDate($this->published_at);
     }
 
-    public static function formatNepaliDate(\Carbon\CarbonInterface $date): string
+    public static function formatNepaliDate(CarbonInterface $date): string
     {
         $days = ['आइतबार', 'सोमबार', 'मंगलबार', 'बुधबार', 'बिहीबार', 'शुक्रबार', 'शनिबार'];
         $months = [
             1 => 'वैशाख', 2 => 'जेठ', 3 => 'असार', 4 => 'साउन',
             5 => 'भदौ', 6 => 'असोज', 7 => 'कात्तिक', 8 => 'मंसिर',
-            9 => 'पुस', 10 => 'माघ', 11 => 'फागुन', 12 => 'चैत'
+            9 => 'पुस', 10 => 'माघ', 11 => 'फागुन', 12 => 'चैत',
         ];
         $digits = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
 
-        $base = \Carbon\Carbon::create(2026, 4, 14, 0, 0, 0, 'Asia/Kathmandu');
+        $base = Carbon::create(2026, 4, 14, 0, 0, 0, 'Asia/Kathmandu');
         $diffDays = (int) $base->diffInDays($date, false);
 
         $monthDays = [
             1 => 31, 2 => 31, 3 => 32, 4 => 31,
             5 => 31, 6 => 31, 7 => 30, 8 => 29,
-            9 => 30, 10 => 29, 11 => 30, 12 => 30
+            9 => 30, 10 => 29, 11 => 30, 12 => 30,
         ];
 
         $year = 2083;

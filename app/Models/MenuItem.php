@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Cache;
 
 class MenuItem extends Model
 {
@@ -46,6 +47,19 @@ class MenuItem extends Model
             'is_mega_menu' => 'boolean',
             'order' => 'integer',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::saved(fn () => static::clearPortalCache());
+        static::deleted(fn () => static::clearPortalCache());
+    }
+
+    /** Remove menu-dependent navigation and homepage data after changes. */
+    protected static function clearPortalCache(): void
+    {
+        Cache::forget('portal.navigation.menu');
+        Cache::forget('portal.homepage.v1');
     }
 
     public function category(): BelongsTo
@@ -108,7 +122,7 @@ class MenuItem extends Model
             return route('pages.show', $this->page->slug);
         }
 
-        if (!empty($this->url)) {
+        if (! empty($this->url)) {
             return $this->url;
         }
 

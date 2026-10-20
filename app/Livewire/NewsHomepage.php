@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\MenuItem;
 use App\Services\YouTubeService;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -30,6 +31,9 @@ class NewsHomepage extends Component
 
     public function render()
     {
+        // Do not cache hydrated articles in the database cache store: article bodies
+        // can make the serialized value larger than MySQL's max_allowed_packet.
+        // Query caching for these results needs Redis or a dedicated cache store.
         // 1. Featured Lead Story
         $leadStory = Article::query()
             ->with(['category', 'categories'])
@@ -189,7 +193,7 @@ class NewsHomepage extends Component
             $provinceStories[$prov] = $provArticles;
         }
 
-        $headerMenuItems = \App\Models\MenuItem::query()
+        $headerMenuItems = MenuItem::query()
             ->active()
             ->header()
             ->root()
@@ -197,7 +201,7 @@ class NewsHomepage extends Component
             ->ordered()
             ->get();
 
-        return view('livewire.news-homepage', [
+        $homepageData = [
             'leadStory' => $leadStory,
             'breakingNews' => $breakingNews,
             'flashNews' => $flashNews,
@@ -217,6 +221,8 @@ class NewsHomepage extends Component
             'provinceStories' => $provinceStories,
             'categories' => Category::nav()->get(),
             'headerMenuItems' => $headerMenuItems,
-        ]);
+        ];
+
+        return view('livewire.news-homepage', $homepageData);
     }
 }

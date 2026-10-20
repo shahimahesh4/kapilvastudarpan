@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Cache;
 
 class Category extends Model
 {
@@ -17,6 +18,19 @@ class Category extends Model
             'is_nav' => 'boolean',
             'order' => 'integer',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::saved(fn () => static::clearPortalCache());
+        static::deleted(fn () => static::clearPortalCache());
+    }
+
+    /** Remove category-dependent navigation and homepage data after changes. */
+    protected static function clearPortalCache(): void
+    {
+        Cache::forget('portal.navigation.categories');
+        Cache::forget('portal.homepage.v1');
     }
 
     public function articles(): BelongsToMany
@@ -33,7 +47,7 @@ class Category extends Model
     {
         return Article::query()->where(function ($q) {
             $q->where('category_id', $this->id)
-              ->orWhereHas('categories', fn ($catQ) => $catQ->where('categories.id', $this->id));
+                ->orWhereHas('categories', fn ($catQ) => $catQ->where('categories.id', $this->id));
         });
     }
 

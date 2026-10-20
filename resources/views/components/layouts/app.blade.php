@@ -129,11 +129,10 @@
     }
     </script>
 
-    <!-- SweetAlert2 for Interactive Notifications -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
-
-    <!-- Nepali Unicode Converter Engine (Universal) -->
-    <script src="{{ asset('js/nepali-unicode-converter.js') }}"></script>
+    <!-- The converter is only needed on its dedicated page. -->
+    @if(request()->routeIs('unicode.converter'))
+        <script src="{{ asset('js/nepali-unicode-converter.js') }}" defer></script>
+    @endif
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
@@ -203,12 +202,28 @@
     @livewireScripts
 
     <script>
-        // Global SweetAlert2 notification helper
+        // Load SweetAlert only after a feature actually needs it, instead of on every page view.
+        window.loadSweetAlert = function() {
+            if (window.Swal) return Promise.resolve(window.Swal);
+            if (window.__sweetAlertLoading) return window.__sweetAlertLoading;
+
+            window.__sweetAlertLoading = new Promise(function(resolve, reject) {
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
+                script.async = true;
+                script.onload = function() { resolve(window.Swal); };
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+
+            return window.__sweetAlertLoading;
+        };
+
         window.copyShareLink = function(url) {
             const link = url || window.location.href;
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(link).then(function() {
-                    if (window.Swal) {
+                    window.loadSweetAlert().then(function() {
                         Swal.fire({
                             toast: true,
                             position: 'top-end',
@@ -219,9 +234,9 @@
                             timer: 2500,
                             timerProgressBar: true
                         });
-                    } else {
+                    }).catch(function() {
                         alert('लिङ्क कपी गरियो!');
-                    }
+                    });
                 }).catch(function() {
                     prompt('कृपया यो लिङ्क कपी गर्नुहोस्:', link);
                 });
@@ -231,16 +246,16 @@
         };
 
         window.notifySuccess = function(msg) {
-            if (window.Swal) {
+            window.loadSweetAlert().then(function() {
                 Swal.fire({
                     icon: 'success',
                     title: 'सफल!',
                     text: msg,
                     confirmButtonColor: '#c92137'
                 });
-            } else {
+            }).catch(function() {
                 alert(msg);
-            }
+            });
         };
 
         // Livewire 3 SPA Navigation Lifecycle Handler
