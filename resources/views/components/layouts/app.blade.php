@@ -132,7 +132,8 @@
         <script src="{{ asset('js/nepali-unicode-converter.js') }}" defer></script>
     @endif
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- Livewire provides Alpine; the former Vite JS entry only loaded unused Axios. --}}
+    @vite(['resources/css/app.css'])
     @livewireStyles
 
     <style>
@@ -165,12 +166,18 @@
         },
         init() {
             this.darkMode = localStorage.getItem('kapilvastu-theme') === 'dark';
+            let frameQueued = false;
             const updatePinnedState = () => {
-                this.menuPinned = this.$refs.menuAnchor?.getBoundingClientRect().top <= 0;
+                if (frameQueued) return;
+                frameQueued = true;
+                requestAnimationFrame(() => {
+                    this.menuPinned = this.$refs.menuAnchor?.getBoundingClientRect().top <= 0;
+                    frameQueued = false;
+                });
             };
             this.$nextTick(updatePinnedState);
             window.addEventListener('scroll', updatePinnedState, { passive: true });
-            window.addEventListener('resize', updatePinnedState);
+            window.addEventListener('resize', updatePinnedState, { passive: true });
         }
     }"
     @keydown.escape.window="flashOpen = false; sidebarOpen = false; accountOpen = false; searchOpen = false"

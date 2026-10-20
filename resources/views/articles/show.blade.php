@@ -953,13 +953,22 @@
     <!-- Reading Progress Bar Scroll Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            let frameQueued = false;
             window.addEventListener('scroll', function() {
+                if (frameQueued) return;
+                frameQueued = true;
+                requestAnimationFrame(function() {
                 var el = document.getElementById('article-progress');
-                if (!el) return;
+                if (!el) {
+                    frameQueued = false;
+                    return;
+                }
                 var total = document.documentElement.scrollHeight - window.innerHeight;
                 var progress = total > 0 ? (window.scrollY / total) * 100 : 0;
                 el.style.width = Math.min(100, Math.max(0, progress)) + '%';
-            });
+                frameQueued = false;
+                });
+            }, { passive: true });
         });
     </script>
 </x-layouts.app>
