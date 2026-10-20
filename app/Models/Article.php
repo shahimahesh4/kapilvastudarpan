@@ -198,7 +198,7 @@ class Article extends Model
     public function imageUrl(int $width = 1280): string
     {
         if (empty($this->image_path)) {
-            return asset('images/kapilvastu-darpan-logo.png');
+            return asset('images/kapilvastu-darpan-logo.jpg');
         }
 
         if (str_starts_with($this->image_path, 'http://') || str_starts_with($this->image_path, 'https://')) {

@@ -12,7 +12,7 @@
             permission: (typeof window !== 'undefined' && 'Notification' in window) ? Notification.permission : 'unsupported',
             isSubscribed: false,
             isProcessing: false,
-            logoUrl: '{{ asset('images/kapilvastu-darpan-logo.png') }}',
+            logoUrl: '{{ asset('images/kapilvastu-darpan-logo.jpg') }}',
             siteName: '{{ addslashes(setting('site_name', 'कपिलवस्तु दर्पण')) }}',
 
             init() {

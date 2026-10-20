@@ -11,7 +11,7 @@
 
 @php
     $canonicalUrl = $canonical ?? url()->current();
-    $shareImage = $ogImage ?? setting_image_url(setting('site_logo'), 'images/kapilvastu-darpan-logo.png');
+    $shareImage = $ogImage ?? setting_image_url(setting('site_logo'), 'images/kapilvastu-darpan-logo.jpg');
     $siteName = setting('site_name', 'कपिलवस्तु दर्पण');
     $defaultTitle = setting('meta_title', 'कपिलवस्तु दर्पण | जनताको आवाज - ताजा समाचार, विचार र विश्लेषण');
     $pageTitle = (!empty($title) && $title !== 'कपिलवस्तु दर्पण | जनताको आवाज - ताजा समाचार, विचार र विश्लेषण') ? $title : $defaultTitle;
@@ -70,7 +70,7 @@
                 "url": "https://www.kapilvastudarpan.com",
                 "logo": {
                     "@@type": "ImageObject",
-                    "url": "{{ asset('images/kapilvastu-darpan-logo.png') }}"
+                    "url": "{{ asset('images/kapilvastu-darpan-logo.jpg') }}"
                 },
                 "address": {
                     "@@type": "PostalAddress",

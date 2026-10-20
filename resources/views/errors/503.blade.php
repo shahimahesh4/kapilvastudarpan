@@ -424,7 +424,7 @@
     <main class="main-container">
         <!-- Official Brand Logo -->
         <div class="brand-box">
-            <img src="{{ setting_image_url(setting('site_logo'), 'images/kapilvastu-darpan-logo.png') }}" alt="{{ setting('site_name', 'कपिलवस्तु दर्पण') }}" class="brand-logo" onerror="this.style.display='none'; document.getElementById('brand-fallback-text').style.display='flex';">
+            <img src="{{ setting_image_url(setting('site_logo'), 'images/kapilvastu-darpan-logo.jpg') }}" alt="{{ setting('site_name', 'कपिलवस्तु दर्पण') }}" class="brand-logo" onerror="this.style.display='none'; document.getElementById('brand-fallback-text').style.display='flex';">
             <div id="brand-fallback-text" class="brand-text" style="display: none;">
                 <span class="brand-name">{{ setting('site_name', 'कपिलवस्तु दर्पण') }}</span>
                 <span class="brand-slogan">{{ setting('site_tagline', 'सत्य, तथ्य र निष्पक्ष पत्रकारिता') }}</span>
