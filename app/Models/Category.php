@@ -50,6 +50,8 @@ class Category extends Model
         'emergency' => 'Emergency — Warning',
         'diaspora' => 'Diaspora — People',
         'lifestyle' => 'Lifestyle — Heart',
+        'market' => 'Market — Bar chart',
+        'calendar' => 'Calendar',
     ];
 
     private const DRAWER_ICON_PREVIEWS = [
@@ -67,6 +69,7 @@ class Category extends Model
         'photo' => ['◉', '#475569'], 'podcast' => ['♩', '#9333ea'], 'live' => ['●', '#e11d48'],
         'factcheck' => ['✓', '#16a34a'], 'emergency' => ['⚠', '#ea580c'], 'diaspora' => ['♙', '#0f766e'],
         'lifestyle' => ['♥', '#e11d48'],
+        'market' => ['▮', '#4b83f4'], 'calendar' => ['▦', '#7c4dff'],
     ];
 
     /** Trusted, static HTML labels for Filament's mobile-icon selector. */
