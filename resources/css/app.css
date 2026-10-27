@@ -52,6 +52,22 @@
     .drawer-menu-icon--environment { background: #16a34a; } .drawer-menu-icon--environment::before { content: '♻'; font-size: 1.35rem; }
     .drawer-menu-icon--video { background: #e11d48; } .drawer-menu-icon--video::before { content: '▶'; font-size: 1.25rem; }
     .drawer-menu-icon--breaking { background: #dc2626; } .drawer-menu-icon--breaking::before { content: '!'; font-size: 1.8rem; }
+    .drawer-menu-icon--national { background: #dc2626; } .drawer-menu-icon--national::before { content: '⚑'; font-size: 1.6rem; }
+    .drawer-menu-icon--world { background: #0284c7; } .drawer-menu-icon--world::before { content: '◉'; font-size: 1.55rem; }
+    .drawer-menu-icon--economy { background: #15803d; } .drawer-menu-icon--economy::before { content: '↗'; font-size: 1.8rem; }
+    .drawer-menu-icon--jobs { background: #7c3aed; } .drawer-menu-icon--jobs::before { content: '✦'; font-size: 1.55rem; }
+    .drawer-menu-icon--law { background: #1d4ed8; } .drawer-menu-icon--law::before { content: '⚖'; font-size: 1.4rem; }
+    .drawer-menu-icon--crime { background: #b91c1c; } .drawer-menu-icon--crime::before { content: '!'; font-size: 1.8rem; }
+    .drawer-menu-icon--religion { background: #d97706; } .drawer-menu-icon--religion::before { content: '⌂'; font-size: 1.65rem; }
+    .drawer-menu-icon--literature { background: #a21caf; } .drawer-menu-icon--literature::before { content: '✎'; font-size: 1.65rem; }
+    .drawer-menu-icon--cinema { background: #be123c; } .drawer-menu-icon--cinema::before { content: '▣'; font-size: 1.4rem; }
+    .drawer-menu-icon--photo { background: #475569; } .drawer-menu-icon--photo::before { content: '◉'; font-size: 1.55rem; }
+    .drawer-menu-icon--podcast { background: #9333ea; } .drawer-menu-icon--podcast::before { content: '♩'; font-size: 1.7rem; }
+    .drawer-menu-icon--live { background: #e11d48; } .drawer-menu-icon--live::before { content: '●'; font-size: 1.1rem; }
+    .drawer-menu-icon--factcheck { background: #16a34a; } .drawer-menu-icon--factcheck::before { content: '✓'; font-size: 1.55rem; }
+    .drawer-menu-icon--emergency { background: #ea580c; } .drawer-menu-icon--emergency::before { content: '⚠'; font-size: 1.4rem; }
+    .drawer-menu-icon--diaspora { background: #0f766e; } .drawer-menu-icon--diaspora::before { content: '♙'; font-size: 1.6rem; }
+    .drawer-menu-icon--lifestyle { background: #e11d48; } .drawer-menu-icon--lifestyle::before { content: '♥'; font-size: 1.55rem; }
     /* Standard news body container width: around 1200px */
     .body-container,
     .site-container {

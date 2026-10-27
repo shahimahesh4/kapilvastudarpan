@@ -34,6 +34,22 @@ class Category extends Model
         'environment' => 'Environment — Recycle',
         'video' => 'Video — Play',
         'breaking' => 'Breaking — Exclamation',
+        'national' => 'National — Flag',
+        'world' => 'World — Globe',
+        'economy' => 'Economy — Chart',
+        'jobs' => 'Jobs — Badge',
+        'law' => 'Law — Gavel',
+        'crime' => 'Crime — Alert',
+        'religion' => 'Religion — Temple',
+        'literature' => 'Literature — Pen',
+        'cinema' => 'Cinema — Clapper',
+        'photo' => 'Photo — Lens',
+        'podcast' => 'Podcast — Microphone',
+        'live' => 'Live — Broadcast',
+        'factcheck' => 'Fact check — Tick',
+        'emergency' => 'Emergency — Warning',
+        'diaspora' => 'Diaspora — People',
+        'lifestyle' => 'Lifestyle — Heart',
     ];
 
     private const DRAWER_ICON_PREVIEWS = [
@@ -45,6 +61,12 @@ class Category extends Model
         'entertainment' => ['★', '#a855f7'], 'culture' => ['♬', '#db2777'], 'travel' => ['✈', '#0891b2'],
         'weather' => ['☁', '#60a5fa'], 'agriculture' => ['✿', '#65a30d'], 'environment' => ['♻', '#16a34a'],
         'video' => ['▶', '#e11d48'], 'breaking' => ['!', '#dc2626'],
+        'national' => ['⚑', '#dc2626'], 'world' => ['◉', '#0284c7'], 'economy' => ['↗', '#15803d'],
+        'jobs' => ['✦', '#7c3aed'], 'law' => ['⚖', '#1d4ed8'], 'crime' => ['!', '#b91c1c'],
+        'religion' => ['⌂', '#d97706'], 'literature' => ['✎', '#a21caf'], 'cinema' => ['▣', '#be123c'],
+        'photo' => ['◉', '#475569'], 'podcast' => ['♩', '#9333ea'], 'live' => ['●', '#e11d48'],
+        'factcheck' => ['✓', '#16a34a'], 'emergency' => ['⚠', '#ea580c'], 'diaspora' => ['♙', '#0f766e'],
+        'lifestyle' => ['♥', '#e11d48'],
     ];
 
     /** Trusted, static HTML labels for Filament's mobile-icon selector. */
