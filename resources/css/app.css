@@ -29,6 +29,7 @@
     /* CSS-only mobile-drawer badges: flat, colourful circles like the reference menu. */
     .drawer-menu-icon { display: grid; width: 2.75rem; height: 2.75rem; flex: none; place-items: center; border-radius: 9999px; color: #fff; background: #7c4dff; }
     .drawer-menu-icon::before { font-family: Arial, sans-serif; font-size: 1.5rem; font-weight: 700; line-height: 1; text-align: center; }
+    .drawer-menu-icon--default { background: #7c4dff; } .drawer-menu-icon--default::before { content: '◆'; font-size: 1.2rem; }
     .drawer-menu-icon--news { background: #4cbfd0; } .drawer-menu-icon--news::before { content: '◎'; font-size: 1.8rem; font-weight: 400; }
     .drawer-menu-icon--local { background: #3b82f6; } .drawer-menu-icon--local::before { content: '⌖'; font-size: 1.7rem; }
     .drawer-menu-icon--politics { background: #4438d9; } .drawer-menu-icon--politics::before { content: '⚖'; font-size: 1.4rem; }

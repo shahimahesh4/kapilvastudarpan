@@ -11,17 +11,18 @@ use Illuminate\Support\Facades\Cache;
 class Category extends Model
 {
     public const DRAWER_ICONS = [
-        'news' => 'News — Globe',
-        'local' => 'Local news — Location',
-        'politics' => 'Politics — Scales',
-        'business' => 'Business — Briefcase',
-        'province' => 'Province — Home',
-        'society' => 'Society — Leaf',
-        'security' => 'Security — Camera',
-        'sports' => 'Sports — Star',
-        'opinion' => 'Opinion — Conversation',
-        'health' => 'Health — Cross',
-        'rashifal' => 'Horoscope — Sun',
+        'default' => 'General — Diamond',
+        'news' => 'Globe',
+        'local' => 'Location',
+        'politics' => 'Scales',
+        'business' => 'Briefcase',
+        'province' => 'Home',
+        'society' => 'Leaf',
+        'security' => 'Security diamond',
+        'sports' => 'Star',
+        'opinion' => 'Conversation',
+        'health' => 'Health cross',
+        'rashifal' => 'Sun',
     ];
 
     protected $fillable = ['name', 'slug', 'description', 'drawer_icon', 'order', 'is_nav', 'meta_title', 'meta_description', 'meta_keywords'];

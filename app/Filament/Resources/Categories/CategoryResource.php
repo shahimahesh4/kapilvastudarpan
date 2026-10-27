@@ -87,8 +87,8 @@ class CategoryResource extends Resource
                     Select::make('drawer_icon')
                         ->label('Mobile Menu Icon')
                         ->options(Category::DRAWER_ICONS)
-                        ->placeholder('Automatic from category name')
-                        ->helperText('Shown in the mobile navigation drawer. Leave blank to select an icon automatically from the category name.'),
+                        ->default('default')
+                        ->helperText('Choose an icon for this category. It is independent of the category name.'),
 
                     Textarea::make('description')
                         ->label('Description')
@@ -137,7 +137,7 @@ class CategoryResource extends Resource
 
                 TextColumn::make('drawer_icon')
                     ->label('Mobile Icon')
-                    ->formatStateUsing(fn (?string $state): string => $state ? (Category::DRAWER_ICONS[$state] ?? $state) : 'Automatic')
+                    ->formatStateUsing(fn (?string $state): string => $state ? (Category::DRAWER_ICONS[$state] ?? $state) : 'Automatic (legacy)')
                     ->toggleable(),
 
                 IconColumn::make('is_nav')
