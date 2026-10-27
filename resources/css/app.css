@@ -70,6 +70,7 @@
     .drawer-menu-icon--lifestyle { background: #e11d48; } .drawer-menu-icon--lifestyle::before { content: '♥'; font-size: 1.55rem; }
     .drawer-menu-icon--market { background: #4b83f4; } .drawer-menu-icon--market::before { width: .27rem; height: .85rem; content: ''; margin-top: .35rem; background: #fff; box-shadow: .43rem -.32rem 0 #fff, .86rem -.66rem 0 #fff; }
     .drawer-menu-icon--calendar { background: #7c4dff; } .drawer-menu-icon--calendar::before { width: 1.25rem; height: 1.2rem; content: ''; border: 2px solid #fff; border-radius: .18rem; background: linear-gradient(#fff 0 .18rem, transparent .18rem); } .drawer-menu-icon--calendar::after { position: absolute; top: .72rem; width: .08rem; height: .22rem; content: ''; border-right: 2px solid #fff; border-left: 2px solid #fff; }
+    .drawer-menu-icon--games { background: #e6d117; } .drawer-menu-icon--games::before { width: 1.45rem; height: .82rem; content: ''; border: 2px solid #37320b; border-radius: 48% 48% 60% 60%; } .drawer-menu-icon--games::after { position: absolute; width: .18rem; height: .18rem; content: ''; border-radius: 9999px; background: #37320b; box-shadow: .34rem 0 #37320b, -.62rem 0 #37320b, -.62rem .18rem #37320b, -.8rem .09rem #37320b; }
     /* Standard news body container width: around 1200px */
     .body-container,
     .site-container {
