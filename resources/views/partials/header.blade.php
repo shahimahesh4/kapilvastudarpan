@@ -398,7 +398,7 @@
 
 <!-- Breaking News Highlights Bar -->
 @if(isset($breakingNews) && $breakingNews->isNotEmpty())
-    <section class="border-b border-sky-100 bg-[#effaff]" aria-label="समाचार हाइलाइट्स" x-data="{
+    <section class="hidden border-b border-sky-100 bg-[#effaff] md:block" aria-label="समाचार हाइलाइट्स" x-data="{
         current: 0,
         items: {{ Js::from($breakingNews->map(fn($item) => ['title' => $item->title, 'url' => route('articles.show', $item->slug)])) }},
         init() {
