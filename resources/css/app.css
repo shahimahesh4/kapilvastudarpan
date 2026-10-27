@@ -26,20 +26,20 @@
 }
 
 @layer components {
-    /* CSS-only pictogram badges for the mobile navigation drawer. */
-    .drawer-menu-icon { display: grid; width: 2.25rem; height: 2.25rem; flex: none; place-items: center; border-radius: 9999px; color: #fff; background: #8b5cf6; box-shadow: 0 1px 3px rgb(0 0 0 / .16); }
-    .drawer-menu-icon::before { font-family: Arial, sans-serif; font-size: 1.25rem; font-weight: 700; line-height: 1; }
-    .drawer-menu-icon--news { background: #14b8c8; } .drawer-menu-icon--news::before { content: '◎'; }
-    .drawer-menu-icon--local { background: #f43f5e; } .drawer-menu-icon--local::before { content: '⌖'; }
-    .drawer-menu-icon--politics { background: #f59e0b; } .drawer-menu-icon--politics::before { content: '⚖'; font-size: 1.1rem; }
-    .drawer-menu-icon--business { background: #4f46e5; } .drawer-menu-icon--business::before { content: '↗'; font-size: 1.45rem; }
-    .drawer-menu-icon--province { background: #3b82f6; } .drawer-menu-icon--province::before { content: '⌂'; font-size: 1.35rem; }
-    .drawer-menu-icon--society { background: #4d8f32; } .drawer-menu-icon--society::before { content: '♧'; font-size: 1.4rem; }
-    .drawer-menu-icon--security { background: #ef4444; } .drawer-menu-icon--security::before { content: '◇'; font-size: 1.45rem; }
-    .drawer-menu-icon--sports { color: #3f3f46; background: #facc15; } .drawer-menu-icon--sports::before { content: '★'; }
-    .drawer-menu-icon--opinion { background: #22c8d8; } .drawer-menu-icon--opinion::before { content: '☏'; }
-    .drawer-menu-icon--health { background: #fb5c66; } .drawer-menu-icon--health::before { content: '+'; font-size: 1.65rem; }
-    .drawer-menu-icon--rashifal { background: #f59e0b; } .drawer-menu-icon--rashifal::before { content: '☼'; }
+    /* CSS-only mobile-drawer badges: flat, colourful circles like the reference menu. */
+    .drawer-menu-icon { display: grid; width: 2.75rem; height: 2.75rem; flex: none; place-items: center; border-radius: 9999px; color: #fff; background: #7c4dff; }
+    .drawer-menu-icon::before { font-family: Arial, sans-serif; font-size: 1.5rem; font-weight: 700; line-height: 1; text-align: center; }
+    .drawer-menu-icon--news { background: #4cbfd0; } .drawer-menu-icon--news::before { content: '◎'; font-size: 1.8rem; font-weight: 400; }
+    .drawer-menu-icon--local { background: #3b82f6; } .drawer-menu-icon--local::before { content: '⌖'; font-size: 1.7rem; }
+    .drawer-menu-icon--politics { background: #4438d9; } .drawer-menu-icon--politics::before { content: '⚖'; font-size: 1.4rem; }
+    .drawer-menu-icon--business { background: #4438d9; } .drawer-menu-icon--business::before { content: '▰'; font-size: 1.3rem; letter-spacing: -.25rem; }
+    .drawer-menu-icon--province { background: #4b83f4; } .drawer-menu-icon--province::before { content: '⌂'; font-size: 1.65rem; }
+    .drawer-menu-icon--society { background: #609c38; } .drawer-menu-icon--society::before { content: '♧'; font-size: 1.75rem; }
+    .drawer-menu-icon--security { background: #71388c; } .drawer-menu-icon--security::before { content: '◇'; font-size: 1.8rem; }
+    .drawer-menu-icon--sports { color: #37320b; background: #e6d117; } .drawer-menu-icon--sports::before { content: '★'; font-size: 1.55rem; }
+    .drawer-menu-icon--opinion { background: #77e1e8; } .drawer-menu-icon--opinion::before { content: '☏'; color: #0b3a41; font-size: 1.65rem; }
+    .drawer-menu-icon--health { background: #ff5f66; } .drawer-menu-icon--health::before { content: '+'; font-size: 2rem; font-weight: 500; }
+    .drawer-menu-icon--rashifal { background: #ffab16; } .drawer-menu-icon--rashifal::before { content: '☼'; font-size: 1.7rem; font-weight: 400; }
     /* Standard news body container width: around 1200px */
     .body-container,
     .site-container {
