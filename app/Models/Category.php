@@ -23,7 +23,44 @@ class Category extends Model
         'opinion' => 'Conversation',
         'health' => 'Health cross',
         'rashifal' => 'Sun',
+        'education' => 'Education — Book',
+        'technology' => 'Technology — Command',
+        'science' => 'Science — Atom',
+        'entertainment' => 'Entertainment — Star',
+        'culture' => 'Culture — Music',
+        'travel' => 'Travel — Plane',
+        'weather' => 'Weather — Cloud',
+        'agriculture' => 'Agriculture — Flower',
+        'environment' => 'Environment — Recycle',
+        'video' => 'Video — Play',
+        'breaking' => 'Breaking — Exclamation',
     ];
+
+    private const DRAWER_ICON_PREVIEWS = [
+        'default' => ['◆', '#7c4dff'], 'news' => ['◎', '#4cbfd0'], 'local' => ['⌖', '#3b82f6'],
+        'politics' => ['⚖', '#4438d9'], 'business' => ['▰', '#4438d9'], 'province' => ['⌂', '#4b83f4'],
+        'society' => ['♧', '#609c38'], 'security' => ['◇', '#71388c'], 'sports' => ['★', '#e6d117'],
+        'opinion' => ['☏', '#77e1e8'], 'health' => ['+', '#ff5f66'], 'rashifal' => ['☼', '#ffab16'],
+        'education' => ['▤', '#2563eb'], 'technology' => ['⌘', '#0ea5a4'], 'science' => ['⚛', '#6366f1'],
+        'entertainment' => ['★', '#a855f7'], 'culture' => ['♬', '#db2777'], 'travel' => ['✈', '#0891b2'],
+        'weather' => ['☁', '#60a5fa'], 'agriculture' => ['✿', '#65a30d'], 'environment' => ['♻', '#16a34a'],
+        'video' => ['▶', '#e11d48'], 'breaking' => ['!', '#dc2626'],
+    ];
+
+    /** Trusted, static HTML labels for Filament's mobile-icon selector. */
+    public static function drawerIconOptions(): array
+    {
+        return collect(self::DRAWER_ICONS)->map(function (string $label, string $key): string {
+            [$glyph, $color] = self::DRAWER_ICON_PREVIEWS[$key];
+
+            return sprintf(
+                '<span style="display:inline-grid;width:1.75rem;height:1.75rem;margin-right:.55rem;place-items:center;border-radius:9999px;background:%s;color:#fff;font-family:Arial,sans-serif;font-size:1rem;font-weight:700;vertical-align:middle">%s</span><span>%s</span>',
+                $color,
+                e($glyph),
+                e($label),
+            );
+        })->all();
+    }
 
     protected $fillable = ['name', 'slug', 'description', 'drawer_icon', 'order', 'is_nav', 'meta_title', 'meta_description', 'meta_keywords'];
 

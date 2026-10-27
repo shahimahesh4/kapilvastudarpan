@@ -41,6 +41,17 @@
     .drawer-menu-icon--opinion { background: #77e1e8; } .drawer-menu-icon--opinion::before { content: '☏'; color: #0b3a41; font-size: 1.65rem; }
     .drawer-menu-icon--health { background: #ff5f66; } .drawer-menu-icon--health::before { content: '+'; font-size: 2rem; font-weight: 500; }
     .drawer-menu-icon--rashifal { background: #ffab16; } .drawer-menu-icon--rashifal::before { content: '☼'; font-size: 1.7rem; font-weight: 400; }
+    .drawer-menu-icon--education { background: #2563eb; } .drawer-menu-icon--education::before { content: '▤'; font-size: 1.3rem; }
+    .drawer-menu-icon--technology { background: #0ea5a4; } .drawer-menu-icon--technology::before { content: '⌘'; font-size: 1.7rem; }
+    .drawer-menu-icon--science { background: #6366f1; } .drawer-menu-icon--science::before { content: '⚛'; font-size: 1.65rem; font-weight: 400; }
+    .drawer-menu-icon--entertainment { background: #a855f7; } .drawer-menu-icon--entertainment::before { content: '★'; font-size: 1.55rem; }
+    .drawer-menu-icon--culture { background: #db2777; } .drawer-menu-icon--culture::before { content: '♬'; font-size: 1.55rem; }
+    .drawer-menu-icon--travel { background: #0891b2; } .drawer-menu-icon--travel::before { content: '✈'; font-size: 1.45rem; font-weight: 400; }
+    .drawer-menu-icon--weather { background: #60a5fa; } .drawer-menu-icon--weather::before { content: '☁'; font-size: 1.65rem; font-weight: 400; }
+    .drawer-menu-icon--agriculture { background: #65a30d; } .drawer-menu-icon--agriculture::before { content: '✿'; font-size: 1.55rem; font-weight: 400; }
+    .drawer-menu-icon--environment { background: #16a34a; } .drawer-menu-icon--environment::before { content: '♻'; font-size: 1.35rem; }
+    .drawer-menu-icon--video { background: #e11d48; } .drawer-menu-icon--video::before { content: '▶'; font-size: 1.25rem; }
+    .drawer-menu-icon--breaking { background: #dc2626; } .drawer-menu-icon--breaking::before { content: '!'; font-size: 1.8rem; }
     /* Standard news body container width: around 1200px */
     .body-container,
     .site-container {

@@ -86,9 +86,10 @@ class CategoryResource extends Resource
 
                     Select::make('drawer_icon')
                         ->label('Mobile Menu Icon')
-                        ->options(Category::DRAWER_ICONS)
+                        ->options(Category::drawerIconOptions())
+                        ->allowHtml()
                         ->default('default')
-                        ->helperText('Choose an icon for this category. It is independent of the category name.'),
+                        ->helperText('Choose from the visual icon library. The icon is independent of the category name.'),
 
                     Textarea::make('description')
                         ->label('Description')
