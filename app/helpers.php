@@ -110,6 +110,33 @@ if (! function_exists('setting_image_url')) {
     }
 }
 
+if (! function_exists('setting_image_relative_url')) {
+    /**
+     * Resolve a same-origin image URL for admin/browser UI.
+     *
+     * Unlike asset(), this does not depend on APP_URL matching the host currently
+     * serving the request (for example 127.0.0.1, a local domain, or production).
+     */
+    function setting_image_relative_url(?string $path, ?string $default = null): ?string
+    {
+        $target = $path ?: $default;
+
+        if (blank($target)) {
+            return null;
+        }
+
+        if (str_starts_with($target, 'http://') || str_starts_with($target, 'https://')) {
+            return $target;
+        }
+
+        if (str_starts_with($target, 'storage/') || str_starts_with($target, 'images/')) {
+            return '/'.ltrim($target, '/');
+        }
+
+        return '/storage/'.ltrim($target, '/');
+    }
+}
+
 if (! function_exists('nepali_format_amount')) {
     /**
      * Format a number using the South Asian/Nepali comma numbering system (e.g., 1,37,14,141.90).

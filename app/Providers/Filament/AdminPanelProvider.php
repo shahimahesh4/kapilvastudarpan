@@ -31,9 +31,9 @@ class AdminPanelProvider extends PanelProvider
             ->path('stnapanel')
             ->login()
             ->brandName('कपिलवस्तु दर्पण')
-            ->brandLogo(fn () => setting_image_url(setting('site_logo'), 'images/kapilvastu-darpan-logo.jpg'))
+            ->brandLogo(fn () => setting_image_relative_url(setting('site_logo'), 'images/kapilvastu-darpan-logo.jpg'))
             ->brandLogoHeight('3.2rem')
-            ->favicon(fn () => setting_image_url(setting('site_favicon'), 'images/favicon.png'))
+            ->favicon(fn () => setting_image_relative_url(setting('site_favicon'), 'images/favicon.png'))
             ->colors([
                 'primary' => Color::Red,
             ])
