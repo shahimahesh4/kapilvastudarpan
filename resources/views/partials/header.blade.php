@@ -146,13 +146,13 @@
         </a>
 
         @auth
-            <a href="{{ route('dashboard') }}" wire:navigate.hover class="grid h-10 w-10 place-items-center justify-self-end rounded-full border border-[#0955cf] text-[#0955cf] transition hover:bg-[#0955cf] hover:text-white" aria-label="मेरो ड्यासबोर्ड">
+            <button type="button" @click="accountOpen = true" class="grid h-10 w-10 place-items-center justify-self-end rounded-full border border-[#0955cf] text-[#0955cf] transition hover:bg-[#0955cf] hover:text-white" aria-label="मेरो खाता">
                 <svg viewBox="0 0 24 24" class="h-6 w-6 fill-none stroke-current stroke-[1.7]" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path stroke-linecap="round" d="M4.5 20c.85-4.1 3.3-6.1 7.5-6.1s6.65 2 7.5 6.1"></path></svg>
-            </a>
+            </button>
         @else
-            <a href="{{ route('login') }}" wire:navigate.hover class="grid h-10 w-10 place-items-center justify-self-end rounded-full border border-[#0955cf] text-[#0955cf] transition hover:bg-[#0955cf] hover:text-white" aria-label="लगइन वा दर्ता">
+            <button type="button" @click="accountOpen = true; authTab = 'login'" class="grid h-10 w-10 place-items-center justify-self-end rounded-full border border-[#0955cf] text-[#0955cf] transition hover:bg-[#0955cf] hover:text-white" aria-label="लगइन वा दर्ता">
                 <svg viewBox="0 0 24 24" class="h-6 w-6 fill-none stroke-current stroke-[1.7]" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path stroke-linecap="round" d="M4.5 20c.85-4.1 3.3-6.1 7.5-6.1s6.65 2 7.5 6.1"></path></svg>
-            </a>
+            </button>
         @endauth
     </div>
     <div class="h-[4.75rem] md:hidden" aria-hidden="true"></div>
