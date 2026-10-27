@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Models\Setting;
 use BackedEnum;
 use Filament\Actions\Action;
+use Filament\Forms\Components\BaseFileUpload;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Filament\Forms\Components\FileUpload;
@@ -103,6 +104,8 @@ class WebsiteSettings extends Page
                                                 ->image()
                                                 ->disk('public')
                                                 ->directory('settings')
+                                                ->visibility('public')
+                                                ->getUploadedFileUsing(fn (BaseFileUpload $component, string $file, string|array|null $storedFileNames): ?array => $this->getSameSitePublicUpload($component, $file, $storedFileNames))
                                                 ->maxSize(5120)
                                                 ->helperText('PNG / JPG / SVG logo file - क्लिक वा ड्र्याग गरेर नयाँ लोगो अपलोड गर्नुहोस्।'),
 
@@ -111,6 +114,8 @@ class WebsiteSettings extends Page
                                                 ->image()
                                                 ->disk('public')
                                                 ->directory('settings')
+                                                ->visibility('public')
+                                                ->getUploadedFileUsing(fn (BaseFileUpload $component, string $file, string|array|null $storedFileNames): ?array => $this->getSameSitePublicUpload($component, $file, $storedFileNames))
                                                 ->maxSize(2048)
                                                 ->helperText('Square (1:1) PNG or ICO favicon - क्लिक वा ड्र्याग गरेर नयाँ फेविकन अपलोड गर्नुहोस्।'),
 
@@ -119,6 +124,8 @@ class WebsiteSettings extends Page
                                                 ->image()
                                                 ->disk('public')
                                                 ->directory('settings')
+                                                ->visibility('public')
+                                                ->getUploadedFileUsing(fn (BaseFileUpload $component, string $file, string|array|null $storedFileNames): ?array => $this->getSameSitePublicUpload($component, $file, $storedFileNames))
                                                 ->imageCropAspectRatio('1:1')
                                                 ->maxSize(2048)
                                                 ->helperText('वृत्ताकार/Square (1:1) न्युज प्रोफाइल फोटो — लेखक विवरणमा देखिने।'),
@@ -687,6 +694,35 @@ class WebsiteSettings extends Page
             ->components([
                 $this->getFormContentComponent(),
             ]);
+    }
+
+    /**
+     * Give FilePond a same-origin URL and complete file metadata for public uploads.
+     *
+     * A relative URL avoids a stale or mismatched APP_URL (for example localhost
+     * versus the live domain), which otherwise leaves existing uploads at
+     * "Waiting for size" in the settings form.
+     *
+     * @return array{name: string, size: int, type: string|null, url: string}|null
+     */
+    protected function getSameSitePublicUpload(BaseFileUpload $component, string $file, string|array|null $storedFileNames): ?array
+    {
+        try {
+            $disk = $component->getDisk();
+
+            if (! $disk->exists($file)) {
+                return null;
+            }
+
+            return [
+                'name' => is_array($storedFileNames) ? ($storedFileNames[$file] ?? basename($file)) : ($storedFileNames ?: basename($file)),
+                'size' => $disk->size($file),
+                'type' => $disk->mimeType($file),
+                'url' => '/storage/'.ltrim($file, '/'),
+            ];
+        } catch (\Throwable) {
+            return null;
+        }
     }
 
     public function getFormContentComponent(): Component
