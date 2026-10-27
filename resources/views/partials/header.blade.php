@@ -1,7 +1,7 @@
 <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-[#c92137] focus:text-white focus:px-4 focus:py-2">मुख्य सामग्रीमा जानुहोस्</a>
 
 <!-- Top Info Utility Bar -->
-<div class="border-b border-stone-200/90 bg-stone-50/80 text-xs text-stone-600 transition-colors">
+<div class="hidden border-b border-stone-200/90 bg-stone-50/80 text-xs text-stone-600 transition-colors md:block">
     <div class="mx-auto max-w-[1280px] flex items-center justify-between px-4 sm:px-6 lg:px-8 py-2">
         <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
             <div class="flex items-center gap-1.5 font-medium text-stone-700" x-data="{
@@ -131,7 +131,32 @@
 
 <!-- Main Header Branding Section -->
 <header class="bg-white border-b border-stone-100">
-    <div class="mx-auto max-w-[1280px] flex items-center justify-between gap-6 px-4 py-3 sm:py-4 sm:px-6 lg:px-8">
+    <!-- Mobile header: menu, centred logo, account shortcut. -->
+    <div class="grid h-[4.75rem] grid-cols-[2.75rem_minmax(0,1fr)_2.75rem] items-center gap-2 px-4 md:hidden">
+        <button @click="sidebarOpen = true" type="button" class="grid h-10 w-10 place-items-center text-[#0955cf] transition hover:text-[#c92137]" :aria-expanded="sidebarOpen ? 'true' : 'false'" aria-controls="site-sidebar" aria-label="मेनु खोल्नुहोस्">
+            <span class="flex w-8 flex-col gap-[7px]" aria-hidden="true">
+                <span class="h-px w-full bg-current"></span>
+                <span class="h-px w-full bg-current"></span>
+                <span class="h-px w-full bg-current"></span>
+            </span>
+        </button>
+
+        <a href="{{ route('home') }}" wire:navigate.hover class="justify-self-center" aria-label="{{ setting('site_name', 'कपिलवस्तु दर्पण') }} गृहपृष्ठ">
+            <img src="{{ setting_image_relative_url(setting('site_logo'), 'images/kapilvastu-darpan-logo.jpg') }}" alt="{{ setting('site_name', 'कपिलवस्तु दर्पण') }}" width="320" height="48" decoding="async" class="h-11 w-auto max-w-full object-contain">
+        </a>
+
+        @auth
+            <a href="{{ route('dashboard') }}" wire:navigate.hover class="grid h-10 w-10 place-items-center justify-self-end rounded-full border border-[#0955cf] text-[#0955cf] transition hover:bg-[#0955cf] hover:text-white" aria-label="मेरो ड्यासबोर्ड">
+                <svg viewBox="0 0 24 24" class="h-6 w-6 fill-none stroke-current stroke-[1.7]" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path stroke-linecap="round" d="M4.5 20c.85-4.1 3.3-6.1 7.5-6.1s6.65 2 7.5 6.1"></path></svg>
+            </a>
+        @else
+            <a href="{{ route('login') }}" wire:navigate.hover class="grid h-10 w-10 place-items-center justify-self-end rounded-full border border-[#0955cf] text-[#0955cf] transition hover:bg-[#0955cf] hover:text-white" aria-label="लगइन वा दर्ता">
+                <svg viewBox="0 0 24 24" class="h-6 w-6 fill-none stroke-current stroke-[1.7]" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path stroke-linecap="round" d="M4.5 20c.85-4.1 3.3-6.1 7.5-6.1s6.65 2 7.5 6.1"></path></svg>
+            </a>
+        @endauth
+    </div>
+
+    <div class="mx-auto hidden max-w-[1280px] items-center justify-between gap-6 px-4 py-3 sm:px-6 sm:py-4 md:flex lg:px-8">
         <a href="{{ route('home') }}" wire:navigate.hover class="shrink-0 flex items-center gap-3.5 group" aria-label="{{ setting('site_name', 'कपिलवस्तु दर्पण') }} गृहपृष्ठ">
             <img src="{{ setting_image_relative_url(setting('site_logo'), 'images/kapilvastu-darpan-logo.jpg') }}" alt="{{ setting('site_name', 'कपिलवस्तु दर्पण') }}" width="320" height="80" decoding="async" class="h-14 sm:h-16 md:h-20 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]">
         </a>
@@ -141,12 +166,6 @@
             <x-ad-banner placement="header" class="h-20 w-full rounded-xl overflow-hidden border border-stone-200/80 shadow-2xs" />
         </div>
 
-        <!-- Mobile Hamburger Button -->
-        <button @click="sidebarOpen = true" type="button" class="flex h-11 w-12 flex-col items-center justify-center gap-1.5 rounded-xl bg-[#c92137] hover:bg-[#a50404] transition md:hidden shadow-sm p-2 cursor-pointer" :aria-expanded="sidebarOpen ? 'true' : 'false'" aria-controls="site-sidebar" aria-label="मेनु खोल्नुहोस्">
-            <span class="h-[3px] w-6 rounded-full bg-white shadow-xs"></span>
-            <span class="h-[3px] w-6 rounded-full bg-white shadow-xs"></span>
-            <span class="h-[3px] w-6 rounded-full bg-white shadow-xs"></span>
-        </button>
     </div>
 
     <!-- Sticky Primary Navigation Bar -->
