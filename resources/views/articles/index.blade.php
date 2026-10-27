@@ -1,7 +1,16 @@
+@php
+    $isSearchPage = isset($query);
+    $archiveCanonical = isset($category) && request()->integer('page', 1) > 1
+        ? route('category.show', $category->slug).'?page='.request()->integer('page')
+        : null;
+@endphp
+
 <x-layouts.app
-    :title="!empty($category->meta_title) ? $category->meta_title : ($heading . ' | ' . setting('site_name', 'कपिलवस्तु दर्पण'))"
-    :description="!empty($category->meta_description) ? $category->meta_description : ('कपिलवस्तु दर्पण — ' . $heading . ' सम्बन्धी सम्पूर्ण ताजा समाचार, विचार, भिडियो र विश्लेषण।')"
-    :keywords="!empty($category->meta_keywords) ? $category->meta_keywords : ('कपिलवस्तु दर्पण, ' . $heading . ', नेपाली समाचार, ताजा अपडेट')"
+    :title="!empty(($category ?? null)?->meta_title) ? $category->meta_title : ($heading . ' | ' . setting('site_name', 'कपिलवस्तु दर्पण'))"
+    :description="!empty(($category ?? null)?->meta_description) ? $category->meta_description : ('कपिलवस्तु दर्पण — ' . $heading . ' सम्बन्धी सम्पूर्ण ताजा समाचार, विचार, भिडियो र विश्लेषण।')"
+    :keywords="!empty(($category ?? null)?->meta_keywords) ? $category->meta_keywords : ('कपिलवस्तु दर्पण, ' . $heading . ', नेपाली समाचार, ताजा अपडेट')"
+    :canonical="$archiveCanonical"
+    :robots="$isSearchPage ? 'noindex, follow' : 'index, follow'"
 >
     <main class="mx-auto max-w-[1280px] px-4 py-6 sm:py-8 sm:px-6 lg:px-8" x-data="{
         viewMode: localStorage.getItem('kd_cat_view') || 'grid',

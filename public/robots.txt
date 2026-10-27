@@ -5,4 +5,4 @@ Disallow: /stnapanel/
 Disallow: /stnapanel/*
 Allow: /
 
-Sitemap: https://www.kapilvastudarpan.com/sitemap.xml
+Sitemap: https://kapilvastudarpan.com/sitemap.xml

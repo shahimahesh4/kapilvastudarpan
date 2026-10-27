@@ -12,9 +12,66 @@
 @php
     $canonicalUrl = $canonical ?? url()->current();
     $shareImage = $ogImage ?? setting_image_url(setting('site_logo'), 'images/kapilvastu-darpan-logo.jpg');
+    if ($shareImage && ! str_starts_with($shareImage, 'http://') && ! str_starts_with($shareImage, 'https://')) {
+        $shareImage = url($shareImage);
+    }
     $siteName = setting('site_name', 'कपिलवस्तु दर्पण');
     $defaultTitle = setting('meta_title', 'कपिलवस्तु दर्पण | जनताको आवाज - ताजा समाचार, विचार र विश्लेषण');
     $pageTitle = (!empty($title) && $title !== 'कपिलवस्तु दर्पण | जनताको आवाज - ताजा समाचार, विचार र विश्लेषण') ? $title : $defaultTitle;
+    $siteUrl = rtrim(setting('website_url', url('/')), '/');
+    $robots = request()->routeIs('login', 'register', 'password.*', 'dashboard*', 'search') ? 'noindex, follow' : $robots;
+    $organizationId = $siteUrl . '/#organization';
+    $websiteId = $siteUrl . '/#website';
+    $structuredData = [
+        [
+            '@type' => 'NewsMediaOrganization',
+            '@id' => $organizationId,
+            'name' => $siteName,
+            'url' => $siteUrl,
+            'logo' => ['@type' => 'ImageObject', 'url' => setting_image_url(setting('site_logo'), 'images/kapilvastu-darpan-logo.jpg')],
+        ],
+        [
+            '@type' => 'WebSite',
+            '@id' => $websiteId,
+            'url' => $siteUrl,
+            'name' => $siteName,
+            'publisher' => ['@id' => $organizationId],
+            'inLanguage' => 'ne-NP',
+        ],
+    ];
+
+    if ($article) {
+        $primaryCategory = $article->categories->first() ?? $article->category;
+        $articleImage = $article->imageUrl(1280);
+        $breadcrumbItems = [
+            ['@type' => 'ListItem', 'position' => 1, 'name' => 'गृहपृष्ठ', 'item' => $siteUrl],
+        ];
+        if ($primaryCategory) {
+            $breadcrumbItems[] = ['@type' => 'ListItem', 'position' => 2, 'name' => $primaryCategory->name, 'item' => route('category.show', $primaryCategory->slug)];
+        }
+        $breadcrumbItems[] = ['@type' => 'ListItem', 'position' => count($breadcrumbItems) + 1, 'name' => $article->title, 'item' => $canonicalUrl];
+        $structuredData[] = [
+            '@type' => 'NewsArticle',
+            'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => $canonicalUrl],
+            'headline' => $article->title,
+            'description' => $article->meta_description ?: ($article->excerpt ?: Str::limit(strip_tags($article->body), 160)),
+            'image' => [$articleImage],
+            'datePublished' => $article->published_at?->toIso8601String(),
+            'dateModified' => $article->updated_at?->toIso8601String(),
+            'author' => ['@type' => 'Person', 'name' => $article->display_author],
+            'publisher' => ['@id' => $organizationId],
+            'articleSection' => $primaryCategory?->name ?? 'समाचार',
+            'inLanguage' => 'ne-NP',
+        ];
+        $structuredData[] = ['@type' => 'BreadcrumbList', 'itemListElement' => $breadcrumbItems];
+    }
+
+    $robotsContent = collect(explode(',', $robots))
+        ->map(fn (string $directive) => trim($directive))
+        ->filter()
+        ->push('max-image-preview:large')
+        ->unique()
+        ->implode(', ');
 @endphp
 <!DOCTYPE html>
 <html lang="ne" class="scroll-smooth">
@@ -23,9 +80,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no">
-    <meta name="robots" content="{{ $robots }}">
+    <meta name="robots" content="{{ $robotsContent }}">
     <meta name="description" content="{{ $description }}">
-    <meta name="keywords" content="{{ $keywords }}">
     <meta name="theme-color" content="#c92137">
 
     <link rel="canonical" href="{{ $canonicalUrl }}">
@@ -41,8 +97,6 @@
     <meta property="og:description" content="{{ $description }}">
     <meta property="og:url" content="{{ $canonicalUrl }}">
     <meta property="og:image" content="{{ $shareImage }}">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
@@ -58,75 +112,7 @@
 
     <title>{{ $pageTitle }}</title>
 
-    <!-- Schema.org JSON-LD Structured Data for Rich Search Results -->
-    <script type="application/ld+json">
-    {
-        "@@context": "https://schema.org",
-        "@@graph": [
-            {
-                "@@type": "NewsMediaOrganization",
-                "@@id": "https://www.kapilvastudarpan.com/#organization",
-                "name": "कपिलवस्तु दर्पण",
-                "url": "https://www.kapilvastudarpan.com",
-                "logo": {
-                    "@@type": "ImageObject",
-                    "url": "{{ asset('images/kapilvastu-darpan-logo.jpg') }}"
-                },
-                "address": {
-                    "@@type": "PostalAddress",
-                    "streetAddress": "कपिलवस्तु १०, पचेहरा",
-                    "addressLocality": "तौलिहवा",
-                    "addressRegion": "लुम्बिनी प्रदेश",
-                    "addressCountry": "NP"
-                },
-                "contactPoint": {
-                    "@@type": "ContactPoint",
-                    "telephone": "+977-9766250445",
-                    "contactType": "newsroom",
-                    "email": "kapilvastudarpannews@gmail.com"
-                }
-            },
-            {
-                "@@type": "WebSite",
-                "@@id": "https://www.kapilvastudarpan.com/#website",
-                "url": "https://www.kapilvastudarpan.com",
-                "name": "कपिलवस्तु दर्पण",
-                "publisher": {
-                    "@@id": "https://www.kapilvastudarpan.com/#organization"
-                },
-                "potentialAction": {
-                    "@@type": "SearchAction",
-                    "target": "https://www.kapilvastudarpan.com/search?q={search_term_string}",
-                    "query-input": "required name=search_term_string"
-                }
-            }
-            @if ($article)
-            ,{
-                "@@type": "NewsArticle",
-                "mainEntityOfPage": {
-                    "@@type": "WebPage",
-                    "@@id": "{{ $canonicalUrl }}"
-                },
-                "headline": "{{ addslashes($article->title) }}",
-                "description": "{{ addslashes($article->excerpt ?? Str::limit(strip_tags($article->body), 160)) }}",
-                "image": [
-                    "{{ $article->image_url }}"
-                ],
-                "datePublished": "{{ $article->published_at?->toIso8601String() }}",
-                "dateModified": "{{ $article->updated_at?->toIso8601String() }}",
-                "author": {
-                    "@@type": "Person",
-                    "name": "{{ addslashes($article->display_author) }}"
-                },
-                "publisher": {
-                    "@@id": "https://www.kapilvastudarpan.com/#organization"
-                },
-                "articleSection": "{{ addslashes($article->category?->name ?? 'समाचार') }}"
-            }
-            @endif
-        ]
-    }
-    </script>
+    <script type="application/ld+json">{!! json_encode(['@context' => 'https://schema.org', '@graph' => $structuredData], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) !!}</script>
 
     <!-- The converter is only needed on its dedicated page. -->
     @if(request()->routeIs('unicode.converter'))

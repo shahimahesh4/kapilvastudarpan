@@ -9,11 +9,9 @@ use App\Http\Controllers\OptimizedImageController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\RashifalController;
 use App\Http\Controllers\ShareMarketController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\UnicodeConverterController;
 use App\Http\Controllers\DatabaseBackupController;
-use App\Models\Article;
-use App\Models\Category;
-use App\Models\Page;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
@@ -85,15 +83,9 @@ Route::get('/ashifal/{rashi?}', function ($rashi = 'karkat') {
 Route::get('/ads/{advertisement}/click', [AdvertisementController::class, 'click'])
     ->name('ads.click');
 
-Route::get('/sitemap.xml', function () {
-    $articles = Article::published()->latest('published_at')->take(200)->get();
-    $categories = Category::all();
-    $pages = Page::published()->ordered()->get();
-
-    return response()
-        ->view('sitemap', compact('articles', 'categories', 'pages'))
-        ->header('Content-Type', 'application/xml');
-})->name('sitemap');
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+Route::get('/sitemap-pages.xml', [SitemapController::class, 'pages'])->name('sitemap.pages');
+Route::get('/sitemap-news.xml', [SitemapController::class, 'news'])->name('sitemap.news');
 
 // Nepali Unicode Converter (Romanized, Preeti to Unicode, Unicode to Preeti)
 Route::get('/unicode-converter', [UnicodeConverterController::class, 'index'])->name('unicode.converter');

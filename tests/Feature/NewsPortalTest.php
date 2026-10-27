@@ -65,6 +65,7 @@ class NewsPortalTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('खोज नतिजा: नेपाल');
+        $response->assertSee('name="robots" content="noindex, follow, max-image-preview:large"', false);
     }
 
     public function test_sitemap_xml_returns_valid_content(): void
@@ -73,7 +74,18 @@ class NewsPortalTest extends TestCase
 
         $response->assertStatus(200);
         $this->assertStringContainsString('xml', (string) $response->headers->get('content-type'));
-        $response->assertSee('urlset');
+        $response->assertSee('sitemapindex');
+        $response->assertSee(route('sitemap.pages'));
+        $response->assertSee(route('sitemap.news'));
+
+        $this->get('/sitemap-pages.xml')
+            ->assertStatus(200)
+            ->assertSee('urlset')
+            ->assertSee(route('home'));
+
+        $this->get('/sitemap-news.xml')
+            ->assertStatus(200)
+            ->assertSee('xmlns:news');
     }
 
     public function test_security_headers_are_present_in_responses(): void
