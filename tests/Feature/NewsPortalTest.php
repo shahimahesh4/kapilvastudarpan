@@ -96,6 +96,8 @@ class NewsPortalTest extends TestCase
         $response->assertHeader('X-Content-Type-Options', 'nosniff');
         $response->assertHeader('X-XSS-Protection', '1; mode=block');
         $response->assertHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+        $response->assertHeader('Content-Security-Policy', "base-uri 'self'; form-action 'self'; frame-ancestors 'self'; object-src 'none'");
+        $response->assertHeader('Cross-Origin-Opener-Policy', 'same-origin');
     }
 
     public function test_admin_login_page_is_accessible(): void

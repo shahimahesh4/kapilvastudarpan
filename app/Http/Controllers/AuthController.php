@@ -280,6 +280,7 @@ class AuthController extends Controller
         }
 
         Auth::login($user);
+        $request->session()->regenerate();
 
         return redirect()->route('home')->with('status_success', 'Your email has been verified successfully! Your account is now fully active.');
     }

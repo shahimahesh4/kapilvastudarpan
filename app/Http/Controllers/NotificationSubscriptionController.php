@@ -15,6 +15,10 @@ class NotificationSubscriptionController extends Controller
      */
     public function subscribe(Request $request): JsonResponse
     {
+        $validated = $request->validate([
+            'endpoint' => ['required', 'url', 'max:2048'],
+        ]);
+
         $userAgent = (string) $request->userAgent();
         $isMobile = Str::contains(strtolower($userAgent), ['mobile', 'android', 'iphone', 'ipad']);
         $deviceType = $isMobile ? 'mobile' : 'desktop';
@@ -28,7 +32,7 @@ class NotificationSubscriptionController extends Controller
             [
                 'user_id' => auth()->id(),
                 'device_type' => $deviceType,
-                'endpoint' => $request->input('endpoint'),
+                'endpoint' => $validated['endpoint'],
                 'is_active' => true,
                 'subscribed_at' => now(),
             ]

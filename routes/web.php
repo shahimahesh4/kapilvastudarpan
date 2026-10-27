@@ -28,13 +28,13 @@ Route::get('/stnapanel/database/export', [DatabaseBackupController::class, 'expo
 // Frontend User Authentication & Password Reset
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:login');
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
-    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:registration');
     Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
-    Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->middleware('throttle:password-reset')->name('password.email');
     Route::get('/reset-password/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
-    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->middleware('throttle:password-reset')->name('password.update');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
@@ -51,7 +51,7 @@ Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])
     ->name('verification.verify');
 
 Route::post('/email/verification-notification', [AuthController::class, 'resendVerification'])
-    ->middleware('throttle:6,1')
+    ->middleware('throttle:password-reset')
     ->name('verification.send');
 
 Route::get('/search', [ArticleController::class, 'search'])
@@ -71,6 +71,7 @@ Route::delete('/comments/{comment}', [ArticleController::class, 'destroyComment'
     ->name('comments.destroy');
 
 Route::post('/contact/submit', [PageController::class, 'submitContact'])
+    ->middleware('throttle:contact')
     ->name('contact.submit');
 
 Route::get('/rashifal/{rashi?}', [RashifalController::class, 'show'])
@@ -92,7 +93,7 @@ Route::get('/unicode-converter', [UnicodeConverterController::class, 'index'])->
 Route::get('/unicode', function () {
     return redirect()->route('unicode.converter');
 });
-Route::post('/api/unicode/convert', [UnicodeConverterController::class, 'convert'])->name('api.unicode.convert');
+Route::post('/api/unicode/convert', [UnicodeConverterController::class, 'convert'])->middleware('throttle:public-api')->name('api.unicode.convert');
 
 // Nepal Share Market (NEPSE Live Data)
 Route::get('/sharemarket', [ShareMarketController::class, 'index'])->name('sharemarket.index');
@@ -104,14 +105,14 @@ Route::get('/nepse', function () {
     }
     return redirect()->route('sharemarket.index');
 });
-Route::get('/api/nepse/live', [ShareMarketController::class, 'live'])->name('api.nepse.live');
-Route::get('/api/nepse/ticker', [ShareMarketController::class, 'ticker'])->name('api.nepse.ticker');
-Route::get('/api/nepse/ticker/{symbol}', [ShareMarketController::class, 'tickerDetailApi'])->name('api.nepse.ticker.show');
+Route::get('/api/nepse/live', [ShareMarketController::class, 'live'])->middleware('throttle:public-api')->name('api.nepse.live');
+Route::get('/api/nepse/ticker', [ShareMarketController::class, 'ticker'])->middleware('throttle:public-api')->name('api.nepse.ticker');
+Route::get('/api/nepse/ticker/{symbol}', [ShareMarketController::class, 'tickerDetailApi'])->middleware('throttle:public-api')->name('api.nepse.ticker.show');
 
 // Web Push Notification Subscription Endpoints
-Route::post('/api/notifications/subscribe', [NotificationSubscriptionController::class, 'subscribe'])->name('api.notifications.subscribe');
-Route::post('/api/notifications/unsubscribe', [NotificationSubscriptionController::class, 'unsubscribe'])->name('api.notifications.unsubscribe');
-Route::get('/api/notifications/test-payload', [NotificationSubscriptionController::class, 'testPayload'])->name('api.notifications.test-payload');
+Route::post('/api/notifications/subscribe', [NotificationSubscriptionController::class, 'subscribe'])->middleware('throttle:notification-subscription')->name('api.notifications.subscribe');
+Route::post('/api/notifications/unsubscribe', [NotificationSubscriptionController::class, 'unsubscribe'])->middleware('throttle:notification-subscription')->name('api.notifications.unsubscribe');
+Route::get('/api/notifications/test-payload', [NotificationSubscriptionController::class, 'testPayload'])->middleware('throttle:public-api')->name('api.notifications.test-payload');
 
 // Legacy 301 redirect from /page/{slug} to /{slug}
 Route::get('/page/{slug}', function (string $slug) {

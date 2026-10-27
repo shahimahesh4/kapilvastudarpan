@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -30,6 +33,15 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         require_once __DIR__.'/../helpers.php';
+
+        RateLimiter::for('login', fn (Request $request) => Limit::perMinute(5)
+            ->by(strtolower((string) $request->input('email')).'|'.$request->ip()));
+        RateLimiter::for('registration', fn (Request $request) => Limit::perMinute(3)->by($request->ip()));
+        RateLimiter::for('password-reset', fn (Request $request) => Limit::perMinute(3)
+            ->by(strtolower((string) $request->input('email')).'|'.$request->ip()));
+        RateLimiter::for('contact', fn (Request $request) => Limit::perMinute(5)->by($request->ip()));
+        RateLimiter::for('notification-subscription', fn (Request $request) => Limit::perMinute(10)->by($request->ip()));
+        RateLimiter::for('public-api', fn (Request $request) => Limit::perMinute(60)->by($request->ip()));
 
         // Disable Vite preload tags to prevent redundant link preload warnings on Livewire SPA navigation
         Vite::usePreloadTagAttributes(false);

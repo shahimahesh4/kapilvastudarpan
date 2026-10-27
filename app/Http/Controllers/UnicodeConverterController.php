@@ -67,7 +67,7 @@ class UnicodeConverterController extends Controller
     public function convert(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'text' => 'nullable|string',
+            'text' => 'nullable|string|max:5000',
             'mode' => 'required|string|in:romanized,preeti,unicode-to-preeti',
         ]);
 
