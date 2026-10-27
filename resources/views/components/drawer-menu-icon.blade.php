@@ -1,8 +1,8 @@
-@props(['label'])
+@props(['label', 'icon' => null])
 
 @php
     $label = (string) $label;
-    $type = match (true) {
+    $automaticType = match (true) {
         str_contains($label, 'मुख्य') || str_contains($label, 'समाचार') => 'news',
         str_contains($label, 'कपिलवस्तु') => 'local',
         str_contains($label, 'राजनीति') => 'politics',
@@ -16,6 +16,7 @@
         str_contains($label, 'राशि') => 'rashifal',
         default => 'default',
     };
+    $type = is_string($icon) && array_key_exists($icon, \App\Models\Category::DRAWER_ICONS) ? $icon : $automaticType;
 @endphp
 
 <span {{ $attributes->merge(['class' => "drawer-menu-icon drawer-menu-icon--{$type}"]) }} aria-hidden="true"></span>

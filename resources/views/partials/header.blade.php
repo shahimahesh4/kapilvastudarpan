@@ -439,11 +439,11 @@
                                 <div class="flex items-center justify-between px-4 py-3 text-[16px] font-bold text-stone-800 hover:bg-stone-50 rounded transition">
                                     @if($item->link_url === '#' || $item->is_mega_menu)
                                         <button type="button" @click="expanded = !expanded" class="flex-1 text-left hover:text-[#c92137] flex items-center justify-between">
-                                            <span class="flex items-center gap-3"><x-drawer-menu-icon :label="$item->title" /><span>{{ $item->title }}</span></span>
+                                            <span class="flex items-center gap-3"><x-drawer-menu-icon :label="$item->title" :icon="$item->category?->drawer_icon" /><span>{{ $item->title }}</span></span>
                                         </button>
                                     @else
                                         <a href="{{ $item->link_url }}" target="{{ $item->target }}" {{ $isDrawerItemInternal ? 'wire:navigate.hover' : '' }} @click="sidebarOpen = false" class="hover:text-[#c92137] flex-1">
-                                            <span class="flex items-center gap-3"><x-drawer-menu-icon :label="$item->title" /><span>{{ $item->title }}</span></span>
+                                            <span class="flex items-center gap-3"><x-drawer-menu-icon :label="$item->title" :icon="$item->category?->drawer_icon" /><span>{{ $item->title }}</span></span>
                                         </a>
                                     @endif
                                     <button type="button" @click.stop="expanded = !expanded" class="p-1.5 text-stone-500 hover:text-[#c92137] hover:bg-stone-200/50 rounded transition" aria-label="उप-मेनु खोल्नुहोस्">
@@ -466,7 +466,7 @@
                         @else
                             <li>
                                 <a href="{{ $item->link_url }}" target="{{ $item->target }}" {{ $isDrawerItemInternal ? 'wire:navigate.hover' : '' }} @click="sidebarOpen = false" class="flex items-center justify-between px-4 py-3 text-[16px] font-bold text-stone-800 hover:bg-red-50 hover:text-[#c92137] rounded transition">
-                                    <span class="flex items-center gap-3"><x-drawer-menu-icon :label="$item->title" /><span>{{ $item->title }}</span></span>
+                                    <span class="flex items-center gap-3"><x-drawer-menu-icon :label="$item->title" :icon="$item->category?->drawer_icon" /><span>{{ $item->title }}</span></span>
                                     <span class="text-stone-400 text-xs">→</span>
                                 </a>
                             </li>
@@ -476,7 +476,7 @@
                     @foreach ($categories ?? [] as $cat)
                         <li>
                             <a href="{{ route('category.show', $cat->slug) }}" wire:navigate.hover @click="sidebarOpen = false" class="flex items-center justify-between px-4 py-3 text-[16px] font-bold text-stone-800 hover:bg-red-50 hover:text-[#c92137] rounded transition">
-                                <span class="flex items-center gap-3"><x-drawer-menu-icon :label="$cat->name" /><span>{{ $cat->name }}</span></span>
+                                <span class="flex items-center gap-3"><x-drawer-menu-icon :label="$cat->name" :icon="$cat->drawer_icon" /><span>{{ $cat->name }}</span></span>
                                 <span class="text-stone-400 text-xs">→</span>
                             </a>
                         </li>

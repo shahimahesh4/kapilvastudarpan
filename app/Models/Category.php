@@ -10,7 +10,21 @@ use Illuminate\Support\Facades\Cache;
 
 class Category extends Model
 {
-    protected $fillable = ['name', 'slug', 'description', 'order', 'is_nav', 'meta_title', 'meta_description', 'meta_keywords'];
+    public const DRAWER_ICONS = [
+        'news' => 'News — Globe',
+        'local' => 'Local news — Location',
+        'politics' => 'Politics — Scales',
+        'business' => 'Business — Briefcase',
+        'province' => 'Province — Home',
+        'society' => 'Society — Leaf',
+        'security' => 'Security — Camera',
+        'sports' => 'Sports — Star',
+        'opinion' => 'Opinion — Conversation',
+        'health' => 'Health — Cross',
+        'rashifal' => 'Horoscope — Sun',
+    ];
+
+    protected $fillable = ['name', 'slug', 'description', 'drawer_icon', 'order', 'is_nav', 'meta_title', 'meta_description', 'meta_keywords'];
 
     protected function casts(): array
     {

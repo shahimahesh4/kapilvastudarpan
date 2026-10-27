@@ -14,6 +14,7 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Select;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -83,6 +84,12 @@ class CategoryResource extends Resource
                             ->helperText('Enable to display in the header menu.'),
                     ]),
 
+                    Select::make('drawer_icon')
+                        ->label('Mobile Menu Icon')
+                        ->options(Category::DRAWER_ICONS)
+                        ->placeholder('Automatic from category name')
+                        ->helperText('Shown in the mobile navigation drawer. Leave blank to select an icon automatically from the category name.'),
+
                     Textarea::make('description')
                         ->label('Description')
                         ->rows(3)
@@ -127,6 +134,11 @@ class CategoryResource extends Resource
                 TextColumn::make('slug')
                     ->label('Slug')
                     ->searchable(),
+
+                TextColumn::make('drawer_icon')
+                    ->label('Mobile Icon')
+                    ->formatStateUsing(fn (?string $state): string => $state ? (Category::DRAWER_ICONS[$state] ?? $state) : 'Automatic')
+                    ->toggleable(),
 
                 IconColumn::make('is_nav')
                     ->label('In Menu')
