@@ -2,7 +2,7 @@
 
 <!-- Top Info Utility Bar -->
 <div class="hidden border-b border-stone-200/90 bg-stone-50/80 text-xs text-stone-600 transition-colors md:block">
-    <div class="mx-auto max-w-[1280px] flex items-center justify-between px-4 sm:px-6 lg:px-8 py-2">
+    <div class="flex w-full items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
         <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
             <div class="flex items-center gap-1.5 font-medium text-stone-700" x-data="{
                 currentTime: '{{ nepali_time() }}',
