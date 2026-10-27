@@ -77,22 +77,22 @@ class WebsiteSettings extends Page
                                     ->schema([
                                         Grid::make(3)->schema([
                                             TextInput::make('site_name')
-                                                ->label('Portal Name (पोर्टलको नाम)')
+                                                ->label('Portal Name')
                                                 ->required()
                                                 ->placeholder('कपिलवस्तु दर्पण'),
 
                                             TextInput::make('site_subbadge')
-                                                ->label('Sub-Badge (उप-शीर्षक ब्याच)')
+                                                ->label('Sub-Badge')
                                                 ->placeholder('डिजिटल न्युज')
                                                 ->helperText('Displayed next to logo in red pill badge'),
 
                                             TextInput::make('site_tagline')
-                                                ->label('Slogan / Tagline (मूल नारा)')
+                                                ->label('Slogan / Tagline')
                                                 ->placeholder('सत्य, तथ्य र निष्पक्ष पत्रकारिता...'),
                                         ]),
 
                                         Textarea::make('footer_about')
-                                            ->label('Portal Description / About (पोर्टल परिचय / विवरण)')
+                                            ->label('Portal Description / About')
                                             ->rows(3)
                                             ->placeholder('कपिलवस्तु दर्पण स्थानीय सरोकार, जनजीवन, विकास र राष्ट्रिय सवालहरूलाई जिम्मेवार र तथ्यपूर्ण ढङ्गले प्रस्तुत गर्ने आधिकारिक डिजिटल समाचार पोर्टल हो।')
                                             ->helperText('Shown in footer column 1 about text block.')
@@ -100,7 +100,7 @@ class WebsiteSettings extends Page
 
                                         Grid::make(3)->schema([
                                             FileUpload::make('site_logo')
-                                                ->label('Logo Image (लोगो फोटो अपलोड)')
+                                                ->label('Logo Image')
                                                 ->image()
                                                 ->disk('public')
                                                 ->directory('settings')
@@ -110,7 +110,7 @@ class WebsiteSettings extends Page
                                                 ->helperText('PNG / JPG / SVG logo file - क्लिक वा ड्र्याग गरेर नयाँ लोगो अपलोड गर्नुहोस्।'),
 
                                             FileUpload::make('site_favicon')
-                                                ->label('Favicon Image (फेविकन फोटो अपलोड)')
+                                                ->label('Favicon Image')
                                                 ->image()
                                                 ->disk('public')
                                                 ->directory('settings')
@@ -120,7 +120,7 @@ class WebsiteSettings extends Page
                                                 ->helperText('Square (1:1) PNG or ICO favicon - क्लिक वा ड्र्याग गरेर नयाँ फेविकन अपलोड गर्नुहोस्।'),
 
                                             FileUpload::make('news_profile_photo')
-                                                ->label('News Profile Photo (न्युज प्रोफाइल फोटो)')
+                                                ->label('News Profile Photo')
                                                 ->image()
                                                 ->disk('public')
                                                 ->directory('settings')
@@ -158,7 +158,7 @@ class WebsiteSettings extends Page
                                                 ->placeholder('+९७७-९७६६२५०४४५'),
 
                                             TextInput::make('website_url')
-                                                ->label('Official Website URL (वेबसाइट ठेगाना)')
+                                                ->label('Official Website URL')
                                                 ->placeholder('https://kapilvastudarpan.com')
                                                 ->helperText('Displayed in footer next to 🌐 icon and on contact page.'),
                                         ]),
@@ -191,25 +191,25 @@ class WebsiteSettings extends Page
                                     ->schema([
                                         Grid::make(2)->schema([
                                             TextInput::make('company_name')
-                                                ->label('Publishing Company (सञ्चालक संस्था)')
+                                                ->label('Publishing Company')
                                                 ->placeholder('कपिलवस्तु मल्टिपर्पोज मिडिया प्रा.लि.'),
 
                                             TextInput::make('doi_reg_no')
-                                                ->label('Dept. of Information Reg No (सूचना विभाग दर्ता नं)')
+                                                ->label('Department of Information Registration No.')
                                                 ->placeholder('५३१४/८२/८३'),
                                         ]),
 
                                         Grid::make(3)->schema([
                                             TextInput::make('company_reg_no')
-                                                ->label('Company Registrar Reg No (कम्पनी दर्ता नं)')
+                                                ->label('Company Registrar Registration No.')
                                                 ->placeholder('३१७९१९/८२/८३'),
 
                                             TextInput::make('press_council_no')
-                                                ->label('Press Council Nepal Listing (प्रेस काउन्सिल सूचीकरण)')
+                                                ->label('Press Council Nepal Listing')
                                                 ->placeholder('२०८२/८३'),
 
                                             TextInput::make('press_council_badge')
-                                                ->label('Press Council Status Badge (प्रेस काउन्सिल स्थिति)')
+                                                ->label('Press Council Status Badge')
                                                 ->placeholder('आधिकारिक')
                                                 ->helperText('Shown in badge next to council number (e.g. आधिकारिक)'),
                                         ]),
@@ -220,21 +220,21 @@ class WebsiteSettings extends Page
                                     ->schema([
                                         Grid::make(3)->schema([
                                             TextInput::make('operator_name')
-                                                ->label('Operator / Chairman (संचालक)')
+                                                ->label('Operator / Chairman')
                                                 ->placeholder('तारानाथ केवट'),
 
                                             TextInput::make('editor_name')
-                                                ->label('Editor-in-Chief (सम्पादक)')
+                                                ->label('Editor-in-Chief')
                                                 ->placeholder('टुकलाल गैरे'),
 
                                             TextInput::make('managing_director')
-                                                ->label('Managing Director (प्रबन्ध निर्देशक)')
+                                                ->label('Managing Director')
                                                 ->placeholder('शेषकान्त मरासिनी'),
                                         ]),
 
                                         Grid::make(3)->schema([
                                             FileUpload::make('operator_photo')
-                                                ->label('Operator Passport Photo (संचालक फोटो अपलोड)')
+                                                ->label('Operator Passport Photo')
                                                 ->image()
                                                 ->disk('public')
                                                 ->directory('team')
@@ -244,7 +244,7 @@ class WebsiteSettings extends Page
                                                 ->helperText('Passport size 3.5:4.5 — Drag & drop or browse from computer/phone.'),
 
                                             FileUpload::make('editor_photo')
-                                                ->label('Editor Passport Photo (सम्पादक फोटो अपलोड)')
+                                                ->label('Editor Passport Photo')
                                                 ->image()
                                                 ->disk('public')
                                                 ->directory('team')
@@ -254,7 +254,7 @@ class WebsiteSettings extends Page
                                                 ->helperText('Passport size 3.5:4.5 — Drag & drop or browse from computer/phone.'),
 
                                             FileUpload::make('managing_director_photo')
-                                                ->label('Managing Director Photo (प्रबन्ध निर्देशक फोटो अपलोड)')
+                                                ->label('Managing Director Photo')
                                                 ->image()
                                                 ->disk('public')
                                                 ->directory('team')
@@ -264,7 +264,7 @@ class WebsiteSettings extends Page
                                                 ->helperText('Passport size 3.5:4.5 — Drag & drop or browse from computer/phone.'),
                                         ]),
                                         Toggle::make('show_article_editor_box')
-                                            ->label('Show Editor Bio Box on Article Pages (समाचार विवरण पृष्ठमा सम्पादकीय परिचय कार्ड देखाउने)')
+                                            ->label('Show Editor Bio Box on Article Pages')
                                             ->helperText('बन्द (disabled) गर्दा समाचार पृष्ठको अन्त्यमा देखिने सम्पादकीय परिचय कार्ड लुक्नेछ (पूर्वनिर्धारित: बन्द)।')
                                             ->default(false),
                                     ]),
@@ -275,21 +275,21 @@ class WebsiteSettings extends Page
                                     ->schema([
                                         Grid::make(3)->schema([
                                             TextInput::make('executive_editor')
-                                                ->label('Executive Editor (कार्यकारी सम्पादक)')
+                                                ->label('Executive Editor')
                                                 ->placeholder('कार्यकारी सम्पादकको नाम'),
 
                                             TextInput::make('news_chief')
-                                                ->label('News Chief (समाचार प्रमुख)')
+                                                ->label('News Chief')
                                                 ->placeholder('समाचार प्रमुखको नाम'),
 
                                             TextInput::make('bureau_chief')
-                                                ->label('Bureau Chief (ब्युरो प्रमुख)')
+                                                ->label('Bureau Chief')
                                                 ->placeholder('ब्युरो प्रमुखको नाम'),
                                         ]),
 
                                         Grid::make(3)->schema([
                                             FileUpload::make('executive_editor_photo')
-                                                ->label('Executive Editor Photo (कार्यकारी सम्पादक फोटो)')
+                                                ->label('Executive Editor Photo')
                                                 ->image()
                                                 ->disk('public')
                                                 ->directory('team')
@@ -299,7 +299,7 @@ class WebsiteSettings extends Page
                                                 ->helperText('Passport size 3.5:4.5'),
 
                                             FileUpload::make('news_chief_photo')
-                                                ->label('News Chief Photo (समाचार प्रमुख फोटो)')
+                                                ->label('News Chief Photo')
                                                 ->image()
                                                 ->disk('public')
                                                 ->directory('team')
@@ -309,7 +309,7 @@ class WebsiteSettings extends Page
                                                 ->helperText('Passport size 3.5:4.5'),
 
                                             FileUpload::make('bureau_chief_photo')
-                                                ->label('Bureau Chief Photo (ब्युरो प्रमुख फोटो)')
+                                                ->label('Bureau Chief Photo')
                                                 ->image()
                                                 ->disk('public')
                                                 ->directory('team')
@@ -320,7 +320,7 @@ class WebsiteSettings extends Page
                                         ]),
 
                                         TextInput::make('legal_advisor')
-                                            ->label('Legal Advisor (कानुनी सल्लाहकार)')
+                                            ->label('Legal Advisor')
                                             ->placeholder('कानुनी सल्लाहकारको नाम')
                                             ->columnSpanFull(),
                                     ]),
@@ -330,7 +330,7 @@ class WebsiteSettings extends Page
                                     ->collapsible()
                                     ->schema([
                                         Repeater::make('additional_team_members')
-                                            ->label('Additional Team Members (थप सदस्यहरू)')
+                                            ->label('Additional Team Members')
                                             ->addActionLabel('+ नयाँ सदस्य थप्नुहोस् (Add Team Member)')
                                             ->collapsible()
                                             ->cloneable()
@@ -339,24 +339,24 @@ class WebsiteSettings extends Page
                                             ->schema([
                                                 Grid::make(4)->schema([
                                                     TextInput::make('role')
-                                                        ->label('Designation / Role (पद)')
+                                                        ->label('Designation / Role')
                                                         ->required()
                                                         ->placeholder('उदा: वरिष्ठ संवाददाता / स्तम्भकार'),
 
                                                     TextInput::make('name')
-                                                        ->label('Full Name (नाम)')
+                                                        ->label('Full Name')
                                                         ->required()
                                                         ->placeholder('उदा: राम बहादुर श्रेष्ठ'),
 
                                                     FileUpload::make('photo')
-                                                        ->label('Photo (फोटो अपलोड)')
+                                                        ->label('Photo')
                                                         ->image()
                                                         ->disk('public')
                                                         ->directory('team')
                                                         ->maxSize(5120),
 
                                                     TextInput::make('phone')
-                                                        ->label('Contact Phone (सम्पर्क नम्बर)')
+                                                        ->label('Contact Phone')
                                                         ->placeholder('९८XXXXXXXX'),
                                                 ]),
                                             ])
@@ -372,12 +372,12 @@ class WebsiteSettings extends Page
                                     ->description('Control whether the video section is shown on the homepage.')
                                     ->schema([
                                         Toggle::make('show_video_section')
-                                            ->label('Show Video Section on Homepage (गृहपृष्ठमा भिडियो सेक्सन देखाउने)')
+                                            ->label('Show Video Section on Homepage')
                                             ->default(true)
                                             ->helperText('Enable to display the "भिडियो विशेष" section on the homepage, or disable to hide it completely.'),
 
                                         TextInput::make('video_section_title')
-                                            ->label('Video Section Title (भिडियो सेक्सन शीर्षक)')
+                                            ->label('Video Section Title')
                                             ->default('भिडियो विशेष')
                                             ->placeholder('भिडियो विशेष'),
                                     ]),
@@ -386,7 +386,7 @@ class WebsiteSettings extends Page
                                     ->description('Configure YouTube Data API v3 to automatically fetch and display live YouTube videos. If API is not provided or disabled, default video articles from the database are displayed.')
                                     ->schema([
                                         Toggle::make('youtube_api_enabled')
-                                            ->label('Enable YouTube API (युट्युब एपीआई सक्रिय गर्नुहोस्)')
+                                            ->label('Enable YouTube API')
                                             ->default(false)
                                             ->helperText('When enabled and an API key is provided, YouTube videos will be displayed. If disabled or empty, default database video articles will be shown.'),
 
@@ -411,13 +411,13 @@ class WebsiteSettings extends Page
                                                 ->helperText('Optional: Fetch videos from a specific playlist (e.g. PLxxxxxxxx).'),
 
                                             TextInput::make('youtube_featured_video_url')
-                                                ->label('Featured Video URL or ID (वैकल्पिक विशेष भिडियो)')
+                                                ->label('Featured Video URL or ID')
                                                 ->placeholder('https://www.youtube.com/watch?v=... or Video ID')
                                                 ->helperText('Specific video to highlight on the left large card.'),
                                         ]),
 
                                         TextInput::make('youtube_cache_minutes')
-                                            ->label('Cache Duration (Minutes) / क्यास समय')
+                                            ->label('Cache Duration (Minutes)')
                                             ->numeric()
                                             ->default(60)
                                             ->helperText('Number of minutes to cache API results to preserve your daily YouTube API quota.'),
@@ -425,25 +425,25 @@ class WebsiteSettings extends Page
                             ]),
 
                         Tab::make('Rashifal')
-                            ->label('Rashifal (राशिफल)')
+                            ->label('Rashifal')
                             ->icon('heroicon-o-sparkles')
                             ->schema([
                                 Section::make('Rashifal Section Visibility (राशिफल सेक्सन नियन्त्रण)')
                                     ->description('Control whether the 12 Zodiacs horoscope section is displayed on the homepage.')
                                     ->schema([
                                         Toggle::make('show_rashifal_section')
-                                            ->label('Show Rashifal Section on Homepage (गृहपृष्ठमा राशिफल सेक्सन देखाउने)')
+                                            ->label('Show Rashifal Section on Homepage')
                                             ->default(true)
                                             ->helperText('Enable to display the horoscope section on the homepage, or disable to hide it completely.'),
 
                                         Grid::make(2)->schema([
                                             TextInput::make('rashifal_section_title')
-                                                ->label('Section Title (राशिफल सेक्सन शीर्षक)')
+                                                ->label('Section Title')
                                                 ->default('दैनिक राशिफल')
                                                 ->placeholder('दैनिक राशिफल'),
 
                                             TextInput::make('rashifal_section_subtitle')
-                                                ->label('Section Subtitle (राशिफल सेक्सन उप-शीर्षक)')
+                                                ->label('Section Subtitle')
                                                 ->default('आजको ग्रहगोचर तथा १२ राशिको विस्तृत फलादेश')
                                                 ->placeholder('आजको ग्रहगोचर तथा १२ राशिको विस्तृत फलादेश'),
                                         ]),
@@ -527,7 +527,7 @@ class WebsiteSettings extends Page
                                     ->description('Frontend account registration, login policies, and email verification settings.')
                                     ->schema([
                                         Toggle::make('enable_email_verification')
-                                            ->label('Require Email Verification for Signup/Signin (इमेल प्रमाणीकरण अनिवार्य गर्ने)')
+                                            ->label('Require Email Verification for Signup/Signin')
                                             ->helperText('यदि सक्रिय (enabled) गरेमा नयाँ प्रयोगकर्ता दर्ता गर्दा र लगइन गर्दा इमेल प्रमाणीकरण अनिवार्य हुनेछ। बन्द (disabled) हुँदा प्रयोगकर्ता बिना झन्झट तुरुन्त दर्ता र लगइन हुन सक्छन् (पूर्वनिर्धारित: बन्द)।')
                                             ->default(false),
                                     ]),
@@ -536,14 +536,14 @@ class WebsiteSettings extends Page
                                     ->description('पाठकहरूलाई ताजा तथा ब्रेकिङ समाचारहरूको सूचना दिन स्क्रिनको बायाँ-तल (Left Bottom) कुनामा नोटिफिकेसन सदस्यता विजेट र पपअप नियन्त्रण गर्नुहोस्।')
                                     ->schema([
                                         Toggle::make('push_notifications_enabled')
-                                            ->label('Enable Notification Subscriber Widget (सूचना सदस्यता विजेट सक्रिय गर्ने)')
+                                            ->label('Enable Notification Subscriber Widget')
                                             ->helperText('यदि सक्रिय गरेमा वेबसाइटको बायाँ-तल (Left Bottom) घन्टी (Bell) विजेट र सदस्यता पपअप देखा पर्नेछ।')
                                             ->default(true),
                                     ]),
                             ]),
 
                         Tab::make('ShareMarket')
-                            ->label('शेयर बजार (NEPSE)')
+                            ->label('Share Market (NEPSE)')
                             ->icon('heroicon-o-chart-bar')
                             ->schema([
                                 Section::make('NEPSE Live Market Display Settings (शेयर बजार फिचर)')
@@ -551,12 +551,12 @@ class WebsiteSettings extends Page
                                     ->schema([
                                         Grid::make(2)->schema([
                                             Toggle::make('sharemarket_enabled')
-                                                ->label('Enable Share Market Feature (शेयर बजार सक्रिय गर्ने)')
+                                                ->label('Enable Share Market Feature')
                                                 ->helperText('यदि सक्रिय गरेमा वेबसाइटमा शेयर बजार पृष्ठ (/sharemarket) र मेनु लिंकहरू खुला हुनेछन्।')
                                                 ->default(true),
 
                                             Toggle::make('sharemarket_ticker_enabled')
-                                                ->label('Show Header Live Ticker (हेडरमा लाइभ टिकर देखाउने)')
+                                                ->label('Show Header Live Ticker')
                                                 ->helperText('वेबसाइटको हेडर मुनि नेप्से परिसूचकको प्रत्यक्ष स्वचालित स्क्रोलिङ टिकर पट्टी देखाउने।')
                                                 ->default(true),
                                         ]),
@@ -590,14 +590,14 @@ class WebsiteSettings extends Page
                             ]),
 
                         Tab::make('Maintenance')
-                            ->label('मेन्टेनेन्स मोड (Maintenance)')
+                            ->label('Maintenance Mode')
                             ->icon('heroicon-o-wrench-screwdriver')
                             ->schema([
                                 Section::make('Website Maintenance Mode (वेबसाइट मर्मत तथा अद्यावधिक प्रणाली)')
                                     ->description('वेबसाइटमा ठूलो काम, डिजाइन परिवर्तन वा सर्भर अद्यावधिक गर्दा सर्वसाधारण पाठकहरूका लागि ५०३ मर्मत सूचना पृष्ठ देखाउनुहोस्। एडमिन प्यानल (/stnapanel) व्यवस्थापकहरूका लागि सदैव खुला रहनेछ।')
                                     ->schema([
                                         \Filament\Forms\Components\Placeholder::make('maintenance_status_info')
-                                            ->label('Current Website Status (हालको वेबसाइट स्थिति)')
+                                            ->label('Current Website Status')
                                             ->content(function () {
                                                 $isDown = app()->isDownForMaintenance();
                                                 $statusHtml = $isDown
@@ -608,7 +608,7 @@ class WebsiteSettings extends Page
                                             }),
 
                                         Toggle::make('maintenance_mode_enabled')
-                                            ->label('Website Under Maintenance (मेन्टेनेन्स मोड Enable / Disable)')
+                                            ->label('Website Under Maintenance')
                                             ->helperText('Enable गर्दा सर्वसाधारण पाठकहरूलाई ५०३ मर्मत सूचना पृष्ठ देखिनेछ। Disable गर्दा वेबसाइट तुरुन्तै Live हुनेछ। परिवर्तन लागू गर्न तल "Save Settings" थिच्नुहोस्।')
                                             ->onColor('danger')
                                             ->offColor('success')
@@ -616,19 +616,19 @@ class WebsiteSettings extends Page
                                             ->offIcon('heroicon-o-check-circle'),
 
                                         Textarea::make('maintenance_message')
-                                            ->label('Custom Maintenance Message (मर्मत पृष्ठमा देखिने सन्देश)')
+                                            ->label('Custom Maintenance Message')
                                             ->rows(3)
                                             ->placeholder('आदरणीय पाठकवृन्द, तपाईंहरूलाई अझ स्तरीय, सुरक्षित र द्रुत गतिको समाचार वाचन अनुभव प्रदान गर्नका लागि अहिले प्राविधिक मर्मत तथा प्रणाली स्तरोन्नतिको कार्य भइरहेको छ...')
                                             ->helperText('खाली छोडेमा डिफल्ट सन्देश देखाइनेछ।'),
 
                                         Grid::make(2)->schema([
                                             TextInput::make('maintenance_secret')
-                                                ->label('Bypass Secret Key (विशेष पहुँच कुञ्जी)')
+                                                ->label('Bypass Secret Key')
                                                 ->default('darpan-live-bypass')
                                                 ->helperText('यो कि प्रयोग गरेर https://yourdomain.com/{secret} मा गइ सिधै वेबसाइट हेर्न सकिन्छ।'),
 
                                             TextInput::make('maintenance_estimated_time')
-                                                ->label('Estimated Duration (अनुमानित मर्मत समय)')
+                                                ->label('Estimated Duration')
                                                 ->placeholder('१५ मिनेट / केही बेरमा...')
                                                 ->helperText('मर्मत सम्पन्न हुन लाग्ने अनुमानित समय।'),
                                         ]),
@@ -636,7 +636,7 @@ class WebsiteSettings extends Page
                             ]),
 
                         Tab::make('Backup')
-                            ->label('डाटाबेस ब्याकअप (Backup)')
+                            ->label('Database Backup')
                             ->icon('heroicon-o-arrow-down-tray')
                             ->visible(fn (): bool => auth()->user()?->isSuperAdmin() ?? false)
                             ->schema([
@@ -644,7 +644,7 @@ class WebsiteSettings extends Page
                                     ->description('सम्पूर्ण वेबसाइटको डाटाबेस SQL ढाँचामा (database.sql) ब्याकअप डाउनलोड गर्नुहोस्। यो ब्याकअप फाइल स्थानीय वा अन्य सर्भरमा तुरुन्तै पुनर्स्थापना (Restore/Import) गर्न सकिन्छ।')
                                     ->schema([
                                         \Filament\Forms\Components\Placeholder::make('database_stats')
-                                            ->label('Current Database Overview (हालको डाटाबेस स्थिति)')
+                                            ->label('Current Database Overview')
                                             ->content(function () {
                                                 $stats = app(\App\Services\DatabaseBackupService::class)->getDatabaseStats();
                                                 return new \Illuminate\Support\HtmlString('
