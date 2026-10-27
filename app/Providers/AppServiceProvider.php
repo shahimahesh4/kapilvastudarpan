@@ -88,63 +88,35 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('headerMenuItems', $headerMenuItems);
             }
 
-            if (Schema::hasTable('articles')) {
-                // Article bodies can exceed the MySQL database cache packet limit.
-                // Keep this data uncached until a Redis/file cache store is configured.
-                $flashNews = Article::query()
-                    ->with(['category', 'categories'])
-                    ->published()
-                    ->latest('published_at')
-                    ->take(6)
-                    ->get();
-                $breakingNews = Article::query()
-                    ->published()
-                    ->where(function ($q) {
-                        $q->where('is_breaking', true)->orWhere('is_featured', true);
-                    })
-                    ->latest('published_at')
-                    ->take(6)
-                    ->get();
-                if ($breakingNews->isEmpty()) {
-                    $breakingNews = Article::query()->published()->latest('published_at')->take(5)->get();
-                }
-                $provincesList = [
-                    'कोशी प्रदेश',
-                    'मधेश प्रदेश',
-                    'बागमती प्रदेश',
-                    'गण्डकी प्रदेश',
-                    'लुम्बिनी प्रदेश',
-                    'कर्णाली प्रदेश',
-                    'सुदूरपश्चिम प्रदेश',
-                ];
+        });
 
-                $provinceStories = [];
-                foreach ($provincesList as $prov) {
-                    $provArticles = Article::query()
-                        ->with('category')
-                        ->published()
-                        ->where('province', $prov)
-                        ->latest('published_at')
-                        ->take(4)
-                        ->get();
-
-                    if ($provArticles->count() < 4) {
-                        $additional = Article::query()
-                            ->with('category')
-                            ->published()
-                            ->whereNotIn('id', $provArticles->pluck('id'))
-                            ->latest('published_at')
-                            ->take(4 - $provArticles->count())
-                            ->get();
-                        $provArticles = $provArticles->concat($additional);
-                    }
-
-                    $provinceStories[$prov] = $provArticles;
-                }
-
-                $headerNews = compact('flashNews', 'breakingNews', 'provincesList', 'provinceStories');
-                $view->with($headerNews);
+        // Header content is needed only by the header partial. Cache compact card
+        // records in the file store so MySQL never serializes article bodies.
+        View::composer('partials.header', function ($view) {
+            if (! Schema::hasTable('articles')) {
+                return;
             }
+
+            $headerNews = Cache::store('file')->remember('portal.header-news.v2', now()->addMinutes(2), function (): array {
+                $flashNews = Article::query()->forCard()->published()->latest('published_at')->take(6)->get();
+                $breakingNews = Article::query()->forCard()->published()
+                    ->where(fn ($query) => $query->where('is_breaking', true)->orWhere('is_featured', true))
+                    ->latest('published_at')->take(6)->get();
+                if ($breakingNews->isEmpty()) {
+                    $breakingNews = Article::query()->forCard()->published()->latest('published_at')->take(5)->get();
+                }
+
+                $provincesList = ['कोशी प्रदेश', 'मधेश प्रदेश', 'बागमती प्रदेश', 'गण्डकी प्रदेश', 'लुम्बिनी प्रदेश', 'कर्णाली प्रदेश', 'सुदूरपश्चिम प्रदेश'];
+                $provinceStories = [];
+                foreach ($provincesList as $province) {
+                    $provinceStories[$province] = Article::query()->forCard()->published()
+                        ->where('province', $province)->latest('published_at')->take(4)->get();
+                }
+
+                return compact('flashNews', 'breakingNews', 'provincesList', 'provinceStories');
+            });
+
+            $view->with($headerNews);
         });
     }
 }

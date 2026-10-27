@@ -86,6 +86,7 @@ Route::get('/ads/{advertisement}/click', [AdvertisementController::class, 'click
 
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/sitemap-pages.xml', [SitemapController::class, 'pages'])->name('sitemap.pages');
+Route::get('/sitemap-pages/{page}.xml', [SitemapController::class, 'pages'])->whereNumber('page')->name('sitemap.pages.page');
 Route::get('/sitemap-news.xml', [SitemapController::class, 'news'])->name('sitemap.news');
 
 // Nepali Unicode Converter (Romanized, Preeti to Unicode, Unicode to Preeti)

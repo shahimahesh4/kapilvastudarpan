@@ -118,6 +118,23 @@ class Article extends Model
             ->where('published_at', '<=', now());
     }
 
+    /**
+     * Limit listing queries to the fields needed by cards and navigation.
+     * Full article bodies are loaded only on the article detail page.
+     */
+    public function scopeForCard(Builder $query): Builder
+    {
+        return $query
+            ->select([
+                'id', 'category_id', 'title', 'slug', 'excerpt', 'image_path', 'author',
+                'province', 'published_at', 'is_featured', 'is_breaking', 'views', 'updated_at',
+            ])
+            ->with([
+                'category:id,name,slug',
+                'categories:id,name,slug',
+            ]);
+    }
+
     public function publish(): void
     {
         $this->update([
@@ -160,7 +177,10 @@ class Article extends Model
 
     public function incrementViews(): void
     {
-        $this->increment('views');
+        // A page view must not invalidate the cached homepage/news lists.
+        // Update the counter directly and keep the in-memory model accurate.
+        static::query()->whereKey($this->getKey())->increment('views');
+        $this->views++;
     }
 
     /** Remove cached news lists after content changes. */
@@ -168,6 +188,8 @@ class Article extends Model
     {
         Cache::forget('portal.homepage.v1');
         Cache::forget('portal.header-news.v1');
+        Cache::store('file')->forget('portal.homepage.v2');
+        Cache::store('file')->forget('portal.header-news.v2');
     }
 
     public function getEstimatedReadingTimeAttribute(): int

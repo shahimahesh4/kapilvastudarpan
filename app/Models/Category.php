@@ -109,6 +109,8 @@ class Category extends Model
     {
         Cache::forget('portal.navigation.categories');
         Cache::forget('portal.homepage.v1');
+        Cache::store('file')->forget('portal.homepage.v2');
+        Cache::store('file')->forget('portal.header-news.v2');
     }
 
     public function articles(): BelongsToMany

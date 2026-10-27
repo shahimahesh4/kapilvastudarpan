@@ -127,5 +127,7 @@ class Setting extends Model
     public static function clearCache(): void
     {
         Cache::forget(static::CACHE_KEY);
+        Cache::store('file')->forget('portal.homepage.v2');
+        Cache::store('file')->forget('portal.header-news.v2');
     }
 }

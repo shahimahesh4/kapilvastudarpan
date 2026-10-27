@@ -9,17 +9,27 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SitemapController extends Controller
 {
+    private const URLS_PER_SITEMAP = 45000;
+
     public function index(): Response
     {
-        return $this->xml('sitemap.index');
+        $articleSitemapCount = max(1, (int) ceil(Article::published()->count() / self::URLS_PER_SITEMAP));
+
+        return $this->xml('sitemap.index', compact('articleSitemapCount'));
     }
 
-    public function pages(): Response
+    public function pages(int $page = 1): Response
     {
+        abort_unless($page >= 1, 404);
+
         return $this->xml('sitemap.pages', [
-            'articles' => Article::published()->orderByDesc('published_at')->get(),
-            'categories' => Category::nav()->get(),
-            'pages' => Page::published()->ordered()->get(),
+            'articles' => Article::published()
+                ->select(['id', 'slug', 'updated_at', 'published_at'])
+                ->orderByDesc('published_at')
+                ->forPage($page, self::URLS_PER_SITEMAP)
+                ->get(),
+            'categories' => $page === 1 ? Category::nav()->get() : collect(),
+            'pages' => $page === 1 ? Page::published()->ordered()->get() : collect(),
         ]);
     }
 

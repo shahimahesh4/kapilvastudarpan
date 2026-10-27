@@ -72,6 +72,10 @@
         ->push('max-image-preview:large')
         ->unique()
         ->implode(', ');
+    $structuredDataJson = json_encode(
+        ['@context' => 'https://schema.org', '@graph' => $structuredData],
+        JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT,
+    );
 @endphp
 <!DOCTYPE html>
 <html lang="ne" class="scroll-smooth">
@@ -112,7 +116,7 @@
 
     <title>{{ $pageTitle }}</title>
 
-    <script type="application/ld+json">{!! json_encode(['@context' => 'https://schema.org', '@graph' => $structuredData], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) !!}</script>
+    <script type="application/ld+json">{!! $structuredDataJson !!}</script>
 
     <!-- The converter is only needed on its dedicated page. -->
     @if(request()->routeIs('unicode.converter'))

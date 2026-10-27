@@ -8,6 +8,7 @@ use App\Models\MenuItem;
 use App\Services\YouTubeService;
 use Livewire\Attributes\Url;
 use Livewire\Component;
+use Illuminate\Support\Facades\Cache;
 
 class NewsHomepage extends Component
 {
@@ -31,19 +32,18 @@ class NewsHomepage extends Component
 
     public function render()
     {
-        // Do not cache hydrated articles in the database cache store: article bodies
-        // can make the serialized value larger than MySQL's max_allowed_packet.
-        // Query caching for these results needs Redis or a dedicated cache store.
+        $homepageData = Cache::store('file')->remember('portal.homepage.v2', now()->addMinutes(2), function (): array {
         // 1. Featured Lead Story
         $leadStory = Article::query()
-            ->with(['category', 'categories'])
+            ->forCard()
             ->published()
             ->featured()
             ->latest('published_at')
-            ->first() ?? Article::query()->with(['category', 'categories'])->published()->latest('published_at')->first();
+            ->first() ?? Article::query()->forCard()->published()->latest('published_at')->first();
 
         // 2. Breaking News Ticker (Breaking or latest)
         $breakingNews = Article::query()
+            ->forCard()
             ->published()
             ->where(function ($q) {
                 $q->where('is_breaking', true)->orWhere('is_featured', true);
@@ -53,12 +53,12 @@ class NewsHomepage extends Component
             ->get();
 
         if ($breakingNews->isEmpty()) {
-            $breakingNews = Article::query()->published()->latest('published_at')->take(5)->get();
+            $breakingNews = Article::query()->forCard()->published()->latest('published_at')->take(5)->get();
         }
 
         // 3. Flash News (Drawer)
         $flashNews = Article::query()
-            ->with(['category', 'categories'])
+            ->forCard()
             ->published()
             ->latest('published_at')
             ->take(6)
@@ -66,7 +66,7 @@ class NewsHomepage extends Component
 
         // 4. Top Headlines Grid (excluding lead if possible)
         $headlines = Article::query()
-            ->with(['category', 'categories'])
+            ->forCard()
             ->published()
             ->when($leadStory, fn ($q) => $q->where('id', '!=', $leadStory->id))
             ->latest('published_at')
@@ -75,7 +75,7 @@ class NewsHomepage extends Component
 
         // 5. Trending News (ordered by views)
         $trendingNews = Article::query()
-            ->with(['category', 'categories'])
+            ->forCard()
             ->published()
             ->trending()
             ->take(5)
@@ -83,7 +83,7 @@ class NewsHomepage extends Component
 
         // 6. Section Articles by Category
         $kapilvastuSpecial = Article::query()
-            ->with(['category', 'categories'])
+            ->forCard()
             ->published()
             ->forCategory('kapilvastu-special')
             ->latest('published_at')
@@ -91,7 +91,7 @@ class NewsHomepage extends Component
             ->get();
 
         $politicsArticles = Article::query()
-            ->with(['category', 'categories'])
+            ->forCard()
             ->published()
             ->forCategory('politics')
             ->latest('published_at')
@@ -99,7 +99,7 @@ class NewsHomepage extends Component
             ->get();
 
         $economyArticles = Article::query()
-            ->with(['category', 'categories'])
+            ->forCard()
             ->published()
             ->forCategory('economy')
             ->latest('published_at')
@@ -107,7 +107,7 @@ class NewsHomepage extends Component
             ->get();
 
         $sportsArticles = Article::query()
-            ->with(['category', 'categories'])
+            ->forCard()
             ->published()
             ->forCategory('sports')
             ->latest('published_at')
@@ -115,7 +115,7 @@ class NewsHomepage extends Component
             ->get();
 
         $societyArticles = Article::query()
-            ->with(['category', 'categories'])
+            ->forCard()
             ->published()
             ->forCategory('society')
             ->latest('published_at')
@@ -123,7 +123,7 @@ class NewsHomepage extends Component
             ->get();
 
         $securityArticles = Article::query()
-            ->with(['category', 'categories'])
+            ->forCard()
             ->published()
             ->forCategory('crime-security')
             ->latest('published_at')
@@ -131,7 +131,7 @@ class NewsHomepage extends Component
             ->get();
 
         $opinionArticles = Article::query()
-            ->with(['category', 'categories'])
+            ->forCard()
             ->published()
             ->forCategory('opinion')
             ->latest('published_at')
@@ -139,7 +139,7 @@ class NewsHomepage extends Component
             ->get();
 
         $healthArticles = Article::query()
-            ->with(['category', 'categories'])
+            ->forCard()
             ->published()
             ->forCategory('health')
             ->latest('published_at')
@@ -150,7 +150,7 @@ class NewsHomepage extends Component
         $videoSectionData = $youtubeService->getVideosForHomepage(4);
 
         $videoArticles = Article::query()
-            ->with(['category', 'categories'])
+            ->forCard()
             ->published()
             ->forCategory('video')
             ->orderByDesc('is_featured')
@@ -172,7 +172,7 @@ class NewsHomepage extends Component
         $provinceStories = [];
         foreach ($provincesList as $prov) {
             $provArticles = Article::query()
-                ->with(['category', 'categories'])
+                ->forCard()
                 ->published()
                 ->where('province', $prov)
                 ->latest('published_at')
@@ -181,7 +181,7 @@ class NewsHomepage extends Component
 
             if ($provArticles->count() < 4) {
                 $additional = Article::query()
-                    ->with(['category', 'categories'])
+                    ->forCard()
                     ->published()
                     ->whereNotIn('id', $provArticles->pluck('id'))
                     ->latest('published_at')
@@ -201,7 +201,7 @@ class NewsHomepage extends Component
             ->ordered()
             ->get();
 
-        $homepageData = [
+        return [
             'leadStory' => $leadStory,
             'breakingNews' => $breakingNews,
             'flashNews' => $flashNews,
@@ -222,6 +222,7 @@ class NewsHomepage extends Component
             'categories' => Category::nav()->get(),
             'headerMenuItems' => $headerMenuItems,
         ];
+        });
 
         return view('livewire.news-homepage', $homepageData);
     }
