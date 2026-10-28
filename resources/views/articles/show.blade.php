@@ -6,8 +6,10 @@
     :ogImage="$article->image_url"
     :article="$article"
 >
-    @php($showArticleViewCount = setting_bool('show_article_view_count', true))
-    @php($primaryCategory = $article->categories->first() ?? $article->category)
+    @php
+        $showArticleViewCount = setting_bool('show_article_view_count', true);
+        $primaryCategory = $article->categories->first() ?? $article->category;
+    @endphp
 
     <!-- Top Reading Progress Indicator -->
     <div id="article-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-[#c92137] via-red-500 to-amber-500 z-[100] transition-all duration-75" style="width: 0%"></div>
