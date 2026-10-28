@@ -152,11 +152,11 @@
                                         @endif
                                     </div>
 
-                                    <div class="mt-5 pt-3.5 border-t border-stone-100 flex items-center justify-between text-xs text-stone-500 font-medium">
+                                    <div class="mt-5 pt-3.5 border-t border-stone-100 flex items-center justify-between text-xs text-stone-600 font-medium">
                                         <div class="flex items-center gap-2">
                                             <span class="font-bold text-stone-800">{{ $leadStory->display_author }}</span>
                                         </div>
-                                        <div class="flex items-center gap-1.5 text-stone-400">
+                                        <div class="flex items-center gap-1.5 text-stone-600">
                                             <svg class="h-3.5 w-3.5 text-[#c92137]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                                             <time>{{ $leadStory->published_at?->diffForHumans() }}</time>
                                         </div>
@@ -193,12 +193,12 @@
                                     <!-- Tags Row -->
                                     <div class="mt-3 flex items-center gap-2">
                                         @if($article->province)
-                                            <span class="inline-flex items-center gap-1 rounded-full bg-stone-100 text-stone-600 px-2.5 py-0.5 text-[11px] font-semibold">
-                                                <svg class="h-3 w-3 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+                                            <span class="inline-flex items-center gap-1 rounded-full bg-stone-100 text-stone-700 px-2.5 py-0.5 text-[11px] font-semibold">
+                                                <svg class="h-3 w-3 text-stone-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
                                                 <span>{{ $article->province }}</span>
                                             </span>
                                         @endif
-                                        <span class="text-[11px] text-stone-400 ml-auto">{{ $article->nepali_reading_time }} मिनेट पढ्न सकिने</span>
+                                        <span class="text-[11px] text-stone-600 ml-auto">{{ $article->nepali_reading_time }} मिनेट पढ्न सकिने</span>
                                     </div>
 
                                     <!-- Headline -->
@@ -217,9 +217,9 @@
                                 </div>
 
                                 <!-- Card Footer: Author + Published Time -->
-                                <div class="mt-4 flex items-center justify-between border-t border-stone-100 pt-3 text-[11px] sm:text-xs text-stone-500 font-medium">
+                                <div class="mt-4 flex items-center justify-between border-t border-stone-100 pt-3 text-[11px] sm:text-xs text-stone-600 font-medium">
                                     <span class="font-bold text-stone-700">{{ $article->display_author }}</span>
-                                    <div class="flex items-center gap-1 text-stone-400">
+                                    <div class="flex items-center gap-1 text-stone-600">
                                         <svg class="h-3 w-3 text-[#c92137]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                                         <time>{{ $article->published_at?->diffForHumans() }}</time>
                                     </div>
@@ -334,7 +334,7 @@
                                         <a href="{{ article_url($trend) }}" wire:navigate.hover class="text-sm font-bold leading-snug text-stone-900 group-hover:text-[#c92137] transition line-clamp-2">
                                             {{ $trend->title }}
                                         </a>
-                                        <div class="mt-1 flex items-center gap-2 text-[11px] text-stone-400">
+                                        <div class="mt-1 flex items-center gap-2 text-[11px] text-stone-600">
                                             <span>{{ nepali_number(number_format($trend->views)) }} पटक हेरियो</span>
                                         </div>
                                     </div>
@@ -355,7 +355,7 @@
                                         <a href="{{ article_url($latest) }}" wire:navigate.hover class="text-sm font-bold leading-snug text-stone-900 group-hover:text-[#0955cf] transition line-clamp-2">
                                             {{ $latest->title }}
                                         </a>
-                                        <time class="mt-1 block text-[11px] text-stone-400 font-medium">
+                                        <time class="mt-1 block text-[11px] text-stone-600 font-medium">
                                             {{ $latest->published_at?->diffForHumans() }}
                                         </time>
                                     </div>

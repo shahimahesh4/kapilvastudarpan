@@ -384,7 +384,7 @@
             </nav>
 
             <!-- Flash News Dropdown Drawer -->
-            <section id="flash-news-panel" x-cloak x-show="flashOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="-translate-y-5 opacity-0" x-transition:enter-end="translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="translate-y-0 opacity-100" x-transition:leave-end="-translate-y-5 opacity-0" class="absolute inset-x-0 top-full z-40 border-b border-stone-200 bg-white text-stone-900 shadow-2xl" aria-label="फ्ल्यास समाचार">
+            <section id="flash-news-panel" x-cloak x-show="flashOpen" style="display: none;" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="-translate-y-5 opacity-0" x-transition:enter-end="translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="translate-y-0 opacity-100" x-transition:leave-end="-translate-y-5 opacity-0" class="absolute inset-x-0 top-full z-40 border-b border-stone-200 bg-white text-stone-900 shadow-2xl" aria-label="फ्ल्यास समाचार">
                 <div class="relative mx-auto max-w-[1280px] px-4 py-6 sm:px-6 lg:px-8">
                     <div class="flex items-center justify-between pb-4 border-b border-stone-200 mb-5">
                         <h3 class="text-xl font-extrabold text-[#c92137] flex items-center gap-2">
@@ -406,7 +406,7 @@
                                     <a href="{{ article_url($flash) }}" wire:navigate.hover class="mt-1 block text-base font-bold leading-snug hover:text-[#c92137] line-clamp-2">
                                         {{ $flash->title }}
                                     </a>
-                                    <time class="mt-1 block text-[11px] text-stone-400">{{ $flash->published_at?->diffForHumans() }}</time>
+                                    <time class="mt-1 block text-[11px] text-stone-600">{{ $flash->published_at?->diffForHumans() }}</time>
                                 </div>
                             </article>
                         @endforeach
@@ -449,7 +449,7 @@
 <x-nepse-ticker />
 
 <!-- Mobile / Drawer Sidebar Dialog -->
-<div x-cloak x-show="sidebarOpen" x-transition:enter="transition-opacity ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-in duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50" aria-label="साइट मेनु">
+<div x-cloak x-show="sidebarOpen" style="display: none;" x-transition:enter="transition-opacity ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-in duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50" aria-label="साइट मेनु">
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="sidebarOpen = false"></div>
     <aside id="site-sidebar" class="relative flex h-full w-[min(88vw,23rem)] flex-col overflow-y-auto no-scrollbar bg-white shadow-2xl transition-transform duration-300 ease-out" :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" role="dialog" aria-modal="true" aria-label="मुख्य मेनु">
         <div class="flex items-center justify-between border-b border-stone-200 p-5 bg-stone-50">
@@ -507,7 +507,7 @@
                             <li>
                                 <a href="{{ $item->link_url }}" target="{{ $item->target }}" {{ $isDrawerItemInternal ? 'wire:navigate.hover' : '' }} @click="sidebarOpen = false" class="flex items-center justify-between px-4 py-3 text-[16px] font-bold text-stone-800 hover:bg-red-50 hover:text-[#c92137] rounded transition">
                                     <span class="flex items-center gap-3"><x-drawer-menu-icon :label="$item->title" :icon="$item->category?->drawer_icon" /><span>{{ $item->title }}</span></span>
-                                    <span class="text-stone-400 text-xs">→</span>
+                                    <span class="text-stone-600 text-xs">→</span>
                                 </a>
                             </li>
                         @endif
@@ -517,7 +517,7 @@
                         <li>
                             <a href="{{ route('category.show', $cat->slug) }}" wire:navigate.hover @click="sidebarOpen = false" class="flex items-center justify-between px-4 py-3 text-[16px] font-bold text-stone-800 hover:bg-red-50 hover:text-[#c92137] rounded transition">
                                 <span class="flex items-center gap-3"><x-drawer-menu-icon :label="$cat->name" :icon="$cat->drawer_icon" /><span>{{ $cat->name }}</span></span>
-                                <span class="text-stone-400 text-xs">→</span>
+                                <span class="text-stone-600 text-xs">→</span>
                             </a>
                         </li>
                     @endforeach
@@ -570,7 +570,7 @@
 </div>
 
 <!-- User Account Modal -->
-<div x-cloak x-show="accountOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="-translate-y-2 opacity-0" x-transition:enter-end="translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="translate-y-0 opacity-100" x-transition:leave-end="-translate-y-2 opacity-0" @click.outside="accountOpen = false" class="fixed right-4 top-4 z-[60] w-[calc(100%-2rem)] max-w-sm sm:max-w-md rounded-2xl border border-stone-200 bg-white p-5 sm:p-6 text-stone-900 shadow-2xl sm:right-6 sm:top-6 max-h-[92vh] overflow-y-auto">
+<div x-cloak x-show="accountOpen" style="display: none;" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="-translate-y-2 opacity-0" x-transition:enter-end="translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="translate-y-0 opacity-100" x-transition:leave-end="-translate-y-2 opacity-0" @click.outside="accountOpen = false" class="fixed right-4 top-4 z-[60] w-[calc(100%-2rem)] max-w-sm sm:max-w-md rounded-2xl border border-stone-200 bg-white p-5 sm:p-6 text-stone-900 shadow-2xl sm:right-6 sm:top-6 max-h-[92vh] overflow-y-auto">
     <div class="flex items-start justify-between gap-4 border-b border-stone-100 pb-3">
         <div>
             <h2 class="text-xl font-extrabold text-[#172b4d]">User Account</h2>
@@ -843,7 +843,7 @@
 </div>
 
 <!-- Search Popup Modal (Functional Global Search Form) -->
-<div x-cloak x-show="searchOpen" x-transition:enter="transition-opacity ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-[70] flex items-start justify-center pt-16 sm:pt-24 px-4" aria-modal="true" role="dialog" aria-labelledby="search-modal-title">
+<div x-cloak x-show="searchOpen" style="display: none;" x-transition:enter="transition-opacity ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-[70] flex items-start justify-center pt-16 sm:pt-24 px-4" aria-modal="true" role="dialog" aria-labelledby="search-modal-title">
     <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" @click="searchOpen = false"></div>
 
     <div x-show="searchOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-4 scale-95" x-transition:enter-end="opacity-100 translate-y-0 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 scale-100" x-transition:leave-end="opacity-0 -translate-y-4 scale-95" @click.outside="searchOpen = false" class="relative w-full max-w-2xl rounded-2xl border border-stone-200 bg-white p-6 sm:p-8 text-stone-900 shadow-2xl z-10">

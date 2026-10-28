@@ -126,6 +126,7 @@
     @livewireStyles
 
     <style>
+        [x-cloak] { display: none !important; }
         /* Livewire 3 SPA Navigation Progress Bar in Brand Crimson */
         .livewire-progress-bar {
             background-color: #c92137 !important;

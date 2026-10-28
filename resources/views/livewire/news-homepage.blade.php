@@ -130,7 +130,7 @@
                         @if($headlines[0]->excerpt)
                             <p class="mt-2 text-sm text-stone-600 leading-relaxed line-clamp-2">{{ $headlines[0]->excerpt }}</p>
                         @endif
-                        <div class="mt-3 flex items-center gap-3 text-xs text-stone-500 font-medium">
+                        <div class="mt-3 flex items-center gap-3 text-xs text-stone-600 font-medium">
                             @if($headlines[0]->published_at)
                                 <span class="inline-flex items-center gap-1.5">
                                     <svg class="h-3.5 w-3.5 text-[#c92137]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -167,7 +167,7 @@
                                         {{ $art->title }}
                                     </a>
                                 </h3>
-                                <div class="mt-1.5 flex items-center gap-1.5 text-xs text-stone-400 font-medium">
+                                <div class="mt-1.5 flex items-center gap-1.5 text-xs text-stone-600 font-medium">
                                     <svg class="h-3 w-3 text-[#c92137] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <circle cx="12" cy="12" r="10"></circle>
                                         <polyline points="12 6 12 12 16 14"></polyline>
@@ -187,7 +187,7 @@
                                 <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-red-100 text-[#c92137] text-sm">🔥</span>
                                 <h2 class="text-base font-black text-stone-900">ट्रेन्डिङ <span class="text-[#c92137]">समाचार</span></h2>
                             </div>
-                            <span class="inline-flex items-center rounded-full bg-stone-100 px-2 py-0.5 text-[11px] font-bold text-stone-600">धेरै हेरिएको</span>
+                            <span class="inline-flex items-center rounded-full bg-stone-100 px-2 py-0.5 text-[11px] font-bold text-stone-700">धेरै हेरिएको</span>
                         </div>
                         <ol class="mt-2 divide-y divide-stone-100">
                             @foreach($trendingNews->take(4) as $trend)
@@ -199,8 +199,8 @@
                                         <a wire:navigate.hover href="{{ article_url($trend) }}" class="block text-sm font-bold leading-snug text-stone-800 group-hover:text-[#c92137] line-clamp-2 transition-colors">
                                             {{ $trend->title }}
                                         </a>
-                                        <div class="mt-1 flex items-center gap-1.5 text-[11px] text-stone-400 font-medium">
-                                            <svg class="h-3 w-3 text-stone-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <div class="mt-1 flex items-center gap-1.5 text-[11px] text-stone-700 font-medium">
+                                            <svg class="h-3 w-3 text-[#c92137] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                             </svg>
@@ -229,7 +229,7 @@
                                 विशेष कभरेज
                             </span>
                         </div>
-                        <p class="text-xs sm:text-sm text-stone-500 font-medium mt-0.5">तिलौराकोट, स्थानीय विकास, सम्पदा र जनसरोकारका प्रमुख समाचारहरू</p>
+                        <p class="text-xs sm:text-sm text-stone-600 font-medium mt-0.5">तिलौराकोट, स्थानीय विकास, सम्पदा र जनसरोकारका प्रमुख समाचारहरू</p>
                     </div>
                 </div>
                 <a wire:navigate.hover href="{{ route('category.show', 'kapilvastu-special') }}" class="group inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3.5 py-1.5 text-xs sm:text-sm font-bold text-stone-700 shadow-2xs hover:border-[#c92137] hover:bg-[#c92137] hover:text-white transition-all duration-200">
@@ -261,7 +261,7 @@
                                     {{ $art->excerpt }}
                                 </p>
                             @endif
-                            <div class="mt-4 flex items-center justify-between border-t border-stone-100 pt-3 text-xs text-stone-400 font-medium">
+                            <div class="mt-4 flex items-center justify-between border-t border-stone-100 pt-3 text-xs text-stone-600 font-medium">
                                 <span class="inline-flex items-center gap-1.5">
                                     <svg class="h-3.5 w-3.5 text-[#c92137]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <circle cx="12" cy="12" r="10"></circle>
@@ -269,7 +269,7 @@
                                     </svg>
                                     {{ $art->published_at?->diffForHumans() }}
                                 </span>
-                                <span class="text-stone-500 font-semibold">{{ $art->display_author }}</span>
+                                <span class="text-stone-700 font-semibold">{{ $art->display_author }}</span>
                             </div>
                         </div>
                     </article>
@@ -333,7 +333,7 @@
         <section class="homepage-section-panel mb-10 rounded-2xl border border-stone-200/80 bg-linear-to-b from-stone-50/40 to-white p-5 sm:p-6 shadow-xs" aria-labelledby="economy-heading">
             <div class="mb-5 flex items-center justify-between border-b border-stone-200 pb-3">
                 <div class="flex items-center gap-2.5">
-                    <span class="inline-block h-6 w-1.5 rounded-full bg-emerald-600"></span>
+                    <span class="inline-block h-6 w-1.5 rounded-full bg-emerald-700"></span>
                     <h2 id="economy-heading" class="text-xl sm:text-2xl font-black text-stone-900 tracking-tight">अर्थतन्त्र</h2>
                 </div>
                 <a wire:navigate.hover href="{{ route('category.show', 'economy') }}" class="inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-emerald-700 hover:text-emerald-800 transition">
@@ -355,7 +355,7 @@
                             <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 via-45% to-transparent pointer-events-none"></div>
 
                             <div class="absolute top-4 left-4 z-10">
-                                <span class="inline-flex items-center gap-1 rounded-md bg-emerald-600 px-2.5 py-1 text-[11px] font-black text-white shadow-md">
+                                <span class="inline-flex items-center gap-1 rounded-md bg-emerald-700 px-2.5 py-1 text-[11px] font-black text-white shadow-md">
                                     💰 अर्थतन्त्र
                                 </span>
                             </div>
@@ -404,7 +404,7 @@
                                 सातै प्रदेश
                             </span>
                         </div>
-                        <p class="text-xs sm:text-sm text-stone-500 font-medium mt-0.5">नेपालका सातै प्रदेशका ताजा गतिविधि, विकास र जनजीवनका प्रमुख समाचारहरू</p>
+                        <p class="text-xs sm:text-sm text-stone-600 font-medium mt-0.5">नेपालका सातै प्रदेशका ताजा गतिविधि, विकास र जनजीवनका प्रमुख समाचारहरू</p>
                     </div>
                 </div>
                 <a wire:navigate.hover href="{{ route('category.show', 'pradesh') }}" class="group inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3.5 py-1.5 text-xs sm:text-sm font-bold text-stone-700 shadow-2xs hover:border-[#c92137] hover:bg-[#c92137] hover:text-white transition-all duration-200">
@@ -492,7 +492,7 @@
                                 </div>
                             </article>
                         @empty
-                            <p class="text-sm font-medium text-stone-500 py-6">यस प्रदेशमा थप समाचार उपलब्ध छैन।</p>
+                            <p class="text-sm font-medium text-stone-600 py-6">यस प्रदेशमा थप समाचार उपलब्ध छैन।</p>
                         @endforelse
                     </div>
                 </div>
@@ -723,10 +723,10 @@
         <section class="homepage-section-panel mb-10 rounded-2xl border border-stone-200/80 bg-linear-to-b from-stone-50/50 to-white p-5 sm:p-6 shadow-xs" aria-labelledby="health-heading">
             <div class="mb-5 flex items-center justify-between border-b border-stone-200 pb-3">
                 <div class="flex items-center gap-2.5">
-                    <span class="inline-block h-6 w-1.5 rounded-full bg-teal-600"></span>
+                    <span class="inline-block h-6 w-1.5 rounded-full bg-teal-700"></span>
                     <h2 id="health-heading" class="text-xl sm:text-2xl font-black text-stone-900 tracking-tight">स्वास्थ्य</h2>
                 </div>
-                <a wire:navigate.hover href="{{ route('category.show', 'health') }}" class="inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-teal-600 hover:text-teal-700 transition">
+                <a wire:navigate.hover href="{{ route('category.show', 'health') }}" class="inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-teal-700 hover:text-teal-800 transition">
                     <span>सबै स्वास्थ्य</span>
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
                 </a>
@@ -738,13 +738,13 @@
                         <a wire:navigate.hover href="{{ article_url($art) }}" class="relative block aspect-[16/10] overflow-hidden bg-stone-100">
                             <img src="{{ $art->image_url }}" alt="{{ $art->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            <span class="absolute top-3 left-3 inline-flex items-center gap-1 rounded-md bg-teal-600 px-2.5 py-1 text-[11px] font-black text-white shadow-md">
+                            <span class="absolute top-3 left-3 inline-flex items-center gap-1 rounded-md bg-teal-700 px-2.5 py-1 text-[11px] font-black text-white shadow-md">
                                 🩺 {{ $hCat ? $hCat->name : 'स्वास्थ्य' }}
                             </span>
                         </a>
 
                         <div class="p-4 sm:p-5 flex flex-col flex-1">
-                            <h3 class="text-base sm:text-lg font-black leading-snug text-stone-900 group-hover:text-teal-600 transition-colors line-clamp-2">
+                            <h3 class="text-base sm:text-lg font-black leading-snug text-stone-900 group-hover:text-teal-700 transition-colors line-clamp-2">
                                 <a wire:navigate.hover href="{{ article_url($art) }}" class="block">
                                     {{ $art->title }}
                                 </a>
@@ -856,7 +856,7 @@
 
                             <!-- Duration Badge -->
                             <div class="absolute bottom-3 right-3 z-10">
-                                <span class="rounded-md bg-black/80 backdrop-blur-xs px-2 py-0.5 text-[11px] font-bold text-stone-300">
+                                <span class="rounded-md bg-black/80 backdrop-blur-xs px-2 py-0.5 text-[11px] font-bold text-white">
                                     {{ $vLead['duration'] ?? 'HD भिडियो' }}
                                 </span>
                             </div>
@@ -872,7 +872,7 @@
                             </a>
                         </h3>
                         @if(!empty($vLead['excerpt']))
-                            <p class="mt-2 text-xs sm:text-sm text-stone-400 line-clamp-2 leading-relaxed font-normal">
+                            <p class="mt-2 text-xs sm:text-sm text-stone-300 line-clamp-2 leading-relaxed font-normal">
                                 {{ $vLead['excerpt'] }}
                             </p>
                         @endif
@@ -913,7 +913,7 @@
                                         </a>
                                     </h4>
                                     @if(!empty($vArt['published_at']))
-                                        <time class="mt-1.5 flex items-center gap-1 text-[11px] font-medium text-stone-400">
+                                        <time class="mt-1.5 flex items-center gap-1 text-[11px] font-medium text-stone-300">
                                             <svg class="h-3 w-3 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                             {{ is_string($vArt['published_at']) ? $vArt['published_at'] : $vArt['published_at']->diffForHumans() }}
                                         </time>
@@ -921,7 +921,7 @@
                                 </div>
                             </article>
                         @empty
-                            <p class="text-xs text-stone-500 py-4">थप भिडियोहरू छिट्टै उपलब्ध हुनेछन्।</p>
+                            <p class="text-xs text-stone-300 py-4">थप भिडियोहरू छिट्टै उपलब्ध हुनेछन्।</p>
                         @endforelse
                     </div>
                 </div>
@@ -1023,14 +1023,14 @@
                                     <span>{{ nepali_date() }}</span>
                                 </span>
                             </div>
-                            <p class="text-[12px] sm:text-xs text-stone-500 font-medium mt-0.5">
+                            <p class="text-[12px] sm:text-xs text-stone-600 font-medium mt-0.5">
                                 {{ setting('rashifal_section_subtitle', 'आजको ग्रहगोचर तथा १२ राशिको विस्तृत फलादेश') }}
                             </p>
                         </div>
                     </div>
 
                     <div class="self-start sm:self-center">
-                        <a wire:navigate.hover href="{{ route('rashifal.show', 'karkat') }}" class="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-xs sm:text-sm font-bold text-[#e25601] border border-amber-300 shadow-2xs hover:bg-[#e25601] hover:text-white hover:border-[#e25601] transition-all duration-200">
+                        <a wire:navigate.hover href="{{ route('rashifal.show', 'karkat') }}" class="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-xs sm:text-sm font-bold text-[#b43b02] border border-amber-400 shadow-2xs hover:bg-[#b43b02] hover:text-white hover:border-[#b43b02] transition-all duration-200">
                             <span>विस्तृत राशिफल हेर्नुहोस्</span>
                             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -1041,10 +1041,10 @@
 
                 <div class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-6">
                     @foreach($rashis as $r)
-                        <a wire:navigate.hover href="{{ route('rashifal.show', $r['slug']) }}" class="group block rounded-xl bg-white p-3 sm:p-4 text-center shadow-xs ring-1 ring-amber-100/90 transition hover:-translate-y-1 hover:shadow-md hover:ring-2 hover:ring-[#e25601]">
+                        <a wire:navigate.hover href="{{ route('rashifal.show', $r['slug']) }}" class="group block rounded-xl bg-white p-3 sm:p-4 text-center shadow-xs ring-1 ring-amber-100/90 transition hover:-translate-y-1 hover:shadow-md hover:ring-2 hover:ring-[#b43b02]">
                             <span class="rashi-icon rashi-icon--{{ $r['index'] }} !w-16 !h-16 sm:!w-20 sm:!h-20 group-hover:scale-105 transition-transform" aria-hidden="true"></span>
-                            <h3 class="mt-2 text-sm sm:text-base font-extrabold text-stone-800 group-hover:text-[#e25601] transition-colors">{{ $r['name'] }}</h3>
-                            <p class="mt-0.5 sm:mt-1 text-[10px] sm:text-[11px] text-stone-500 truncate" title="{{ $r['letters'] }}">{{ $r['letters'] }}</p>
+                            <h3 class="mt-2 text-sm sm:text-base font-extrabold text-stone-800 group-hover:text-[#b43b02] transition-colors">{{ $r['name'] }}</h3>
+                            <p class="mt-0.5 sm:mt-1 text-[10px] sm:text-[11px] text-stone-600 truncate" title="{{ $r['letters'] }}">{{ $r['letters'] }}</p>
                         </a>
                     @endforeach
                 </div>

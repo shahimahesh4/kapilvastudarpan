@@ -180,7 +180,7 @@
                             <!-- View Count -->
                             <div class="mt-2 text-center">
                                 <span class="block text-base sm:text-lg font-black text-stone-800 tracking-tight leading-none">{{ $article->nepali_views }}</span>
-                                <span class="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mt-0.5">पटक पढिएको</span>
+                                <span class="block text-[10px] font-bold text-stone-600 uppercase tracking-wider mt-0.5">पटक पढिएको</span>
                             </div>
                         @endif
 
@@ -390,12 +390,12 @@
                     <div class="aspect-[16/9] sm:aspect-[16/10] rounded-2xl overflow-hidden bg-stone-100 shadow-md border border-stone-200/80 group">
                         <img src="{{ $article->imageUrl(1280) }}" alt="{{ $article->title }}" class="h-full w-full object-cover group-hover:scale-[1.015] transition-transform duration-500" loading="eager" fetchpriority="high" decoding="async">
                     </div>
-                    <figcaption class="mt-2.5 flex items-center justify-between text-xs text-stone-500 italic px-1">
+                    <figcaption class="mt-2.5 flex items-center justify-between text-xs text-stone-600 italic px-1">
                         <span class="flex items-center gap-1.5">
-                            <svg class="h-3.5 w-3.5 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            <svg class="h-3.5 w-3.5 text-stone-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                             <span>तस्बिर: {{ str_contains($article->display_author, 'कपिलवस्तु दर्पण') ? $article->display_author : ($article->display_author . ' / कपिलवस्तु दर्पण') }}</span>
                         </span>
-                        <span class="text-[11px] text-stone-400 not-italic">कपिलवस्तु दर्पण डिजिटल</span>
+                        <span class="text-[11px] text-stone-600 not-italic">कपिलवस्तु दर्पण डिजिटल</span>
                     </figcaption>
                 </figure>
 
@@ -538,7 +538,7 @@
                                     </div>
 
                                     <div class="flex items-center justify-between pt-1">
-                                        <span class="text-[11px] text-stone-400 font-medium">
+                                        <span class="text-[11px] text-stone-600 font-medium">
                                             शिष्ट र मर्यादित भाषाको प्रयोग गर्नुहोस्।
                                         </span>
                                         <button
@@ -599,7 +599,7 @@
                                             <span class="font-black text-stone-900 text-sm block leading-tight">
                                                 {{ $comment->user?->name ?: 'नागरिक' }}
                                             </span>
-                                            <time class="text-[11px] font-semibold text-stone-400 block mt-0.5" datetime="{{ $comment->created_at?->toIso8601String() }}">
+                                            <time class="text-[11px] font-semibold text-stone-600 block mt-0.5" datetime="{{ $comment->created_at?->toIso8601String() }}">
                                                 {{ $comment->nepali_time }} ({{ $comment->nepali_date }})
                                             </time>
                                         </div>
@@ -643,7 +643,7 @@
                                     </div>
 
                                     @if($comment->replies && $comment->replies->count() > 0)
-                                        <span class="text-[11px] font-bold text-stone-400">
+                                        <span class="text-[11px] font-bold text-stone-600">
                                             {{ nepali_number((string)$comment->replies->count()) }} जवाफ
                                         </span>
                                     @endif
@@ -730,7 +730,7 @@
                                                                     जवाफ
                                                                 </span>
                                                             </div>
-                                                            <time class="text-[10px] font-semibold text-stone-400 block mt-0.5" datetime="{{ $reply->created_at?->toIso8601String() }}">
+                                                            <time class="text-[10px] font-semibold text-stone-600 block mt-0.5" datetime="{{ $reply->created_at?->toIso8601String() }}">
                                                                 {{ $reply->nepali_time }}
                                                             </time>
                                                         </div>
@@ -758,7 +758,7 @@
                             <div class="rounded-xl border border-dashed border-stone-200 p-8 text-center text-stone-500">
                                 <svg class="mx-auto h-8 w-8 text-stone-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
                                 <p class="text-sm font-bold text-stone-600">अहिलेसम्म कुनै प्रतिक्रिया आएको छैन।</p>
-                                <p class="text-xs text-stone-400 mt-0.5">पहिलो प्रतिक्रिया लेखेर छलफल सुरु गर्नुहोस्।</p>
+                                <p class="text-xs text-stone-600 mt-0.5">पहिलो प्रतिक्रिया लेखेर छलफल सुरु गर्नुहोस्।</p>
                             </div>
                         @endforelse
                     </div>
@@ -853,7 +853,7 @@
                                             {{ $rel->title }}
                                         </a>
                                     </h3>
-                                    <div class="mt-2.5 flex items-center justify-between text-xs text-stone-400 font-medium">
+                                    <div class="mt-2.5 flex items-center justify-between text-xs text-stone-600 font-medium">
                                         <span class="flex items-center gap-1.5">
                                             <svg class="h-3.5 w-3.5 text-[#c92137]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                 <circle cx="12" cy="12" r="10"></circle>
@@ -861,7 +861,7 @@
                                             </svg>
                                             {{ $rel->published_at?->diffForHumans() }}
                                         </span>
-                                        <span class="text-[11px] text-stone-500 font-semibold">{{ $rel->display_author }}</span>
+                                        <span class="text-[11px] text-stone-700 font-semibold">{{ $rel->display_author }}</span>
                                     </div>
                                 </article>
                             @endforeach
@@ -895,8 +895,8 @@
                                         <h4 class="text-xs sm:text-sm font-extrabold leading-snug text-stone-900 group-hover:text-[#c92137] line-clamp-2 transition-colors">
                                             {{ $trend->title }}
                                         </h4>
-                                        <div class="mt-1 flex items-center justify-between text-[11px] text-stone-400 font-medium">
-                                            <span class="flex items-center gap-1 text-stone-500">
+                                        <div class="mt-1 flex items-center justify-between text-[11px] text-stone-600 font-medium">
+                                            <span class="flex items-center gap-1 text-stone-700">
                                                 <svg class="h-3 w-3 text-[#c92137]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                                 {{ nepali_number(number_format($trend->views)) }}
                                             </span>
@@ -916,7 +916,7 @@
                             <span class="h-4 w-1.5 bg-[#0955cf] rounded-full"></span>
                             <span>ताजा अपडेट</span>
                         </h3>
-                        <span class="text-xs font-bold text-stone-400">अहिले भर्खरै</span>
+                        <span class="text-xs font-bold text-stone-600">अहिले भर्खरै</span>
                     </div>
                     <div class="divide-y divide-stone-100">
                         @foreach($latestArticles as $latest)
@@ -935,7 +935,7 @@
                                         <h4 class="text-sm font-extrabold leading-snug text-stone-800 group-hover:text-[#c92137] line-clamp-2 transition-colors">
                                             {{ $latest->title }}
                                         </h4>
-                                        <div class="mt-1 flex items-center gap-1.5 text-[11px] text-stone-400 font-medium">
+                                        <div class="mt-1 flex items-center gap-1.5 text-[11px] text-stone-600 font-medium">
                                             <svg class="h-3 w-3 text-[#c92137]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                             <time datetime="{{ $latest->published_at?->toIso8601String() }}">{{ $latest->published_at?->diffForHumans() }}</time>
                                         </div>
