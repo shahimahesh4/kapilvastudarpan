@@ -82,7 +82,11 @@ class Advertisement extends Model
         }
 
         if (str_starts_with($this->image_path, 'images/ads/')) {
-            return route('images.optimized', ['path' => $this->image_path, 'w' => $width]);
+            return route('images.optimized', [
+                'path' => $this->image_path,
+                'w' => $width,
+                'v' => $this->updated_at?->getTimestamp() ?? 0,
+            ]);
         }
 
         if (str_starts_with($this->image_path, 'images/')) {

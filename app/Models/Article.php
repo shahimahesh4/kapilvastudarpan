@@ -296,8 +296,10 @@ class Article extends Model
 
     public function getImageUrlAttribute(): string
     {
-        // Card images are normally rendered at roughly 300px wide; serve a 640px WebP rendition for sharp 2x displays.
-        return $this->imageUrl(640);
+        // Article cards are normally 160–300px wide. A 480px rendition keeps them
+        // crisp on high-density screens without downloading a desktop-sized image
+        // for every item below the fold.
+        return $this->imageUrl(480);
     }
 
     /**
@@ -314,7 +316,13 @@ class Article extends Model
         }
 
         if (str_starts_with($this->image_path, 'articles/') || str_starts_with($this->image_path, 'media/')) {
-            return route('images.optimized', ['path' => $this->image_path, 'w' => $width]);
+            return route('images.optimized', [
+                'path' => $this->image_path,
+                'w' => $width,
+                // The public URL changes when the article changes, so the browser
+                // can safely retain each generated rendition for a full year.
+                'v' => $this->updated_at?->getTimestamp() ?? 0,
+            ]);
         }
 
         if (str_starts_with($this->image_path, 'storage/')) {
