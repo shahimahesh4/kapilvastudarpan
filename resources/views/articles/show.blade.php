@@ -7,6 +7,7 @@
     :article="$article"
 >
     @php($showArticleViewCount = setting_bool('show_article_view_count', true))
+    @php($primaryCategory = $article->categories->first() ?? $article->category)
 
     <!-- Top Reading Progress Indicator -->
     <div id="article-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-[#c92137] via-red-500 to-amber-500 z-[100] transition-all duration-75" style="width: 0%"></div>
@@ -77,7 +78,6 @@
                     <span>गृहपृष्ठ</span>
                 </a>
                 <span class="text-stone-300">/</span>
-                @php $primaryCategory = $article->categories->first() ?? $article->category; @endphp
                 @if($primaryCategory)
                     <a href="{{ route('category.show', $primaryCategory->slug) }}" wire:navigate.hover class="inline-flex items-center gap-1 rounded-full bg-red-50 text-[#c92137] border border-red-200/80 px-3.5 py-1 font-black hover:bg-[#c92137] hover:text-white transition-all duration-200 shadow-2xs">
                         <span>{{ $primaryCategory->name }}</span>
