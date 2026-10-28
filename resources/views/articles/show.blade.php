@@ -6,6 +6,8 @@
     :ogImage="$article->image_url"
     :article="$article"
 >
+    @php($showArticleViewCount = setting_bool('show_article_view_count', true))
+
     <!-- Top Reading Progress Indicator -->
     <div id="article-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-[#c92137] via-red-500 to-amber-500 z-[100] transition-all duration-75" style="width: 0%"></div>
 
@@ -172,17 +174,13 @@
                             </svg>
                         </button>
 
-                        <!-- Shares / Views Count (Matches 9.6K Shares in screenshot) -->
-                        <div class="mt-2 text-center">
-                            <span class="block text-base sm:text-lg font-black text-stone-800 tracking-tight leading-none">
-                                @if($article->views >= 1000)
-                                    {{ nepali_number(round($article->views / 1000, 1)) }}K
-                                @else
-                                    {{ nepali_number((string)($article->views ?: 124)) }}
-                                @endif
-                            </span>
-                            <span class="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mt-0.5">Shares</span>
-                        </div>
+                        @if($showArticleViewCount)
+                            <!-- View Count -->
+                            <div class="mt-2 text-center">
+                                <span class="block text-base sm:text-lg font-black text-stone-800 tracking-tight leading-none">{{ $article->nepali_views }}</span>
+                                <span class="block text-[10px] font-bold text-stone-400 uppercase tracking-wider mt-0.5">पटक पढिएको</span>
+                            </div>
+                        @endif
 
                         <!-- Social Share Circular Buttons Stack -->
                         <div class="mt-2 flex flex-col items-center gap-2">
@@ -282,13 +280,15 @@
                         </div>
                     </div>
 
-                    <!-- View Count Badge -->
-                    <div class="flex items-center gap-2">
-                        <span class="inline-flex items-center gap-1.5 rounded-full bg-red-50/90 px-3.5 py-1.5 text-xs font-black text-[#c92137] border border-red-200/90 shadow-2xs">
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                            <span>{{ $article->nepali_views }} पटक पढिएको</span>
-                        </span>
-                    </div>
+                    @if($showArticleViewCount)
+                        <!-- View Count Badge -->
+                        <div class="flex items-center gap-2">
+                            <span class="inline-flex items-center gap-1.5 rounded-full bg-red-50/90 px-3.5 py-1.5 text-xs font-black text-[#c92137] border border-red-200/90 shadow-2xs">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                <span>{{ $article->nepali_views }} पटक पढिएको</span>
+                            </span>
+                        </div>
+                    @endif
                 </div>
 
                 <!-- Desktop Reader Quick Tools Toolbar -->
@@ -301,11 +301,13 @@
                             </svg>
                             <span>{{ $article->published_at?->diffForHumans() }}</span>
                         </span>
-                        <span class="text-stone-300">•</span>
-                        <span class="inline-flex items-center gap-1 font-semibold text-[#c92137]">
-                            <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                            <span>{{ $article->nepali_views }} पटक पढिएको</span>
-                        </span>
+                        @if($showArticleViewCount)
+                            <span class="text-stone-300">•</span>
+                            <span class="inline-flex items-center gap-1 font-semibold text-[#c92137]">
+                                <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                <span>{{ $article->nepali_views }} पटक पढिएको</span>
+                            </span>
+                        @endif
                     </div>
 
                     <div class="flex items-center gap-2">

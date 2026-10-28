@@ -22,6 +22,7 @@ class SettingSeeder extends Seeder
             'site_favicon' => 'settings/favicon.png',
             'news_profile_photo' => 'settings/profile-avatar.png',
             'footer_copyright' => 'कपिलवस्तु दर्पण न्यूज - कपिलवस्तु मल्टिपर्पोज मिडिया प्रा.लि. सर्वाधिकार सुरक्षित।',
+            'homepage_featured_rows' => 1,
 
             // Contact & Office
             'contact_email' => 'kapilvastudarpannews@gmail.com',
@@ -52,6 +53,7 @@ class SettingSeeder extends Seeder
             'legal_advisor' => 'अधिवक्ता राम कुमार शर्मा',
             'additional_team_members' => [],
             'show_article_editor_box' => false,
+            'show_article_view_count' => true,
 
             // Social Media Links
             'social_facebook' => 'https://facebook.com/kapilvastudarpan',

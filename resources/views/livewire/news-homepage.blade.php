@@ -8,7 +8,7 @@
         </form>
 
         <!-- Super Lead Main Headline Banner (Matches User Reference Image) -->
-        @if($leadStory)
+        @if($leadStory && $homepageFeaturedRows === 1)
             <section class="mb-12 border-b border-stone-200/90 pb-10 pt-2" aria-label="मुख्य ब्यानर समाचार">
                 <article class="group">
                     <h1 class="text-center font-black text-2xl sm:text-3xl md:text-4xl lg:text-[42px] leading-tight sm:leading-snug text-stone-900 tracking-tight max-w-5xl mx-auto">
@@ -48,6 +48,46 @@
                         </p>
                     @endif
                 </article>
+            </section>
+        @endif
+
+        @if($homepageFeaturedRows > 1 && $featuredStories->isNotEmpty())
+            <section class="mb-12 border-b border-stone-200/90 pb-10 pt-2" aria-label="मुख्य ब्यानर समाचार">
+                <div class="mx-auto max-w-5xl space-y-8">
+                    @foreach($featuredStories as $featuredStory)
+                        <article class="group {{ $loop->last ? '' : 'border-b border-stone-200/90 pb-10' }}">
+                            <h2 class="text-center font-black text-2xl sm:text-3xl md:text-4xl lg:text-[42px] leading-tight sm:leading-snug text-stone-900 tracking-tight">
+                                <a wire:navigate.hover href="{{ article_url($featuredStory) }}" class="group-hover:text-[#c92137] transition-colors duration-200">
+                                    {{ $featuredStory->title }}
+                                </a>
+                            </h2>
+
+                            <div class="mt-4 mb-6 flex items-center justify-center gap-3 sm:gap-3.5 text-stone-900 font-medium flex-wrap">
+                                <span class="profile-avatar-dashed rounded-full w-10 h-10 sm:w-11 sm:h-11 shrink-0 overflow-hidden p-0.5 bg-white shadow-2xs">
+                                    <img src="{{ setting_image_url(setting('news_profile_photo'), 'images/profile-avatar.png') }}" alt="{{ $featuredStory->display_author }}" class="h-full w-full rounded-full object-contain">
+                                </span>
+                                <span class="font-extrabold text-stone-900 text-sm sm:text-base tracking-tight">{{ $featuredStory->display_author }}</span>
+                                <span class="inline-flex items-center gap-1.5 font-bold text-stone-800 text-sm sm:text-base">
+                                    <svg class="h-4 w-4 sm:h-4.5 sm:w-4.5 text-[#c92137] shrink-0 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                                        <circle cx="12" cy="12" r="9.5"></circle>
+                                        <polyline points="12 6.5 12 12 15.5 14"></polyline>
+                                    </svg>
+                                    <time datetime="{{ $featuredStory->published_at?->toIso8601String() }}">{{ $featuredStory->nepali_date }}</time>
+                                </span>
+                            </div>
+
+                            <a wire:navigate.hover href="{{ article_url($featuredStory) }}" class="block w-full rounded-xl sm:rounded-2xl overflow-hidden bg-stone-100 shadow-sm group-hover:shadow-md transition-all duration-300 aspect-[16/9] sm:aspect-[16/10] max-h-[580px]">
+                                <img src="{{ $featuredStory->image_url }}" alt="{{ $featuredStory->title }}" loading="{{ $loop->first ? 'eager' : 'lazy' }}" class="w-full h-full object-cover group-hover:scale-[1.015] transition-transform duration-500">
+                            </a>
+
+                            @if($featuredStory->excerpt)
+                                <p class="mt-5 mx-auto max-w-4xl text-center text-sm sm:text-base md:text-lg lg:text-[19px] text-stone-700 leading-relaxed font-normal">
+                                    <a wire:navigate.hover href="{{ article_url($featuredStory) }}" class="hover:text-stone-900 transition">{{ $featuredStory->excerpt }}</a>
+                                </p>
+                            @endif
+                        </article>
+                    @endforeach
+                </div>
             </section>
         @endif
 

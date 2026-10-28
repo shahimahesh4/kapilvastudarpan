@@ -33,13 +33,26 @@ class NewsHomepage extends Component
     public function render()
     {
         $homepageData = Cache::store('file')->remember('portal.homepage.v2', now()->addMinutes(2), function (): array {
-        // 1. Featured Lead Story
-        $leadStory = Article::query()
+        // 1. Featured stories shown in the configurable homepage feature rows.
+        $homepageFeaturedRows = min(5, max(1, (int) setting('homepage_featured_rows', 1)));
+        $featuredStories = Article::query()
             ->forCard()
             ->published()
             ->featured()
             ->latest('published_at')
-            ->first() ?? Article::query()->forCard()->published()->latest('published_at')->first();
+            ->take($homepageFeaturedRows)
+            ->get();
+
+        if ($featuredStories->isEmpty()) {
+            $featuredStories = Article::query()
+                ->forCard()
+                ->published()
+                ->latest('published_at')
+                ->take($homepageFeaturedRows)
+                ->get();
+        }
+
+        $leadStory = $featuredStories->first();
 
         // 2. Breaking News Ticker (Breaking or latest)
         $breakingNews = Article::query()
@@ -203,6 +216,8 @@ class NewsHomepage extends Component
 
         return [
             'leadStory' => $leadStory,
+            'featuredStories' => $featuredStories,
+            'homepageFeaturedRows' => $homepageFeaturedRows,
             'breakingNews' => $breakingNews,
             'flashNews' => $flashNews,
             'headlines' => $headlines,

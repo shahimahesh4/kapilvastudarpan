@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -57,6 +58,8 @@ class WebsiteSettings extends Page
     {
         $settings = Setting::getAll();
         $settings['maintenance_mode_enabled'] = app()->isDownForMaintenance();
+        $settings['show_article_view_count'] = Setting::getBool('show_article_view_count', true);
+        $settings['homepage_featured_rows'] = (int) Setting::get('homepage_featured_rows', 1);
 
         $this->form->fill($settings);
     }
@@ -135,6 +138,28 @@ class WebsiteSettings extends Page
                                             ->label('Footer Copyright Notice')
                                             ->placeholder('कपिलवस्तु दर्पण न्यूज - सर्वाधिकार सुरक्षित।')
                                             ->columnSpanFull(),
+                                    ]),
+                            ]),
+
+                        Tab::make('Homepage')
+                            ->label('Homepage Display')
+                            ->icon('heroicon-o-home')
+                            ->schema([
+                                Section::make('Featured News Layout')
+                                    ->description('Control how many featured news cards are shown, one card in each row.')
+                                    ->schema([
+                                        Select::make('homepage_featured_rows')
+                                            ->label('Featured Story Rows to Show')
+                                            ->options([
+                                                1 => '1 featured row',
+                                                2 => '2 featured rows',
+                                                3 => '3 featured rows',
+                                                4 => '4 featured rows',
+                                                5 => '5 featured rows',
+                                            ])
+                                            ->default(1)
+                                            ->required()
+                                            ->helperText('२, ४ वा ५ छान्दा त्यति नै फिचर्ड समाचारहरू तलमाथि, प्रत्येक पङ्क्तिमा एउटा, देखिन्छ।'),
                                     ]),
                             ]),
 
@@ -267,6 +292,11 @@ class WebsiteSettings extends Page
                                             ->label('Show Editor Bio Box on Article Pages')
                                             ->helperText('बन्द (disabled) गर्दा समाचार पृष्ठको अन्त्यमा देखिने सम्पादकीय परिचय कार्ड लुक्नेछ (पूर्वनिर्धारित: बन्द)।')
                                             ->default(false),
+
+                                        Toggle::make('show_article_view_count')
+                                            ->label('Show Article View Count')
+                                            ->helperText('Enable गर्दा समाचार पृष्ठमा कति पटक पढिएको छ भन्ने संख्या देखिन्छ।')
+                                            ->default(true),
                                     ]),
 
                                 Section::make('Extended Leadership & Advisory (थप सम्पादकीय तथा सल्लाहकार)')
