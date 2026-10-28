@@ -8,9 +8,6 @@
     <link rel="icon" type="image/png" href="{{ setting_image_url(setting('site_favicon'), 'images/favicon.png') }}">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <link rel="apple-touch-icon" href="{{ setting_image_url(setting('site_favicon'), 'images/favicon.png') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #c92137;
@@ -34,7 +31,7 @@
         }
 
         body {
-            font-family: 'Mukta', 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans Devanagari", "Noto Sans", sans-serif;
             background: radial-gradient(circle at top center, #ffffff 0%, #f8fafc 55%, #eef2f6 100%);
             color: var(--slate-900);
             min-height: 100vh;
@@ -248,7 +245,7 @@
             font-weight: 700;
             color: var(--primary);
             margin-bottom: 0.85rem;
-            font-family: 'Poppins', sans-serif;
+            font-family: inherit;
             letter-spacing: -0.01em;
         }
 
