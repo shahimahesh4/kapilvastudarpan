@@ -36,7 +36,7 @@
 
                     <!-- Large Hero Featured Photo -->
                     <a wire:navigate.hover href="{{ article_url($leadStory) }}" class="block w-full max-w-5xl mx-auto rounded-xl sm:rounded-2xl overflow-hidden bg-stone-100 shadow-sm group-hover:shadow-md transition-all duration-300 aspect-[16/9] sm:aspect-[16/10] max-h-[580px]">
-                        <img src="{{ $leadStory->image_url }}" alt="{{ $leadStory->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" width="1280" height="800" loading="eager" fetchpriority="high" decoding="async" class="w-full h-full object-cover group-hover:scale-[1.015] transition-transform duration-500">
+                        <img src="{{ $leadStory->imageUrl(1280) }}" alt="{{ $leadStory->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" width="1280" height="800" loading="eager" fetchpriority="high" decoding="async" class="w-full h-full object-cover group-hover:scale-[1.015] transition-transform duration-500">
                     </a>
 
                     <!-- Centered Excerpt Summary Paragraph -->
@@ -77,7 +77,7 @@
                             </div>
 
                             <a wire:navigate.hover href="{{ article_url($featuredStory) }}" class="block w-full rounded-xl sm:rounded-2xl overflow-hidden bg-stone-100 shadow-sm group-hover:shadow-md transition-all duration-300 aspect-[16/9] sm:aspect-[16/10] max-h-[580px]">
-                                <img src="{{ $featuredStory->image_url }}" alt="{{ $featuredStory->title }}" loading="{{ $loop->first ? 'eager' : 'lazy' }}" class="w-full h-full object-cover group-hover:scale-[1.015] transition-transform duration-500">
+                                <img src="{{ $featuredStory->imageUrl(1280) }}" alt="{{ $featuredStory->title }}" loading="{{ $loop->first ? 'eager' : 'lazy' }}" @if($loop->first) fetchpriority="high" @endif decoding="async" class="w-full h-full object-cover group-hover:scale-[1.015] transition-transform duration-500">
                             </a>
 
                             @if($featuredStory->excerpt)
@@ -113,7 +113,7 @@
                 @if(isset($headlines[0]))
                     <article class="lg:col-span-5 group">
                         <a wire:navigate.hover href="{{ article_url($headlines[0]) }}" class="relative block aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 shadow-sm hover:shadow-md transition-all duration-300">
-                            <img src="{{ $headlines[0]->image_url }}" alt="{{ $headlines[0]->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" loading="lazy" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+                            <img src="{{ $headlines[0]->imageUrl(960) }}" alt="{{ $headlines[0]->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" loading="eager" fetchpriority="high" decoding="async" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 via-30% to-transparent pointer-events-none"></div>
                             @php $hCat = $headlines[0]->categories->first() ?? $headlines[0]->category; @endphp
                             @if($hCat)

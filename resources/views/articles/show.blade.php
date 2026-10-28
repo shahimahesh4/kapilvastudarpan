@@ -386,7 +386,7 @@
                 <!-- Featured Image Container -->
                 <figure class="mt-6">
                     <div class="aspect-[16/9] sm:aspect-[16/10] rounded-2xl overflow-hidden bg-stone-100 shadow-md border border-stone-200/80 group">
-                        <img src="{{ $article->image_url }}" alt="{{ $article->title }}" class="h-full w-full object-cover group-hover:scale-[1.015] transition-transform duration-500" loading="eager" fetchpriority="high">
+                        <img src="{{ $article->imageUrl(1280) }}" alt="{{ $article->title }}" class="h-full w-full object-cover group-hover:scale-[1.015] transition-transform duration-500" loading="eager" fetchpriority="high" decoding="async">
                     </div>
                     <figcaption class="mt-2.5 flex items-center justify-between text-xs text-stone-500 italic px-1">
                         <span class="flex items-center gap-1.5">

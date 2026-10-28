@@ -296,7 +296,8 @@ class Article extends Model
 
     public function getImageUrlAttribute(): string
     {
-        return $this->imageUrl();
+        // Card images are normally rendered at roughly 300px wide; serve a 640px WebP rendition for sharp 2x displays.
+        return $this->imageUrl(640);
     }
 
     /**

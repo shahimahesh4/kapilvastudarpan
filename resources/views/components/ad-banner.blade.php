@@ -5,6 +5,11 @@
 
 @php
     $ads = \App\Models\Advertisement::active()->placement($placement)->get();
+    $imageWidth = match ($placement) {
+        'header', 'home_top', 'home_middle' => 970,
+        'sidebar' => 600,
+        default => 640,
+    };
 @endphp
 
 @if($ads->isNotEmpty())
@@ -20,9 +25,9 @@
                 <div class="p-2 flex items-center justify-center">
                     {!! $ad->code_snippet !!}
                 </div>
-            @elseif($ad->image_url)
+            @elseif($ad->imageUrl($imageWidth))
                 <a href="{{ route('ads.click', $ad) }}" target="_blank" rel="sponsored noopener noreferrer" class="block w-full h-full group">
-                    <img src="{{ $ad->image_url }}" alt="{{ $ad->title }}" class="h-full w-full object-cover transition duration-300 group-hover:opacity-95" loading="lazy">
+                    <img src="{{ $ad->imageUrl($imageWidth) }}" alt="{{ $ad->title }}" class="h-full w-full object-cover transition duration-300 group-hover:opacity-95" loading="lazy" decoding="async">
                 </a>
             @endif
         </div>
@@ -49,9 +54,9 @@
                             <div class="p-2 flex items-center justify-center h-full">
                                 {!! $ad->code_snippet !!}
                             </div>
-                        @elseif($ad->image_url)
+                        @elseif($ad->imageUrl($imageWidth))
                             <a href="{{ route('ads.click', $ad) }}" target="_blank" rel="sponsored noopener noreferrer" class="block w-full h-full group">
-                                <img src="{{ $ad->image_url }}" alt="{{ $ad->title }}" class="h-full w-full object-cover transition duration-300 group-hover:opacity-95" loading="lazy">
+                                <img src="{{ $ad->imageUrl($imageWidth) }}" alt="{{ $ad->title }}" class="h-full w-full object-cover transition duration-300 group-hover:opacity-95" loading="lazy" decoding="async">
                             </a>
                         @endif
                     </div>

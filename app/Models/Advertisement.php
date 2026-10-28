@@ -71,7 +71,7 @@ class Advertisement extends Model
         $this->increment('clicks');
     }
 
-    public function getImageUrlAttribute(): ?string
+    public function imageUrl(int $width = 970): ?string
     {
         if (empty($this->image_path)) {
             return null;
@@ -81,10 +81,19 @@ class Advertisement extends Model
             return $this->image_path;
         }
 
+        if (str_starts_with($this->image_path, 'images/ads/')) {
+            return route('images.optimized', ['path' => $this->image_path, 'w' => $width]);
+        }
+
         if (str_starts_with($this->image_path, 'images/')) {
             return asset($this->image_path);
         }
 
         return asset('storage/' . $this->image_path);
+    }
+
+    public function getImageUrlAttribute(): ?string
+    {
+        return $this->imageUrl();
     }
 }

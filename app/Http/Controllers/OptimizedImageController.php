@@ -14,12 +14,18 @@ class OptimizedImageController extends Controller
      */
     public function show(Request $request, string $path): Response
     {
-        abort_unless(str_starts_with($path, 'articles/') || str_starts_with($path, 'media/'), 404);
+        $isPublicAsset = str_starts_with($path, 'images/ads/')
+            || in_array($path, ['images/rashifal-icons.png', 'images/rashifal-icons-red.png'], true);
+        abort_unless($isPublicAsset || str_starts_with($path, 'articles/') || str_starts_with($path, 'media/'), 404);
 
-        $disk = Storage::disk('public');
-        abort_unless($disk->exists($path), 404);
-
-        $source = $disk->path($path);
+        if ($isPublicAsset) {
+            $source = public_path($path);
+            abort_unless(File::exists($source), 404);
+        } else {
+            $disk = Storage::disk('public');
+            abort_unless($disk->exists($path), 404);
+            $source = $disk->path($path);
+        }
         $width = min(1600, max(160, (int) $request->integer('w', 960)));
         $cachePath = storage_path('app/image-cache/'.sha1($path.'|'.filemtime($source).'|'.$width).'.webp');
 
@@ -30,7 +36,7 @@ class OptimizedImageController extends Controller
 
         return response()->file($cachePath, [
             'Content-Type' => 'image/webp',
-            'Cache-Control' => 'public, max-age=604800, immutable',
+            'Cache-Control' => 'public, max-age=31536000, immutable',
         ]);
     }
 
@@ -43,6 +49,7 @@ class OptimizedImageController extends Controller
             'image/jpeg' => @imagecreatefromjpeg($source),
             'image/png' => @imagecreatefrompng($source),
             'image/webp' => @imagecreatefromwebp($source),
+            'image/gif' => @imagecreatefromgif($source),
             default => null,
         };
         abort_unless($image, 415);

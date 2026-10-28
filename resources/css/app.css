@@ -341,7 +341,7 @@
     .story-art--sports-partner { @apply from-amber-950 via-red-800 to-amber-300; background-image: repeating-linear-gradient(90deg, rgba(255,211,135,.14) 0 2%, transparent 2% 10%), linear-gradient(145deg, #381211, #9c3924 55%, #dfad55); }
     .story-art--political-feature { @apply from-blue-950 via-blue-700 to-slate-300; background-image: radial-gradient(ellipse at 51% 45%, #f4d5bd 0 7%, #ede3d7 7.2% 10%, transparent 10.3%), radial-gradient(ellipse at 50% 70%, #20283e 0 19%, transparent 19.3%), linear-gradient(180deg, rgba(35, 96, 164, .22) 0 45%, rgba(15, 42, 83, .7) 45% 100%), linear-gradient(135deg, #8ab6e7 0 48%, #174d94 48% 100%); }
     .story-art__stamp { @apply absolute bottom-3 left-3 z-10 bg-[#a50404] px-2 py-1 text-xs font-extrabold tracking-wide text-white; }
-    .rashi-icon { display: block; width: 5rem; height: 5rem; margin: 0 auto; padding: 0.65rem; border: 2px solid #e25601; border-radius: 9999px; background-color: #fffdf5; background-image: url('/images/rashifal-icons.png'); background-repeat: no-repeat; background-origin: content-box; background-clip: content-box; background-size: 600% 200%; box-shadow: 0 2px 8px rgba(226, 86, 1, 0.15); }
+    .rashi-icon { display: block; width: 5rem; height: 5rem; margin: 0 auto; padding: 0.65rem; border: 2px solid #e25601; border-radius: 9999px; background-color: #fffdf5; background-image: url('/optimized-image/images/rashifal-icons.png?w=600'); background-repeat: no-repeat; background-origin: content-box; background-clip: content-box; background-size: 600% 200%; box-shadow: 0 2px 8px rgba(226, 86, 1, 0.15); }
     .rashi-icon--0 { background-position: 0% 0%; }
     .rashi-icon--1 { background-position: 20% 0%; }
     .rashi-icon--2 { background-position: 40% 0%; }
