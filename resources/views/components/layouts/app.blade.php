@@ -110,6 +110,12 @@
     <meta name="twitter:description" content="{{ $description }}">
     <meta name="twitter:image" content="{{ $shareImage }}">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    {{-- Do not make the Google Fonts stylesheet block first paint. The system-font
+         fallback is used briefly while Mukta loads for Nepali text. --}}
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&display=swap"></noscript>
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
     <title>{{ $pageTitle }}</title>
