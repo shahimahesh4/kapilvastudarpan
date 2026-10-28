@@ -100,7 +100,7 @@
     /* Dark mode uses layered slate surfaces instead of a flat black page, retaining readable hierarchy. */
     .site-dark { background: #020617 !important; color: #f8fafc; }
     .site-dark header { background-color: #0b1220 !important; border-color: #1e293b !important; }
-    .site-dark .bg-white { background-color: #111827 !important; }
+    .site-dark .bg-white { background-color: #000000 !important; }
     .site-dark .bg-stone-50, .site-dark .bg-stone-50\/80, .site-dark .bg-stone-100 { background-color: #0f172a !important; }
     .site-dark .bg-\[\#effaff\] { background-color: #0b1d31 !important; }
     .site-dark .bg-\[\#fff7f7\], .site-dark .bg-\[\#fdfdfc\] { background-color: #16121b !important; }
