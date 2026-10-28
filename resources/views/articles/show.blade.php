@@ -484,7 +484,7 @@
 
                     <!-- Comment Submission Box -->
                     <div class="mb-8">
-                        @auth
+                        @if(auth()->check())
                             <div class="rounded-2xl border border-stone-200 bg-stone-50/70 p-4 sm:p-5">
                                 <div class="flex items-center justify-between mb-3">
                                     <div class="flex items-center gap-2.5">
@@ -581,7 +581,7 @@
                                     </button>
                                 </div>
                             </div>
-                        @endauth
+                        @endif
                     </div>
 
                     <!-- Existing Comments List -->
@@ -619,7 +619,7 @@
                                 <!-- Comment Footer Actions (Reply button) -->
                                 <div class="mt-3.5 flex items-center justify-between border-t border-stone-200/70 pt-2.5 pl-11">
                                     <div>
-                                        @auth
+                                        @if(auth()->check())
                                             <button
                                                 type="button"
                                                 @click="replyingTo = (replyingTo === {{ $comment->id }} ? null : {{ $comment->id }}); replyingToAuthor = '{{ addslashes($comment->user?->name ?: 'नागरिक') }}'"
@@ -637,7 +637,7 @@
                                                 <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg>
                                                 <span>जवाफ दिनुहोस् (Reply)</span>
                                             </button>
-                                        @endauth
+                                        @endif
                                     </div>
 
                                     @if($comment->replies && $comment->replies->count() > 0)
@@ -648,7 +648,7 @@
                                 </div>
 
                                 <!-- Inline Reply Form -->
-                                @auth
+                                @if(auth()->check())
                                     <div x-show="replyingTo === {{ $comment->id }}" x-cloak x-transition class="mt-4 pl-0 sm:pl-11">
                                         <div class="rounded-xl border border-blue-200 bg-blue-50/50 p-3.5 sm:p-4">
                                             <div class="flex items-center justify-between mb-2">
@@ -707,7 +707,7 @@
                                             </form>
                                         </div>
                                     </div>
-                                @endauth
+                                @endif
 
                                 <!-- Threaded Replies List -->
                                 @if($comment->replies && $comment->replies->count() > 0)
