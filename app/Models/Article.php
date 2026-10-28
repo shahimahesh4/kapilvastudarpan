@@ -311,6 +311,17 @@ class Article extends Model
             return asset('images/kapilvastu-darpan-logo.jpg');
         }
 
+        if (str_contains($this->image_path, 'images.unsplash.com/')) {
+            // Sample/legacy Unsplash URLs are outside our control and can expire.
+            // Never ask the browser to fetch them: use a small image served by this
+            // application instead, avoiding console 404s and third-party requests.
+            return route('images.optimized', [
+                'path' => 'images/kapilvastu-darpan-logo.jpg',
+                'w' => $width,
+                'v' => 1,
+            ]);
+        }
+
         if (str_starts_with($this->image_path, 'http://') || str_starts_with($this->image_path, 'https://')) {
             return $this->image_path;
         }
