@@ -105,6 +105,12 @@
     .site-dark .bg-\[\#effaff\] { background-color: #0b1d31 !important; }
     .site-dark .bg-\[\#fff7f7\], .site-dark .bg-\[\#fdfdfc\] { background-color: #16121b !important; }
     .site-dark .bg-gradient-to-br.from-red-50, .site-dark .bg-gradient-to-br.from-red-50.via-white { background-image: none !important; background-color: #111827 !important; }
+    /* Reusable homepage editorial panels: remove light Tailwind gradients in dark mode. */
+    .site-dark .homepage-section-panel {
+        background: linear-gradient(145deg, #101b30 0%, #081222 100%) !important;
+        border-color: #2a3b56 !important;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, .24) !important;
+    }
     .site-dark .text-stone-900, .site-dark .text-stone-800, .site-dark .text-\[\#073c61\] { color: #f8fafc !important; }
     .site-dark .text-stone-700, .site-dark .text-stone-600 { color: #dbe4f0 !important; }
     .site-dark .text-stone-500, .site-dark .text-stone-400, .site-dark .text-stone-300 { color: #aebcd0 !important; }

@@ -238,7 +238,7 @@
         </section>
 
         <!-- Section: राजनीति (Politics - Pro Modern Magazine) -->
-        <section class="mb-10 rounded-2xl border border-stone-200/80 bg-linear-to-b from-stone-50/50 to-white p-5 sm:p-6 shadow-xs" aria-labelledby="politics-heading">
+        <section class="homepage-section-panel mb-10 rounded-2xl border border-stone-200/80 bg-linear-to-b from-stone-50/50 to-white p-5 sm:p-6 shadow-xs" aria-labelledby="politics-heading">
             <div class="mb-5 flex items-center justify-between border-b border-stone-200 pb-3">
                 <div class="flex items-center gap-2.5">
                     <span class="inline-block h-6 w-1.5 rounded-full bg-[#c92137]"></span>
@@ -290,7 +290,7 @@
         </section>
 
         <!-- Section: अर्थतन्त्र (Economy - Magazine Hero Style Matching Sample) -->
-        <section class="mb-10 rounded-2xl border border-stone-200/80 bg-linear-to-b from-stone-50/40 to-white p-5 sm:p-6 shadow-xs" aria-labelledby="economy-heading">
+        <section class="homepage-section-panel mb-10 rounded-2xl border border-stone-200/80 bg-linear-to-b from-stone-50/40 to-white p-5 sm:p-6 shadow-xs" aria-labelledby="economy-heading">
             <div class="mb-5 flex items-center justify-between border-b border-stone-200 pb-3">
                 <div class="flex items-center gap-2.5">
                     <span class="inline-block h-6 w-1.5 rounded-full bg-emerald-600"></span>
@@ -463,7 +463,7 @@
         </aside>
 
                 <!-- Section: समाज (Society - Pro Modern Magazine) -->
-        <section class="mb-10 rounded-2xl border border-stone-200/80 bg-linear-to-b from-stone-50/50 to-white p-5 sm:p-6 shadow-xs" aria-labelledby="society-heading">
+        <section class="homepage-section-panel mb-10 rounded-2xl border border-stone-200/80 bg-linear-to-b from-stone-50/50 to-white p-5 sm:p-6 shadow-xs" aria-labelledby="society-heading">
             <div class="mb-5 flex items-center justify-between border-b border-stone-200 pb-3">
                 <div class="flex items-center gap-2.5">
                     <span class="inline-block h-6 w-1.5 rounded-full bg-blue-600"></span>
@@ -514,7 +514,7 @@
             </div>
         </section>
         <!-- Section: अपराध-सुरक्षा (Crime & Security - Magazine Hero Style Matching Sample) -->
-        <section class="mb-10 rounded-2xl border border-stone-200/80 bg-linear-to-b from-stone-50/40 to-white p-5 sm:p-6 shadow-xs" aria-labelledby="security-heading">
+        <section class="homepage-section-panel mb-10 rounded-2xl border border-stone-200/80 bg-linear-to-b from-stone-50/40 to-white p-5 sm:p-6 shadow-xs" aria-labelledby="security-heading">
             <div class="mb-5 flex items-center justify-between border-b border-stone-200 pb-3">
                 <div class="flex items-center gap-2.5">
                     <span class="inline-block h-6 w-1.5 rounded-full bg-slate-800"></span>
@@ -570,7 +570,7 @@
             </div>
         </section>
 <!-- Section: खेलकुद (Sports - Magazine Hero Style Matching Sample) -->
-        <section class="mb-10 rounded-2xl border border-stone-200/80 bg-linear-to-b from-stone-50/40 to-white p-5 sm:p-6 shadow-xs" aria-labelledby="sports-heading">
+        <section class="homepage-section-panel mb-10 rounded-2xl border border-stone-200/80 bg-linear-to-b from-stone-50/40 to-white p-5 sm:p-6 shadow-xs" aria-labelledby="sports-heading">
             <div class="mb-5 flex items-center justify-between border-b border-stone-200 pb-3">
                 <div class="flex items-center gap-2.5">
                     <span class="inline-block h-6 w-1.5 rounded-full bg-[#c92137]"></span>
@@ -627,7 +627,7 @@
         </section>
 
         <!-- Section 9: विचार (Opinions & Editorials - Pro Modern Magazine) -->
-        <section class="mb-10 rounded-2xl border border-stone-200/80 bg-linear-to-b from-stone-50/50 to-white p-5 sm:p-6 shadow-xs" aria-labelledby="opinion-heading">
+        <section class="homepage-section-panel mb-10 rounded-2xl border border-stone-200/80 bg-linear-to-b from-stone-50/50 to-white p-5 sm:p-6 shadow-xs" aria-labelledby="opinion-heading">
             <div class="mb-5 flex items-center justify-between border-b border-stone-200 pb-3">
                 <div class="flex items-center gap-2.5">
                     <span class="inline-block h-6 w-1.5 rounded-full bg-[#c92137]"></span>
@@ -678,7 +678,7 @@
         </section>
 
                 <!-- Section: स्वास्थ्य (Health - Pro Modern Magazine) -->
-        <section class="mb-10 rounded-2xl border border-stone-200/80 bg-linear-to-b from-stone-50/50 to-white p-5 sm:p-6 shadow-xs" aria-labelledby="health-heading">
+        <section class="homepage-section-panel mb-10 rounded-2xl border border-stone-200/80 bg-linear-to-b from-stone-50/50 to-white p-5 sm:p-6 shadow-xs" aria-labelledby="health-heading">
             <div class="mb-5 flex items-center justify-between border-b border-stone-200 pb-3">
                 <div class="flex items-center gap-2.5">
                     <span class="inline-block h-6 w-1.5 rounded-full bg-teal-600"></span>
