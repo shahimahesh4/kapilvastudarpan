@@ -419,6 +419,8 @@
             <div class="mb-5 flex gap-2 overflow-x-auto pb-2 pt-1 no-scrollbar" role="tablist">
                 @foreach($provincesList as $prov)
                     <button type="button"
+                        role="tab"
+                        :aria-selected="active === '{{ $prov }}' ? 'true' : 'false'"
                         @click="active = '{{ $prov }}'"
                         :class="active === '{{ $prov }}'
                             ? 'bg-[#c92137] text-white shadow-md shadow-red-600/25 ring-2 ring-red-400/40 font-black scale-[1.02]'

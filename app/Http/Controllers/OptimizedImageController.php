@@ -14,13 +14,24 @@ class OptimizedImageController extends Controller
      */
     public function show(Request $request, string $path): Response
     {
-        $isPublicAsset = str_starts_with($path, 'images/ads/')
-            || in_array($path, ['images/rashifal-icons.png', 'images/rashifal-icons-red.png'], true);
+        // Older uploads live directly in public/images while newer uploads are on
+        // the public storage disk. Treat both consistently so old news photos do
+        // not bypass WebP conversion and long-lived browser caching.
+        $isPublicAsset = str_starts_with($path, 'images/');
         abort_unless($isPublicAsset || str_starts_with($path, 'articles/') || str_starts_with($path, 'media/'), 404);
 
         if ($isPublicAsset) {
-            $source = public_path($path);
-            abort_unless(File::exists($source), 404);
+            $imagesRoot = realpath(public_path('images'));
+            $source = realpath(public_path($path));
+            // Resolve the path first, then require it to remain inside public/images.
+            // This permits public images only and prevents ../ path traversal.
+            abort_unless(
+                $imagesRoot
+                && $source
+                && str_starts_with($source, $imagesRoot . DIRECTORY_SEPARATOR)
+                && File::isFile($source),
+                404,
+            );
         } else {
             $disk = Storage::disk('public');
             abort_unless($disk->exists($path), 404);

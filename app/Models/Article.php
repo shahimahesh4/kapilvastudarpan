@@ -315,7 +315,11 @@ class Article extends Model
             return $this->image_path;
         }
 
-        if (str_starts_with($this->image_path, 'articles/') || str_starts_with($this->image_path, 'media/')) {
+        if (
+            str_starts_with($this->image_path, 'articles/')
+            || str_starts_with($this->image_path, 'media/')
+            || str_starts_with($this->image_path, 'images/')
+        ) {
             return route('images.optimized', [
                 'path' => $this->image_path,
                 'w' => $width,
