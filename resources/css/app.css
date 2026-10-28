@@ -101,10 +101,47 @@
     .site-dark { background: #020617 !important; color: #f8fafc; }
     .site-dark header { background-color: #0b1220 !important; border-color: #1e293b !important; }
     .site-dark .bg-white { background-color: #000000 !important; }
-    .site-dark .bg-stone-50, .site-dark .bg-stone-50\/80, .site-dark .bg-stone-100 { background-color: #0f172a !important; }
+    /* Shared light surfaces: these utilities are used across the homepage, forms, dashboards and static pages. */
+    .site-dark .bg-white\/40,
+    .site-dark .bg-white\/50,
+    .site-dark .bg-white\/60,
+    .site-dark .bg-white\/70,
+    .site-dark .bg-white\/80,
+    .site-dark .bg-white\/90,
+    .site-dark .bg-white\/95 { background-color: #0b1424 !important; }
+    .site-dark .bg-stone-50,
+    .site-dark .bg-stone-50\/40,
+    .site-dark .bg-stone-50\/50,
+    .site-dark .bg-stone-50\/60,
+    .site-dark .bg-stone-50\/70,
+    .site-dark .bg-stone-50\/80,
+    .site-dark .bg-stone-50\/90,
+    .site-dark .bg-stone-100,
+    .site-dark .bg-stone-100\/50,
+    .site-dark .bg-stone-100\/70,
+    .site-dark .bg-stone-100\/80,
+    .site-dark .bg-gray-50,
+    .site-dark .bg-slate-50,
+    .site-dark .bg-neutral-50 { background-color: #0f172a !important; }
     .site-dark .bg-\[\#effaff\] { background-color: #0b1d31 !important; }
     .site-dark .bg-\[\#fff7f7\], .site-dark .bg-\[\#fdfdfc\] { background-color: #16121b !important; }
     .site-dark .bg-gradient-to-br.from-red-50, .site-dark .bg-gradient-to-br.from-red-50.via-white { background-image: none !important; background-color: #111827 !important; }
+    .site-dark .from-white,
+    .site-dark .via-white,
+    .site-dark .to-white,
+    .site-dark .from-stone-50,
+    .site-dark .via-stone-50,
+    .site-dark .to-stone-50,
+    .site-dark .from-gray-50,
+    .site-dark .via-gray-50,
+    .site-dark .to-gray-50,
+    .site-dark .from-slate-50,
+    .site-dark .via-slate-50,
+    .site-dark .to-slate-50 {
+        --tw-gradient-from: #132038 var(--tw-gradient-from-position) !important;
+        --tw-gradient-via: #0f1b2e var(--tw-gradient-via-position) !important;
+        --tw-gradient-to: #08111f var(--tw-gradient-to-position) !important;
+    }
     /* Reusable homepage editorial panels: remove light Tailwind gradients in dark mode. */
     .site-dark .homepage-section-panel {
         background: linear-gradient(145deg, #101b30 0%, #081222 100%) !important;
@@ -140,11 +177,102 @@
     .site-dark .article-reader-page .border-red-200,
     .site-dark .article-reader-page .border-red-200\/80,
     .site-dark .article-reader-page .border-red-200\/90 { border-color: #703142 !important; }
+    /* Article archives use a quieter card hierarchy while keeping the editorial red accent vivid. */
+    .site-dark .article-archive-page .bg-white {
+        background-color: #0b1424 !important;
+        border-color: #2d405c !important;
+    }
+    .site-dark .article-archive-page .bg-stone-50,
+    .site-dark .article-archive-page .bg-stone-100,
+    .site-dark .article-archive-page .bg-stone-100\/70 {
+        background-color: #121f34 !important;
+    }
+    .site-dark .article-archive-page .bg-red-50,
+    .site-dark .article-archive-page .bg-red-50\/70,
+    .site-dark .article-archive-page .bg-red-100 {
+        background-color: #351720 !important;
+    }
+    .site-dark .article-archive-page .border-stone-100,
+    .site-dark .article-archive-page .border-stone-200,
+    .site-dark .article-archive-page .border-stone-200\/90,
+    .site-dark .article-archive-page .border-stone-300,
+    .site-dark .article-archive-page .divide-stone-100,
+    .site-dark .article-archive-page .divide-stone-200 {
+        border-color: #2d405c !important;
+    }
+    .site-dark .article-archive-page .border-red-200,
+    .site-dark .article-archive-page .border-red-200\/70,
+    .site-dark .article-archive-page .border-red-200\/80 {
+        border-color: #703142 !important;
+    }
+    .site-dark .article-archive-page .bg-gradient-to-br.from-stone-50 {
+        background: linear-gradient(145deg, #14233a 0%, #0b1424 100%) !important;
+        border-color: #31445f !important;
+    }
+    .site-dark .article-archive-page input {
+        color: #f8fafc !important;
+        caret-color: #fda4af;
+    }
+    .site-dark .article-archive-page input::placeholder { color: #94a3b8 !important; }
+    /* Catch translucent white utilities and white gradient stops used inside article controls. */
+    .site-dark .article-reader-page .bg-white\/80,
+    .site-dark .article-reader-page .bg-white\/95,
+    .site-dark .article-archive-page .bg-white\/80,
+    .site-dark .article-archive-page .bg-white\/95 {
+        background-color: #0f1b2e !important;
+    }
+    .site-dark .article-reader-page .from-white,
+    .site-dark .article-reader-page .via-white,
+    .site-dark .article-reader-page .to-white,
+    .site-dark .article-archive-page .from-white,
+    .site-dark .article-archive-page .via-white,
+    .site-dark .article-archive-page .to-white {
+        --tw-gradient-from: #101b2e var(--tw-gradient-from-position) !important;
+        --tw-gradient-via: #101b2e var(--tw-gradient-via-position) !important;
+        --tw-gradient-to: #0b1424 var(--tw-gradient-to-position) !important;
+    }
+    .site-dark .article-reader-page .text-black,
+    .site-dark .article-reader-page .text-gray-900,
+    .site-dark .article-reader-page .text-slate-900,
+    .site-dark .article-archive-page .text-black,
+    .site-dark .article-archive-page .text-gray-900,
+    .site-dark .article-archive-page .text-slate-900 {
+        color: #f8fafc !important;
+    }
     .site-dark .text-stone-900, .site-dark .text-stone-800, .site-dark .text-\[\#073c61\] { color: #f8fafc !important; }
     .site-dark .text-stone-700, .site-dark .text-stone-600 { color: #dbe4f0 !important; }
     .site-dark .text-stone-500, .site-dark .text-stone-400, .site-dark .text-stone-300 { color: #aebcd0 !important; }
-    .site-dark .border-stone-200, .site-dark .border-stone-200\/90, .site-dark .border-stone-300, .site-dark .border-sky-100, .site-dark .divide-stone-200, .site-dark .divide-stone-300 { border-color: #334155 !important; }
+    .site-dark .text-black,
+    .site-dark .text-gray-900,
+    .site-dark .text-slate-900,
+    .site-dark .text-zinc-900,
+    .site-dark .text-neutral-900,
+    .site-dark .text-\[\#172b4d\] { color: #f8fafc !important; }
+    .site-dark .text-gray-800,
+    .site-dark .text-slate-800,
+    .site-dark .text-zinc-800,
+    .site-dark .text-neutral-800 { color: #dbe4f0 !important; }
+    .site-dark .border-stone-100,
+    .site-dark .border-stone-200,
+    .site-dark .border-stone-200\/80,
+    .site-dark .border-stone-200\/90,
+    .site-dark .border-stone-300,
+    .site-dark .border-gray-200,
+    .site-dark .border-slate-200,
+    .site-dark .border-sky-100,
+    .site-dark .divide-stone-100,
+    .site-dark .divide-stone-200,
+    .site-dark .divide-stone-300 { border-color: #334155 !important; }
     .site-dark .bg-stone-200, .site-dark .bg-stone-200\/70 { background-color: #334155 !important; }
+    .site-dark input:not([type='checkbox']):not([type='radio']),
+    .site-dark textarea,
+    .site-dark select {
+        background-color: #0b1424 !important;
+        color: #f8fafc !important;
+        border-color: #3b4d67 !important;
+    }
+    .site-dark input::placeholder,
+    .site-dark textarea::placeholder { color: #94a3b8 !important; }
     .site-dark .theme-toggle { border-color: #475569 !important; background: #0f172a !important; }
     .site-dark .theme-toggle__moon { background: #1d4ed8 !important; color: #ffffff !important; }
     .site-dark footer[aria-labelledby="footer-heading"] {

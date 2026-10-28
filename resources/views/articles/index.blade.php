@@ -12,7 +12,7 @@
     :canonical="$archiveCanonical"
     :robots="$isSearchPage ? 'noindex, follow' : 'index, follow'"
 >
-    <main class="mx-auto max-w-[1280px] px-4 py-6 sm:py-8 sm:px-6 lg:px-8" x-data="{
+    <main class="article-archive-page mx-auto max-w-[1280px] px-4 py-6 sm:py-8 sm:px-6 lg:px-8" x-data="{
         viewMode: localStorage.getItem('kd_cat_view') || 'grid',
         setView(mode) {
             this.viewMode = mode;
