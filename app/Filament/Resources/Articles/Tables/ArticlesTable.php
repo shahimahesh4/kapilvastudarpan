@@ -139,7 +139,7 @@ class ArticlesTable
                         ->label('View')
                         ->icon('heroicon-o-arrow-top-right-on-square')
                         ->color('gray')
-                        ->url(fn (Article $record): string => route('articles.show', $record->slug))
+                        ->url(fn (Article $record): string => article_url($record))
                         ->openUrlInNewTab()
                         ->visible(fn (Article $record): bool => ! $record->trashed()),
 

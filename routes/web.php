@@ -61,8 +61,14 @@ Route::get('/search', [ArticleController::class, 'search'])
 Route::get('/category/{category:slug}', [ArticleController::class, 'category'])
     ->name('category.show');
 
-Route::get('/news/{article:slug}', [ArticleController::class, 'show'])
+// Canonical article permalinks: /2026/10/28/193125
+Route::get('/{year}/{month}/{day}/{article}', [ArticleController::class, 'show'])
+    ->whereNumber(['year', 'month', 'day', 'article'])
     ->name('articles.show');
+
+// Preserve existing shared article links and let search engines transfer their ranking signals.
+Route::get('/news/{article:slug}', [ArticleController::class, 'redirectLegacy'])
+    ->name('articles.legacy');
 
 Route::post('/news/{article:slug}/comments', [ArticleController::class, 'storeComment'])
     ->name('articles.comments.store');

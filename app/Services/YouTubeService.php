@@ -322,7 +322,7 @@ class YouTubeService
                 'excerpt' => $article->excerpt,
                 'image_url' => $article->image_url,
                 'published_at' => $article->published_at ?? $article->created_at,
-                'url' => route('articles.show', $article->slug),
+                'url' => article_url($article),
                 'embed_url' => $videoId ? "https://www.youtube.com/embed/{$videoId}" : null,
                 'duration' => 'HD ०५:२४',
                 'is_youtube' => false,

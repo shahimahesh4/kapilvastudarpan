@@ -764,7 +764,7 @@
                 <!-- Previous & Next Article Navigation Cards -->
                 <div class="mt-8 grid gap-4 sm:grid-cols-2 border-t border-stone-200 pt-6">
                     @if(isset($previousArticle) && $previousArticle)
-                        <a href="{{ route('articles.show', $previousArticle->slug) }}" wire:navigate.hover class="group flex gap-3.5 items-center rounded-xl border border-stone-200 bg-white p-3.5 shadow-2xs hover:border-[#c92137] hover:shadow-md transition-all duration-200">
+                        <a href="{{ article_url($previousArticle) }}" wire:navigate.hover class="group flex gap-3.5 items-center rounded-xl border border-stone-200 bg-white p-3.5 shadow-2xs hover:border-[#c92137] hover:shadow-md transition-all duration-200">
                             <div class="relative h-16 w-20 shrink-0 overflow-hidden rounded-lg bg-stone-100 border border-stone-200/80">
                                 <img src="{{ $previousArticle->image_url }}" alt="{{ $previousArticle->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async">
                             </div>
@@ -783,7 +783,7 @@
                     @endif
 
                     @if(isset($nextArticle) && $nextArticle)
-                        <a href="{{ route('articles.show', $nextArticle->slug) }}" wire:navigate.hover class="group flex flex-row-reverse gap-3.5 items-center rounded-xl border border-stone-200 bg-white p-3.5 text-right shadow-2xs hover:border-[#c92137] hover:shadow-md transition-all duration-200">
+                        <a href="{{ article_url($nextArticle) }}" wire:navigate.hover class="group flex flex-row-reverse gap-3.5 items-center rounded-xl border border-stone-200 bg-white p-3.5 text-right shadow-2xs hover:border-[#c92137] hover:shadow-md transition-all duration-200">
                             <div class="relative h-16 w-20 shrink-0 overflow-hidden rounded-lg bg-stone-100 border border-stone-200/80">
                                 <img src="{{ $nextArticle->image_url }}" alt="{{ $nextArticle->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async">
                             </div>
@@ -835,7 +835,7 @@
                         <div class="grid gap-6 sm:grid-cols-2">
                             @foreach($relatedArticles as $rel)
                                 <article class="article-related-surface rounded-xl border border-stone-200/90 bg-white p-3.5 shadow-xs hover:shadow-md hover:border-red-200 transition-all duration-300 group">
-                                    <a href="{{ route('articles.show', $rel->slug) }}" wire:navigate.hover class="block aspect-[16/9] rounded-lg overflow-hidden bg-stone-100 relative">
+                                    <a href="{{ article_url($rel) }}" wire:navigate.hover class="block aspect-[16/9] rounded-lg overflow-hidden bg-stone-100 relative">
                                         <img src="{{ $rel->image_url }}" alt="{{ $rel->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async">
                                         @php $relCat = $rel->categories->first() ?? $rel->category; @endphp
                                         @if($relCat)
@@ -845,7 +845,7 @@
                                         @endif
                                     </a>
                                     <h3 class="mt-3">
-                                        <a href="{{ route('articles.show', $rel->slug) }}" wire:navigate.hover class="block text-base font-extrabold leading-snug text-stone-900 group-hover:text-[#c92137] hover:underline line-clamp-2 transition-colors">
+                                        <a href="{{ article_url($rel) }}" wire:navigate.hover class="block text-base font-extrabold leading-snug text-stone-900 group-hover:text-[#c92137] hover:underline line-clamp-2 transition-colors">
                                             {{ $rel->title }}
                                         </a>
                                     </h3>
@@ -880,7 +880,7 @@
                     <ol class="divide-y divide-red-100/80">
                         @foreach($trendingArticles as $trend)
                             <li class="py-3 group first:pt-1 last:pb-1">
-                                <a href="{{ route('articles.show', $trend->slug) }}" wire:navigate.hover class="flex gap-2.5 items-center">
+                                <a href="{{ article_url($trend) }}" wire:navigate.hover class="flex gap-2.5 items-center">
                                     <span class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#c92137] to-[#a50404] text-xs font-black text-white shadow-2xs group-hover:scale-110 transition-transform">
                                         {{ nepali_number($loop->iteration) }}
                                     </span>
@@ -917,7 +917,7 @@
                     <div class="divide-y divide-stone-100">
                         @foreach($latestArticles as $latest)
                             <article class="py-3 group first:pt-1 last:pb-1">
-                                <a href="{{ route('articles.show', $latest->slug) }}" wire:navigate.hover class="flex gap-3 items-center">
+                                <a href="{{ article_url($latest) }}" wire:navigate.hover class="flex gap-3 items-center">
                                     <div class="relative h-16 w-20 shrink-0 overflow-hidden rounded-lg bg-stone-100 border border-stone-200/80 shadow-2xs">
                                         <img src="{{ $latest->image_url }}" alt="{{ $latest->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async">
                                     </div>

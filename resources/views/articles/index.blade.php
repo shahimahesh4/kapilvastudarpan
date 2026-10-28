@@ -115,7 +115,7 @@
                         <article class="mb-8 rounded-2xl border border-stone-200/90 bg-white p-5 sm:p-6 shadow-sm hover:shadow-md transition-all duration-300 group">
                             <div class="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6 items-center">
                                 <!-- Big Feature Photo -->
-                                <a href="{{ route('articles.show', $leadStory->slug) }}" wire:navigate.hover class="md:col-span-7 block aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 relative shadow-xs">
+                                <a href="{{ article_url($leadStory) }}" wire:navigate.hover class="md:col-span-7 block aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 relative shadow-xs">
                                     <img src="{{ $leadStory->image_url }}" alt="{{ $leadStory->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" loading="eager" fetchpriority="high">
                                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
                                     @php $leadCat = $leadStory->categories->first() ?? $leadStory->category; @endphp
@@ -140,7 +140,7 @@
                                         </div>
 
                                         <h2 class="text-xl sm:text-2xl lg:text-[25px] font-black leading-snug text-stone-900 group-hover:text-[#c92137] transition">
-                                            <a href="{{ route('articles.show', $leadStory->slug) }}" wire:navigate.hover>
+                                            <a href="{{ article_url($leadStory) }}" wire:navigate.hover>
                                                 {{ $leadStory->title }}
                                             </a>
                                         </h2>
@@ -178,7 +178,7 @@
                             >
                                 <div>
                                     <!-- Card Image with Hover Zoom -->
-                                    <a href="{{ route('articles.show', $article->slug) }}" wire:navigate.hover class="block aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 relative shadow-2xs">
+                                    <a href="{{ article_url($article) }}" wire:navigate.hover class="block aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 relative shadow-2xs">
                                         <img src="{{ $article->image_url }}" alt="{{ $article->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async">
                                         <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
 
@@ -203,7 +203,7 @@
 
                                     <!-- Headline -->
                                     <h2 class="mt-2">
-                                        <a href="{{ route('articles.show', $article->slug) }}" wire:navigate.hover class="block text-base sm:text-[18px] font-bold leading-snug text-stone-900 group-hover:text-[#c92137] transition line-clamp-2">
+                                        <a href="{{ article_url($article) }}" wire:navigate.hover class="block text-base sm:text-[18px] font-bold leading-snug text-stone-900 group-hover:text-[#c92137] transition line-clamp-2">
                                             {{ $article->title }}
                                         </a>
                                     </h2>
@@ -231,7 +231,7 @@
                                 x-show="viewMode === 'list'"
                                 class="py-5 first:pt-2 group flex flex-col sm:flex-row gap-4 sm:gap-6 items-start"
                             >
-                                <a href="{{ route('articles.show', $article->slug) }}" wire:navigate.hover class="w-full sm:w-56 aspect-[16/10] shrink-0 rounded-xl overflow-hidden bg-stone-100 relative shadow-2xs">
+                                <a href="{{ article_url($article) }}" wire:navigate.hover class="w-full sm:w-56 aspect-[16/10] shrink-0 rounded-xl overflow-hidden bg-stone-100 relative shadow-2xs">
                                     <img src="{{ $article->image_url }}" alt="{{ $article->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async">
                                     @php $artCat = $article->categories->first() ?? $article->category; @endphp
                                     @if($artCat)
@@ -253,7 +253,7 @@
                                     </div>
 
                                     <h2 class="text-base sm:text-xl font-bold leading-snug text-stone-900 group-hover:text-[#c92137] transition">
-                                        <a href="{{ route('articles.show', $article->slug) }}" wire:navigate.hover>
+                                        <a href="{{ article_url($article) }}" wire:navigate.hover>
                                             {{ $article->title }}
                                         </a>
                                     </h2>
@@ -331,7 +331,7 @@
                                         {{ nepali_number($loop->iteration) }}
                                     </span>
                                     <div class="flex-1 min-w-0">
-                                        <a href="{{ route('articles.show', $trend->slug) }}" wire:navigate.hover class="text-sm font-bold leading-snug text-stone-900 group-hover:text-[#c92137] transition line-clamp-2">
+                                        <a href="{{ article_url($trend) }}" wire:navigate.hover class="text-sm font-bold leading-snug text-stone-900 group-hover:text-[#c92137] transition line-clamp-2">
                                             {{ $trend->title }}
                                         </a>
                                         <div class="mt-1 flex items-center gap-2 text-[11px] text-stone-400">
@@ -352,7 +352,7 @@
                                         {{ nepali_number($loop->iteration) }}
                                     </span>
                                     <div class="flex-1 min-w-0">
-                                        <a href="{{ route('articles.show', $latest->slug) }}" wire:navigate.hover class="text-sm font-bold leading-snug text-stone-900 group-hover:text-[#0955cf] transition line-clamp-2">
+                                        <a href="{{ article_url($latest) }}" wire:navigate.hover class="text-sm font-bold leading-snug text-stone-900 group-hover:text-[#0955cf] transition line-clamp-2">
                                             {{ $latest->title }}
                                         </a>
                                         <time class="mt-1 block text-[11px] text-stone-400 font-medium">

@@ -208,7 +208,7 @@ class AdminDashboardTest extends TestCase
             $this->assertEquals('published', $article->status);
             $this->assertTrue(Article::published()->where('id', $article->id)->exists());
 
-            $resPublished = $this->get(route('articles.show', $article->slug));
+            $resPublished = $this->get(article_url($article));
             $resPublished->assertStatus(200);
 
             // Unpublish the article
@@ -218,7 +218,7 @@ class AdminDashboardTest extends TestCase
             $this->assertFalse(Article::published()->where('id', $article->id)->exists());
 
             // Unpublished article returns 404 to public readers
-            $resUnpublished = $this->get(route('articles.show', $article->slug));
+            $resUnpublished = $this->get(article_url($article));
             $resUnpublished->assertStatus(404);
 
             // Re-publish the article
@@ -227,7 +227,7 @@ class AdminDashboardTest extends TestCase
             $this->assertEquals('published', $article->fresh()->status);
             $this->assertTrue(Article::published()->where('id', $article->id)->exists());
 
-            $resRePublished = $this->get(route('articles.show', $article->slug));
+            $resRePublished = $this->get(article_url($article));
             $resRePublished->assertStatus(200);
         } finally {
             $article->categories()->detach();
@@ -260,7 +260,7 @@ class AdminDashboardTest extends TestCase
         $this->assertTrue(Article::onlyTrashed()->where('id', $articleId)->exists());
 
         // Trashed article returns 404
-        $resTrashed = $this->get(route('articles.show', $article->slug));
+        $resTrashed = $this->get(article_url($article));
         $resTrashed->assertStatus(404);
 
         // 2. Restore from trash
@@ -533,7 +533,7 @@ class AdminDashboardTest extends TestCase
             \App\Models\Setting::set('show_article_editor_box', false);
             \Illuminate\Support\Facades\Cache::flush();
 
-            $response = $this->get(route('articles.show', $article->slug));
+            $response = $this->get(article_url($article));
             $response->assertStatus(200);
             $response->assertDontSee('प्रधान सम्पादक / सम्पादकीय नेतृत्व');
 
@@ -541,7 +541,7 @@ class AdminDashboardTest extends TestCase
             \App\Models\Setting::set('show_article_editor_box', true);
             \Illuminate\Support\Facades\Cache::flush();
 
-            $responseEnabled = $this->get(route('articles.show', $article->slug));
+            $responseEnabled = $this->get(article_url($article));
             $responseEnabled->assertStatus(200);
             $responseEnabled->assertSee('प्रधान सम्पादक / सम्पादकीय नेतृत्व');
         } finally {

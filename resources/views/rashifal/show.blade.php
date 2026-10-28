@@ -184,7 +184,7 @@
                         @foreach($latestArticles as $latest)
                             <li class="flex items-start gap-2.5 group">
                                 <span class="text-[#c92137] text-xl leading-none font-black select-none mt-0.5">•</span>
-                                <a href="{{ route('articles.show', $latest->slug) }}" wire:navigate.hover class="text-sm sm:text-[15px] font-bold leading-snug text-stone-900 group-hover:text-[#c92137] transition line-clamp-2">
+                                <a href="{{ article_url($latest) }}" wire:navigate.hover class="text-sm sm:text-[15px] font-bold leading-snug text-stone-900 group-hover:text-[#c92137] transition line-clamp-2">
                                     {{ $latest->title }}
                                 </a>
                             </li>
@@ -209,7 +209,7 @@
                                     {{ $num }}.
                                 </span>
                                 <div class="min-w-0 flex-1">
-                                    <a href="{{ route('articles.show', $trend->slug) }}" wire:navigate.hover class="text-sm sm:text-[15px] font-bold leading-snug text-stone-900 group-hover:text-[#c92137] transition line-clamp-2">
+                                    <a href="{{ article_url($trend) }}" wire:navigate.hover class="text-sm sm:text-[15px] font-bold leading-snug text-stone-900 group-hover:text-[#c92137] transition line-clamp-2">
                                         {{ $trend->title }}
                                     </a>
                                 </div>

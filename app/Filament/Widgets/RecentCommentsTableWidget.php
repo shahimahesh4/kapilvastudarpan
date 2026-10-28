@@ -87,7 +87,7 @@ class RecentCommentsTableWidget extends BaseWidget
                         ->label('View Article')
                         ->icon('heroicon-o-arrow-top-right-on-square')
                         ->color('gray')
-                        ->url(fn (Comment $record): string => $record->article ? route('articles.show', $record->article->slug) : '#')
+                        ->url(fn (Comment $record): string => $record->article ? article_url($record->article) : '#')
                         ->openUrlInNewTab()
                         ->visible(fn (Comment $record): bool => ! empty($record->article?->slug)),
 

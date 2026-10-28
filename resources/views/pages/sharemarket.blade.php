@@ -439,7 +439,7 @@
                         <div class="space-y-3.5 divide-y divide-stone-100">
                             @foreach($businessNews as $news)
                                 <article class="pt-3 first:pt-0 group">
-                                    <a href="{{ route('articles.show', $news->slug) }}" wire:navigate.hover class="flex items-start gap-3">
+                                    <a href="{{ article_url($news) }}" wire:navigate.hover class="flex items-start gap-3">
                                         <div class="h-16 w-20 shrink-0 rounded-lg overflow-hidden bg-stone-100">
                                             <img src="{{ $news->image_url }}" alt="{{ $news->title }}" class="h-full w-full object-cover group-hover:scale-105 transition duration-300">
                                         </div>

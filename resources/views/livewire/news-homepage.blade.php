@@ -12,7 +12,7 @@
             <section class="mb-12 border-b border-stone-200/90 pb-10 pt-2" aria-label="मुख्य ब्यानर समाचार">
                 <article class="group">
                     <h1 class="text-center font-black text-2xl sm:text-3xl md:text-4xl lg:text-[42px] leading-tight sm:leading-snug text-stone-900 tracking-tight max-w-5xl mx-auto">
-                        <a wire:navigate.hover href="{{ route('articles.show', $leadStory->slug) }}" class="group-hover:text-[#c92137] transition-colors duration-200">
+                        <a wire:navigate.hover href="{{ article_url($leadStory) }}" class="group-hover:text-[#c92137] transition-colors duration-200">
                             {{ $leadStory->title }}
                         </a>
                     </h1>
@@ -35,14 +35,14 @@
                     </div>
 
                     <!-- Large Hero Featured Photo -->
-                    <a wire:navigate.hover href="{{ route('articles.show', $leadStory->slug) }}" class="block w-full max-w-5xl mx-auto rounded-xl sm:rounded-2xl overflow-hidden bg-stone-100 shadow-sm group-hover:shadow-md transition-all duration-300 aspect-[16/9] sm:aspect-[16/10] max-h-[580px]">
+                    <a wire:navigate.hover href="{{ article_url($leadStory) }}" class="block w-full max-w-5xl mx-auto rounded-xl sm:rounded-2xl overflow-hidden bg-stone-100 shadow-sm group-hover:shadow-md transition-all duration-300 aspect-[16/9] sm:aspect-[16/10] max-h-[580px]">
                         <img src="{{ $leadStory->image_url }}" alt="{{ $leadStory->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" width="1280" height="800" loading="eager" fetchpriority="high" decoding="async" class="w-full h-full object-cover group-hover:scale-[1.015] transition-transform duration-500">
                     </a>
 
                     <!-- Centered Excerpt Summary Paragraph -->
                     @if($leadStory->excerpt)
                         <p class="mt-5 max-w-4xl mx-auto text-center text-sm sm:text-base md:text-lg lg:text-[19px] text-stone-700 leading-relaxed font-normal">
-                            <a wire:navigate.hover href="{{ route('articles.show', $leadStory->slug) }}" class="hover:text-stone-900 transition">
+                            <a wire:navigate.hover href="{{ article_url($leadStory) }}" class="hover:text-stone-900 transition">
                                 {{ $leadStory->excerpt }}
                             </a>
                         </p>
@@ -72,7 +72,7 @@
                 <!-- Main Feature Column -->
                 @if(isset($headlines[0]))
                     <article class="lg:col-span-5 group">
-                        <a wire:navigate.hover href="{{ route('articles.show', $headlines[0]->slug) }}" class="relative block aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 shadow-sm hover:shadow-md transition-all duration-300">
+                        <a wire:navigate.hover href="{{ article_url($headlines[0]) }}" class="relative block aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 shadow-sm hover:shadow-md transition-all duration-300">
                             <img src="{{ $headlines[0]->image_url }}" alt="{{ $headlines[0]->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" loading="lazy" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 via-30% to-transparent pointer-events-none"></div>
                             @php $hCat = $headlines[0]->categories->first() ?? $headlines[0]->category; @endphp
@@ -83,7 +83,7 @@
                             @endif
                         </a>
                         <h2 class="mt-3.5">
-                            <a wire:navigate.hover href="{{ route('articles.show', $headlines[0]->slug) }}" class="block text-xl sm:text-2xl font-black leading-snug text-stone-900 group-hover:text-[#c92137] transition-colors duration-150">
+                            <a wire:navigate.hover href="{{ article_url($headlines[0]) }}" class="block text-xl sm:text-2xl font-black leading-snug text-stone-900 group-hover:text-[#c92137] transition-colors duration-150">
                                 {{ $headlines[0]->title }}
                             </a>
                         </h2>
@@ -112,7 +112,7 @@
                 <div class="space-y-4 lg:col-span-4 lg:border-x lg:border-stone-200 lg:px-5">
                     @foreach($headlines->slice(1, 3) as $art)
                         <article class="grid grid-cols-[7.5rem_1fr] sm:grid-cols-[8.5rem_1fr] items-start gap-3.5 border-b border-stone-200 pb-4 last:border-0 last:pb-0 group">
-                            <a wire:navigate.hover href="{{ route('articles.show', $art->slug) }}" class="relative block aspect-[4/3] rounded-lg overflow-hidden bg-stone-100 shadow-2xs ring-1 ring-stone-200/80">
+                            <a wire:navigate.hover href="{{ article_url($art) }}" class="relative block aspect-[4/3] rounded-lg overflow-hidden bg-stone-100 shadow-2xs ring-1 ring-stone-200/80">
                                 <img src="{{ $art->image_url }}" alt="{{ $art->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" loading="lazy" class="h-full w-full object-cover transition duration-300 group-hover:scale-105">
                             </a>
                             <div class="min-w-0">
@@ -123,7 +123,7 @@
                                     </a>
                                 @endif
                                 <h3 class="mt-0.5">
-                                    <a wire:navigate.hover href="{{ route('articles.show', $art->slug) }}" class="block text-sm sm:text-base font-extrabold leading-snug text-stone-900 group-hover:text-[#c92137] line-clamp-2 transition-colors">
+                                    <a wire:navigate.hover href="{{ article_url($art) }}" class="block text-sm sm:text-base font-extrabold leading-snug text-stone-900 group-hover:text-[#c92137] line-clamp-2 transition-colors">
                                         {{ $art->title }}
                                     </a>
                                 </h3>
@@ -156,7 +156,7 @@
                                         {{ nepali_number($loop->iteration) }}
                                     </span>
                                     <div class="min-w-0 flex-1">
-                                        <a wire:navigate.hover href="{{ route('articles.show', $trend->slug) }}" class="block text-sm font-bold leading-snug text-stone-800 group-hover:text-[#c92137] line-clamp-2 transition-colors">
+                                        <a wire:navigate.hover href="{{ article_url($trend) }}" class="block text-sm font-bold leading-snug text-stone-800 group-hover:text-[#c92137] line-clamp-2 transition-colors">
                                             {{ $trend->title }}
                                         </a>
                                         <div class="mt-1 flex items-center gap-1.5 text-[11px] text-stone-400 font-medium">
@@ -203,7 +203,7 @@
             <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach($kapilvastuSpecial as $art)
                     <article class="group flex flex-col rounded-2xl border border-stone-200/90 bg-white shadow-2xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
-                        <a wire:navigate.hover href="{{ route('articles.show', $art->slug) }}" class="relative block aspect-[16/10] overflow-hidden bg-stone-100">
+                        <a wire:navigate.hover href="{{ article_url($art) }}" class="relative block aspect-[16/10] overflow-hidden bg-stone-100">
                             <img src="{{ $art->image_url }}" alt="{{ $art->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
                             <span class="absolute bottom-3 left-3 z-10 inline-flex items-center gap-1 rounded-md bg-[#c92137] px-2.5 py-1 text-[11px] font-black text-white shadow-md">
@@ -212,7 +212,7 @@
                         </a>
                         <div class="flex flex-1 flex-col p-5">
                             <h3 class="flex-1">
-                                <a wire:navigate.hover href="{{ route('articles.show', $art->slug) }}" class="block text-base sm:text-lg font-black leading-snug text-stone-900 group-hover:text-[#c92137] transition-colors duration-150 line-clamp-2">
+                                <a wire:navigate.hover href="{{ article_url($art) }}" class="block text-base sm:text-lg font-black leading-snug text-stone-900 group-hover:text-[#c92137] transition-colors duration-150 line-clamp-2">
                                     {{ $art->title }}
                                 </a>
                             </h3>
@@ -253,7 +253,7 @@
                 @foreach($politicsArticles as $art)
                     @php $pCat = $art->categories->first() ?? $art->category; @endphp
                     <article class="flex flex-col rounded-2xl border border-stone-200/90 bg-white shadow-2xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden group">
-                        <a wire:navigate.hover href="{{ route('articles.show', $art->slug) }}" class="relative block aspect-[16/10] overflow-hidden bg-stone-100">
+                        <a wire:navigate.hover href="{{ article_url($art) }}" class="relative block aspect-[16/10] overflow-hidden bg-stone-100">
                             <img src="{{ $art->image_url }}" alt="{{ $art->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <span class="absolute top-3 left-3 inline-flex items-center gap-1 rounded-md bg-[#c92137] px-2.5 py-1 text-[11px] font-black text-white shadow-md">
@@ -263,7 +263,7 @@
 
                         <div class="p-4 sm:p-5 flex flex-col flex-1">
                             <h3 class="text-base sm:text-lg font-black leading-snug text-stone-900 group-hover:text-[#c92137] transition-colors line-clamp-2">
-                                <a wire:navigate.hover href="{{ route('articles.show', $art->slug) }}" class="block">
+                                <a wire:navigate.hover href="{{ article_url($art) }}" class="block">
                                     {{ $art->title }}
                                 </a>
                             </h3>
@@ -310,7 +310,7 @@
             <div class="grid gap-5 lg:grid-cols-12 items-stretch">
                 @if($econLead)
                     <article class="lg:col-span-6 group flex flex-col">
-                        <a wire:navigate.hover href="{{ route('articles.show', $econLead->slug) }}" class="relative block w-full h-full min-h-[300px] sm:min-h-[360px] lg:min-h-full rounded-2xl overflow-hidden bg-stone-900 shadow-2xs group-hover:shadow-xl transition-all duration-300">
+                        <a wire:navigate.hover href="{{ article_url($econLead) }}" class="relative block w-full h-full min-h-[300px] sm:min-h-[360px] lg:min-h-full rounded-2xl overflow-hidden bg-stone-900 shadow-2xs group-hover:shadow-xl transition-all duration-300">
                             <img src="{{ $econLead->image_url }}" alt="{{ $econLead->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" loading="lazy" class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 via-45% to-transparent pointer-events-none"></div>
 
@@ -332,11 +332,11 @@
                 <div class="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                     @foreach($econSecondary as $art)
                         <article class="group flex flex-col">
-                            <a wire:navigate.hover href="{{ route('articles.show', $art->slug) }}" class="relative block aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 shadow-2xs group-hover:shadow-md transition">
+                            <a wire:navigate.hover href="{{ article_url($art) }}" class="relative block aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 shadow-2xs group-hover:shadow-md transition">
                                 <img src="{{ $art->image_url }}" alt="{{ $art->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105">
                             </a>
                             <h3 class="mt-2.5">
-                                <a wire:navigate.hover href="{{ route('articles.show', $art->slug) }}" class="block text-sm sm:text-base font-extrabold leading-snug text-stone-900 group-hover:text-emerald-700 line-clamp-2 transition-colors">
+                                <a wire:navigate.hover href="{{ article_url($art) }}" class="block text-sm sm:text-base font-extrabold leading-snug text-stone-900 group-hover:text-emerald-700 line-clamp-2 transition-colors">
                                     {{ $art->title }}
                                 </a>
                             </h3>
@@ -402,7 +402,7 @@
                     @if($pLead)
                         @php $leadCat = $pLead->categories->first() ?? $pLead->category; @endphp
                         <article class="lg:col-span-6 group">
-                            <a wire:navigate.hover href="{{ route('articles.show', $pLead->slug) }}" class="relative block aspect-[16/10] rounded-2xl overflow-hidden bg-stone-900 shadow-md group-hover:shadow-2xl transition-all duration-300">
+                            <a wire:navigate.hover href="{{ article_url($pLead) }}" class="relative block aspect-[16/10] rounded-2xl overflow-hidden bg-stone-900 shadow-md group-hover:shadow-2xl transition-all duration-300">
                                 <img src="{{ $pLead->image_url }}" alt="{{ $pLead->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" loading="lazy" class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 via-40% to-transparent pointer-events-none"></div>
 
@@ -432,7 +432,7 @@
                         @forelse($pRest as $story)
                             @php $storyCat = $story->categories->first() ?? $story->category; @endphp
                             <article class="grid grid-cols-[6.5rem_1fr] sm:grid-cols-[8rem_1fr] items-start gap-3.5 p-2 sm:p-2.5 -mx-2 sm:-mx-2.5 rounded-xl border border-transparent hover:border-stone-200/70 hover:bg-stone-50/80 transition-all duration-150 group">
-                                <a wire:navigate.hover href="{{ route('articles.show', $story->slug) }}" class="relative block aspect-[4/3] rounded-lg overflow-hidden bg-stone-100 shadow-2xs ring-1 ring-stone-200/80 group-hover:ring-red-200 group-hover:shadow-sm transition-all">
+                                <a wire:navigate.hover href="{{ article_url($story) }}" class="relative block aspect-[4/3] rounded-lg overflow-hidden bg-stone-100 shadow-2xs ring-1 ring-stone-200/80 group-hover:ring-red-200 group-hover:shadow-sm transition-all">
                                     <img src="{{ $story->image_url }}" alt="{{ $story->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" loading="lazy" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
                                 </a>
                                 <div class="min-w-0">
@@ -440,7 +440,7 @@
                                         <span class="text-xs font-black text-[#c92137] tracking-wider uppercase">{{ $storyCat->name }}</span>
                                     @endif
                                     <h4 class="mt-0.5">
-                                        <a wire:navigate.hover href="{{ route('articles.show', $story->slug) }}" class="block text-sm sm:text-base font-extrabold leading-snug text-stone-900 group-hover:text-[#c92137] line-clamp-2 transition-colors">
+                                        <a wire:navigate.hover href="{{ article_url($story) }}" class="block text-sm sm:text-base font-extrabold leading-snug text-stone-900 group-hover:text-[#c92137] line-clamp-2 transition-colors">
                                             {{ $story->title }}
                                         </a>
                                     </h4>
@@ -478,7 +478,7 @@
                 @foreach($societyArticles as $art)
                     @php $sCat = $art->categories->first() ?? $art->category; @endphp
                     <article class="flex flex-col rounded-2xl border border-stone-200/90 bg-white shadow-2xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden group">
-                        <a wire:navigate.hover href="{{ route('articles.show', $art->slug) }}" class="relative block aspect-[16/10] overflow-hidden bg-stone-100">
+                        <a wire:navigate.hover href="{{ article_url($art) }}" class="relative block aspect-[16/10] overflow-hidden bg-stone-100">
                             <img src="{{ $art->image_url }}" alt="{{ $art->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <span class="absolute top-3 left-3 inline-flex items-center gap-1 rounded-md bg-blue-600 px-2.5 py-1 text-[11px] font-black text-white shadow-md">
@@ -488,7 +488,7 @@
 
                         <div class="p-4 sm:p-5 flex flex-col flex-1">
                             <h3 class="text-base sm:text-lg font-black leading-snug text-stone-900 group-hover:text-blue-600 transition-colors line-clamp-2">
-                                <a wire:navigate.hover href="{{ route('articles.show', $art->slug) }}" class="block">
+                                <a wire:navigate.hover href="{{ article_url($art) }}" class="block">
                                     {{ $art->title }}
                                 </a>
                             </h3>
@@ -534,7 +534,7 @@
             <div class="grid gap-5 lg:grid-cols-12 items-stretch">
                 @if($secLead)
                     <article class="lg:col-span-6 group flex flex-col">
-                        <a wire:navigate.hover href="{{ route('articles.show', $secLead->slug) }}" class="relative block w-full h-full min-h-[300px] sm:min-h-[360px] lg:min-h-full rounded-2xl overflow-hidden bg-stone-900 shadow-2xs group-hover:shadow-xl transition-all duration-300">
+                        <a wire:navigate.hover href="{{ article_url($secLead) }}" class="relative block w-full h-full min-h-[300px] sm:min-h-[360px] lg:min-h-full rounded-2xl overflow-hidden bg-stone-900 shadow-2xs group-hover:shadow-xl transition-all duration-300">
                             <img src="{{ $secLead->image_url }}" alt="{{ $secLead->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" loading="lazy" class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 via-45% to-transparent pointer-events-none"></div>
 
@@ -556,11 +556,11 @@
                 <div class="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                     @foreach($secSecondary as $art)
                         <article class="group flex flex-col">
-                            <a wire:navigate.hover href="{{ route('articles.show', $art->slug) }}" class="relative block aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 shadow-2xs group-hover:shadow-md transition">
+                            <a wire:navigate.hover href="{{ article_url($art) }}" class="relative block aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 shadow-2xs group-hover:shadow-md transition">
                                 <img src="{{ $art->image_url }}" alt="{{ $art->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105">
                             </a>
                             <h3 class="mt-2.5">
-                                <a wire:navigate.hover href="{{ route('articles.show', $art->slug) }}" class="block text-sm sm:text-base font-extrabold leading-snug text-stone-900 group-hover:text-red-600 line-clamp-2 transition-colors">
+                                <a wire:navigate.hover href="{{ article_url($art) }}" class="block text-sm sm:text-base font-extrabold leading-snug text-stone-900 group-hover:text-red-600 line-clamp-2 transition-colors">
                                     {{ $art->title }}
                                 </a>
                             </h3>
@@ -590,7 +590,7 @@
             <div class="grid gap-5 lg:grid-cols-12 items-stretch">
                 @if($sportsLead)
                     <article class="lg:col-span-6 group flex flex-col">
-                        <a wire:navigate.hover href="{{ route('articles.show', $sportsLead->slug) }}" class="relative block w-full h-full min-h-[300px] sm:min-h-[360px] lg:min-h-full rounded-2xl overflow-hidden bg-stone-900 shadow-2xs group-hover:shadow-xl transition-all duration-300">
+                        <a wire:navigate.hover href="{{ article_url($sportsLead) }}" class="relative block w-full h-full min-h-[300px] sm:min-h-[360px] lg:min-h-full rounded-2xl overflow-hidden bg-stone-900 shadow-2xs group-hover:shadow-xl transition-all duration-300">
                             <img src="{{ $sportsLead->image_url }}" alt="{{ $sportsLead->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" loading="lazy" class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 via-45% to-transparent pointer-events-none"></div>
 
@@ -612,11 +612,11 @@
                 <div class="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                     @foreach($sportsSecondary as $art)
                         <article class="group flex flex-col">
-                            <a wire:navigate.hover href="{{ route('articles.show', $art->slug) }}" class="relative block aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 shadow-2xs group-hover:shadow-md transition">
+                            <a wire:navigate.hover href="{{ article_url($art) }}" class="relative block aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 shadow-2xs group-hover:shadow-md transition">
                                 <img src="{{ $art->image_url }}" alt="{{ $art->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105">
                             </a>
                             <h3 class="mt-2.5">
-                                <a wire:navigate.hover href="{{ route('articles.show', $art->slug) }}" class="block text-sm sm:text-base font-extrabold leading-snug text-stone-900 group-hover:text-[#c92137] line-clamp-2 transition-colors">
+                                <a wire:navigate.hover href="{{ article_url($art) }}" class="block text-sm sm:text-base font-extrabold leading-snug text-stone-900 group-hover:text-[#c92137] line-clamp-2 transition-colors">
                                     {{ $art->title }}
                                 </a>
                             </h3>
@@ -650,7 +650,7 @@
                             </svg>
                         </div>
                         <h3 class="mt-3.5">
-                            <a wire:navigate.hover href="{{ route('articles.show', $art->slug) }}" class="block text-base sm:text-lg font-black leading-snug text-stone-900 group-hover:text-[#c92137] line-clamp-3 transition-colors">
+                            <a wire:navigate.hover href="{{ article_url($art) }}" class="block text-base sm:text-lg font-black leading-snug text-stone-900 group-hover:text-[#c92137] line-clamp-3 transition-colors">
                                 {{ $art->title }}
                             </a>
                         </h3>
@@ -693,7 +693,7 @@
                 @foreach($healthArticles as $art)
                     @php $hCat = $art->categories->first() ?? $art->category; @endphp
                     <article class="flex flex-col rounded-2xl border border-stone-200/90 bg-white shadow-2xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden group">
-                        <a wire:navigate.hover href="{{ route('articles.show', $art->slug) }}" class="relative block aspect-[16/10] overflow-hidden bg-stone-100">
+                        <a wire:navigate.hover href="{{ article_url($art) }}" class="relative block aspect-[16/10] overflow-hidden bg-stone-100">
                             <img src="{{ $art->image_url }}" alt="{{ $art->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" loading="lazy" class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <span class="absolute top-3 left-3 inline-flex items-center gap-1 rounded-md bg-teal-600 px-2.5 py-1 text-[11px] font-black text-white shadow-md">
@@ -703,7 +703,7 @@
 
                         <div class="p-4 sm:p-5 flex flex-col flex-1">
                             <h3 class="text-base sm:text-lg font-black leading-snug text-stone-900 group-hover:text-teal-600 transition-colors line-clamp-2">
-                                <a wire:navigate.hover href="{{ route('articles.show', $art->slug) }}" class="block">
+                                <a wire:navigate.hover href="{{ article_url($art) }}" class="block">
                                     {{ $art->title }}
                                 </a>
                             </h3>

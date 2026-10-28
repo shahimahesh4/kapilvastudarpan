@@ -270,11 +270,11 @@
                                                                 <div class="grid grid-cols-4 gap-5">
                                                                     @foreach ($provinceStories[$provName] ?? [] as $story)
                                                                         <article class="group flex flex-col">
-                                                                            <a href="{{ route('articles.show', $story->slug) }}" wire:navigate.hover class="block aspect-[16/10] rounded-lg overflow-hidden bg-stone-100 shadow-sm">
+                                                                            <a href="{{ article_url($story) }}" wire:navigate.hover class="block aspect-[16/10] rounded-lg overflow-hidden bg-stone-100 shadow-sm">
                                                                                 <img src="{{ $story->image_url }}" alt="{{ $story->title }}" class="h-full w-full object-cover group-hover:scale-105 transition duration-300">
                                                                             </a>
                                                                             <h4 class="mt-3 text-[16px] sm:text-[17px] font-bold leading-snug text-stone-900 group-hover:text-[#c92137] line-clamp-2 transition">
-                                                                                <a href="{{ route('articles.show', $story->slug) }}" wire:navigate.hover>
+                                                                                <a href="{{ article_url($story) }}" wire:navigate.hover>
                                                                                     {{ $story->title }}
                                                                                 </a>
                                                                             </h4>
@@ -395,7 +395,7 @@
                     <div class="grid gap-x-6 gap-y-5 md:grid-cols-2 lg:grid-cols-3">
                         @foreach($flashNews ?? [] as $flash)
                             <article class="grid grid-cols-[6.5rem_1fr] items-start gap-3 group">
-                                <a href="{{ route('articles.show', $flash->slug) }}" wire:navigate.hover class="block aspect-[4/3] rounded overflow-hidden bg-stone-100">
+                                <a href="{{ article_url($flash) }}" wire:navigate.hover class="block aspect-[4/3] rounded overflow-hidden bg-stone-100">
                                     <img src="{{ $flash->image_url }}" alt="{{ $flash->title }}" class="h-full w-full object-cover group-hover:scale-105 transition duration-300">
                                 </a>
                                 <div>
@@ -403,7 +403,7 @@
                                     @if($flashCat)
                                         <a href="{{ route('category.show', $flashCat->slug) }}" wire:navigate.hover class="text-xs font-bold text-[#c92137]">{{ $flashCat->name }}</a>
                                     @endif
-                                    <a href="{{ route('articles.show', $flash->slug) }}" wire:navigate.hover class="mt-1 block text-base font-bold leading-snug hover:text-[#c92137] line-clamp-2">
+                                    <a href="{{ article_url($flash) }}" wire:navigate.hover class="mt-1 block text-base font-bold leading-snug hover:text-[#c92137] line-clamp-2">
                                         {{ $flash->title }}
                                     </a>
                                     <time class="mt-1 block text-[11px] text-stone-400">{{ $flash->published_at?->diffForHumans() }}</time>
@@ -421,7 +421,7 @@
 @if(isset($breakingNews) && $breakingNews->isNotEmpty())
     <section class="hidden border-b border-sky-100 bg-[#effaff] md:block" aria-label="समाचार हाइलाइट्स" x-data="{
         current: 0,
-        items: {{ Js::from($breakingNews->map(fn($item) => ['title' => $item->title, 'url' => route('articles.show', $item->slug)])) }},
+        items: {{ Js::from($breakingNews->map(fn($item) => ['title' => $item->title, 'url' => article_url($item)])) }},
         init() {
             if (this.items.length > 1) {
                 setInterval(() => this.current = (this.current + 1) % this.items.length, 5000);

@@ -8,6 +8,6 @@
         <url><loc>{{ route('pages.show', $page->slug) }}</loc><lastmod>{{ $page->updated_at?->toIso8601String() }}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
     @endforeach
     @foreach ($articles as $article)
-        <url><loc>{{ route('articles.show', $article->slug) }}</loc><lastmod>{{ $article->updated_at?->toIso8601String() }}</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
+        <url><loc>{{ article_url($article) }}</loc><lastmod>{{ $article->updated_at?->toIso8601String() }}</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
     @endforeach
 </urlset>

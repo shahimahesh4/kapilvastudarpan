@@ -24,7 +24,7 @@
     @endif
     @foreach ($articles as $art)
         <url>
-            <loc>{{ route('articles.show', $art->slug) }}</loc>
+            <loc>{{ article_url($art) }}</loc>
             <lastmod>{{ $art->updated_at->toIso8601String() }}</lastmod>
             <changefreq>daily</changefreq>
             <priority>0.9</priority>

@@ -92,7 +92,7 @@ class RecentArticlesTableWidget extends BaseWidget
                         ->icon('heroicon-o-arrow-top-right-on-square')
                         ->color('gray')
                         ->visible(fn (Article $record): bool => ! empty($record->slug))
-                        ->url(fn (Article $record): string => route('articles.show', $record->slug))
+                        ->url(fn (Article $record): string => article_url($record))
                         ->openUrlInNewTab(),
 
                     Action::make('publish')

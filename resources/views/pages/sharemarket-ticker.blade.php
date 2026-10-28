@@ -1315,7 +1315,7 @@
             @if(!empty($businessNews) && $businessNews->isNotEmpty())
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     @foreach($businessNews as $art)
-                        <a href="{{ route('articles.show', $art->slug) }}" wire:navigate.hover class="group block space-y-2">
+                        <a href="{{ article_url($art) }}" wire:navigate.hover class="group block space-y-2">
                             <div class="aspect-16/10 rounded-xl overflow-hidden bg-stone-100 border border-stone-200">
                                 @if($art->featured_image)
                                     <img src="{{ setting_image_url($art->featured_image) }}" alt="{{ $art->title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
@@ -1363,7 +1363,7 @@
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     @foreach($businessNews as $art)
-                        <a href="{{ route('articles.show', $art->slug) }}" wire:navigate.hover class="group block space-y-2">
+                        <a href="{{ article_url($art) }}" wire:navigate.hover class="group block space-y-2">
                             <div class="aspect-16/10 rounded-xl overflow-hidden bg-stone-100 border border-stone-200">
                                 @if($art->featured_image)
                                     <img src="{{ setting_image_url($art->featured_image) }}" alt="{{ $art->title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">

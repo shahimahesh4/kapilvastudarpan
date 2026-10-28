@@ -16,7 +16,7 @@ class ArticleCommentTest extends TestCase
 
         $initialComments = Comment::where('article_id', $article->id)->count();
 
-        $response = $this->get(route('articles.show', $article->slug));
+        $response = $this->get(article_url($article));
         $response->assertStatus(200);
         $response->assertSee('प्रतिक्रियाहरू');
         $response->assertSee('प्रतिक्रिया दिनका लागि कृपया पहिले लगइन गर्नुहोस्');
@@ -27,7 +27,7 @@ class ArticleCommentTest extends TestCase
             'content' => 'यो परीक्षण प्रतिक्रिया हो।',
         ]);
 
-        $postResponse->assertRedirect(route('articles.show', $article->slug) . '#comments');
+        $postResponse->assertRedirect(article_url($article) . '#comments');
         $this->assertEquals($initialComments, Comment::where('article_id', $article->id)->count());
     }
 
@@ -44,7 +44,7 @@ class ArticleCommentTest extends TestCase
 
         try {
             // Viewing as authenticated user
-            $response = $this->actingAs($user)->get(route('articles.show', $article->slug));
+            $response = $this->actingAs($user)->get(article_url($article));
             $response->assertStatus(200);
             $response->assertSee('रामशरण पाठक ' . $uniqueKey);
             $response->assertSee('प्रतिक्रिया पठाउनुहोस्');
@@ -56,7 +56,7 @@ class ArticleCommentTest extends TestCase
                 'content' => $commentText,
             ]);
 
-            $postResponse->assertRedirect(route('articles.show', $article->slug) . '#comments');
+            $postResponse->assertRedirect(article_url($article) . '#comments');
             $postResponse->assertSessionHas('comment_success');
 
             $this->assertDatabaseHas('comments', [
@@ -67,7 +67,7 @@ class ArticleCommentTest extends TestCase
             ]);
 
             // Reload page to see the newly posted comment
-            $reloadResponse = $this->get(route('articles.show', $article->slug));
+            $reloadResponse = $this->get(article_url($article));
             $reloadResponse->assertStatus(200);
             $reloadResponse->assertSee($commentText);
             $reloadResponse->assertSee('रामशरण पाठक ' . $uniqueKey);
@@ -102,7 +102,7 @@ class ArticleCommentTest extends TestCase
 
             // Author can delete it
             $successResponse = $this->actingAs($user)->delete(route('comments.destroy', $comment->id));
-            $successResponse->assertRedirect(route('articles.show', $article->slug) . '#comments');
+            $successResponse->assertRedirect(article_url($article) . '#comments');
             $this->assertDatabaseMissing('comments', ['id' => $comment->id]);
         } finally {
             $comment->delete();
@@ -136,7 +136,7 @@ class ArticleCommentTest extends TestCase
                 'parent_id' => $rootComment->id,
             ]);
 
-            $postResponse->assertRedirect(route('articles.show', $article->slug) . '#comments');
+            $postResponse->assertRedirect(article_url($article) . '#comments');
             $postResponse->assertSessionHas('comment_success', 'तपाईंको जवाफ सफलतापूर्वक पोस्ट गरियो।');
 
             $this->assertDatabaseHas('comments', [
@@ -148,7 +148,7 @@ class ArticleCommentTest extends TestCase
             ]);
 
             // Verify the thread renders on the article page
-            $pageResponse = $this->get(route('articles.show', $article->slug));
+            $pageResponse = $this->get(article_url($article));
             $pageResponse->assertStatus(200);
             $pageResponse->assertSee($rootComment->content);
             $pageResponse->assertSee($replyText);

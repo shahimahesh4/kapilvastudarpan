@@ -23,6 +23,14 @@ if (! function_exists('nepali_number')) {
     }
 }
 
+if (! function_exists('article_url')) {
+    /** Return the canonical public URL for an article. */
+    function article_url(Article $article): string
+    {
+        return $article->publicUrl();
+    }
+}
+
 if (! function_exists('nepali_date')) {
     /**
      * Format a date into Bikram Sambat Nepali date string.

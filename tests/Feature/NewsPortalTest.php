@@ -25,7 +25,7 @@ class NewsPortalTest extends TestCase
 
         $initialViews = $article->views;
 
-        $response = $this->get(route('articles.show', $article->slug));
+        $response = $this->get(article_url($article));
 
         $response->assertStatus(200);
         $response->assertSee($article->title);
@@ -176,7 +176,7 @@ class NewsPortalTest extends TestCase
         $article = Article::published()->first();
         $this->assertNotNull($article);
 
-        $response = $this->get(route('articles.show', $article->slug));
+        $response = $this->get(article_url($article));
         $response->assertStatus(200);
         $response->assertSee('profile-avatar');
         $response->assertSee($article->display_author);
@@ -211,7 +211,7 @@ class NewsPortalTest extends TestCase
         // 4. Single article page check: Reading time & views in Nepali
         $article = Article::published()->first();
         $this->assertNotNull($article);
-        $articleResponse = $this->get(route('articles.show', $article->slug));
+        $articleResponse = $this->get(article_url($article));
         $articleResponse->assertStatus(200);
         $articleContent = $articleResponse->getContent();
         $this->assertDoesNotMatchRegularExpression('/[0-9]+\s*(घण्टा|मिनेट|दिन)\s*अगाडि/u', $articleContent);
@@ -233,7 +233,7 @@ class NewsPortalTest extends TestCase
         ]);
 
         try {
-            $response = $this->get(route('articles.show', $article->slug));
+            $response = $this->get(article_url($article));
             $response->assertStatus(200);
             $response->assertSee('<title>कस्टम गुगल एसईओ मेटा शीर्षक | विशेष</title>', false);
             $response->assertSee('<meta property="og:title" content="कस्टम गुगल एसईओ मेटा शीर्षक | विशेष">', false);

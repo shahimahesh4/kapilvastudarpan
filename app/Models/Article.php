@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class Article extends Model
 {
@@ -19,6 +20,45 @@ class Article extends Model
     protected static function booted(): void
     {
         static::saving(function (Article $article) {
+            // Slugs remain in storage only to resolve legacy URLs; public URLs use date and ID.
+            if (blank($article->slug)) {
+                $baseSlug = Str::slug((string) $article->title) ?: 'article';
+                $slug = $baseSlug;
+                $suffix = 2;
+
+                $slugIsTaken = function (string $candidate) use ($article): bool {
+                    $query = static::withTrashed()->where('slug', $candidate);
+
+                    if ($article->exists) {
+                        $query->whereKeyNot($article->getKey());
+                    }
+
+                    return $query->exists();
+                };
+
+                while ($slugIsTaken($slug)) {
+                    $slug = $baseSlug.'-'.$suffix++;
+                }
+
+                $article->slug = $slug;
+            }
+
+            if (blank($article->meta_title)) {
+                $article->meta_title = static::suggestedMetaTitle($article->title);
+            }
+
+            if (blank($article->meta_description)) {
+                $article->meta_description = static::suggestedMetaDescription(
+                    $article->excerpt,
+                    $article->body,
+                    $article->title,
+                );
+            }
+
+            if (blank($article->meta_keywords)) {
+                $article->meta_keywords = static::suggestedMetaKeywords($article->title);
+            }
+
             if (empty($article->category_id) && $article->relationLoaded('categories') && $article->categories->isNotEmpty()) {
                 $article->category_id = $article->categories->first()->id;
             }
@@ -181,6 +221,51 @@ class Article extends Model
         // Update the counter directly and keep the in-memory model accurate.
         static::query()->whereKey($this->getKey())->increment('views');
         $this->views++;
+    }
+
+    /** The canonical date-and-ID permalink used for public article pages. */
+    public function publicUrl(): string
+    {
+        $date = ($this->published_at ?? $this->created_at ?? now())
+            ->copy()
+            ->timezone(config('app.timezone'));
+
+        return route('articles.show', [
+            'year' => $date->format('Y'),
+            'month' => $date->format('m'),
+            'day' => $date->format('d'),
+            'article' => $this->getKey(),
+        ]);
+    }
+
+    public static function suggestedMetaTitle(?string $title): string
+    {
+        $headline = trim((string) $title);
+        $siteName = (string) setting('site_name', 'कपिलवस्तु दर्पण');
+
+        return Str::limit($headline.' | '.$siteName, 70, '');
+    }
+
+    public static function suggestedMetaDescription(?string $excerpt, ?string $body, ?string $title): string
+    {
+        $content = $excerpt ?: $body ?: $title;
+
+        return Str::limit(Str::squish(strip_tags((string) $content)), 160, '');
+    }
+
+    public static function suggestedMetaKeywords(?string $title): string
+    {
+        $headlineWords = preg_split('/\s+/u', strip_tags((string) $title)) ?: [];
+        $keywords = collect($headlineWords)
+            ->map(fn (string $word) => preg_replace('/^[\p{P}\p{S}]+|[\p{P}\p{S}]+$/u', '', trim($word)) ?? '')
+            ->filter(fn (string $word) => Str::length($word) > 1)
+            ->take(6)
+            ->prepend('नेपाली समाचार')
+            ->prepend('कपिलवस्तु दर्पण')
+            ->unique()
+            ->values();
+
+        return $keywords->implode(', ');
     }
 
     /** Remove cached news lists after content changes. */

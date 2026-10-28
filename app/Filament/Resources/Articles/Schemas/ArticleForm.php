@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Articles\Schemas;
 
+use App\Models\Article;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
@@ -13,7 +14,6 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Illuminate\Support\Str;
 
 class ArticleForm
 {
@@ -33,26 +33,27 @@ class ArticleForm
                                 ->required()
                                 ->placeholder('Enter article title / headline...')
                                 ->live(onBlur: true)
-                                ->afterStateUpdated(function (string $operation, $state, callable $set, callable $get) {
-                                    if ($operation === 'create' || blank($get('slug'))) {
-                                        $slug = Str::slug((string) $state);
-                                        $set('slug', $slug ?: 'article-' . time());
+                                ->afterStateUpdated(function (?string $state, callable $set, callable $get) {
+                                    if (blank($get('meta_title'))) {
+                                        $set('meta_title', Article::suggestedMetaTitle($state));
+                                    }
+
+                                    if (blank($get('meta_keywords'))) {
+                                        $set('meta_keywords', Article::suggestedMetaKeywords($state));
                                     }
                                 })
-                                ->columnSpanFull(),
-
-                            TextInput::make('slug')
-                                ->label('Slug')
-                                ->required()
-                                ->unique(ignoreRecord: true)
-                                ->placeholder('article-url-slug')
-                                ->helperText('Auto-generated from the article title, but you can edit it.')
                                 ->columnSpanFull(),
 
                             RichEditor::make('body')
                                 ->label('Content')
                                 ->hint(new \Illuminate\Support\HtmlString('<a href="/stnapanel/nepali-unicode-converter" target="_blank" class="text-xs text-stone-500 hover:text-stone-800 dark:text-stone-400 font-bold ml-2" title="नेपाली युनिकोड कन्भर्टर">⌨️ युनिकोड</a>'))
                                 ->required()
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(function (?string $state, callable $set, callable $get) {
+                                    if (blank($get('meta_description'))) {
+                                        $set('meta_description', Article::suggestedMetaDescription($get('excerpt'), $state, $get('title')));
+                                    }
+                                })
                                 ->minHeight('450px')
                                 ->toolbarButtons([
                                     'attachFiles',
@@ -76,6 +77,12 @@ class ArticleForm
                                 ->label('Short Summary (Excerpt)')
                                 ->rows(3)
                                 ->placeholder('Brief summary of the article to be shown in previews and search results...')
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(function (?string $state, callable $set, callable $get) {
+                                    if (blank($get('meta_description'))) {
+                                        $set('meta_description', Article::suggestedMetaDescription($state, $get('body'), $get('title')));
+                                    }
+                                })
                                 ->columnSpanFull(),
                         ]),
 
@@ -183,17 +190,19 @@ class ArticleForm
 
                             TextInput::make('meta_title')
                                 ->label('SEO Meta Title')
-                                ->placeholder('Custom Google search result title (defaults to article title)')
-                                ->helperText('Leave empty to automatically use the article title'),
+                                ->placeholder('Automatically generated from the article title')
+                                ->helperText('Generated automatically; you can edit it if needed.'),
 
                             Textarea::make('meta_description')
                                 ->label('Meta Description')
                                 ->rows(2)
-                                ->placeholder('Short description for search engines (Google)'),
+                                ->placeholder('Automatically generated from the summary or article content')
+                                ->helperText('Generated automatically; you can edit it if needed.'),
 
                             TextInput::make('meta_keywords')
                                 ->label('Meta Keywords')
-                                ->placeholder('kapilvastu news, breaking news, nepal'),
+                                ->placeholder('Automatically generated from the article title')
+                                ->helperText('Generated automatically; you can edit it if needed.'),
                         ]),
                 ])->columnSpan(['default' => 1, 'lg' => 1]),
             ]);

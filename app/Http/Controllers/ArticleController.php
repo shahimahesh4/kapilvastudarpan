@@ -8,9 +8,17 @@ use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
-    public function show(Article $article)
+    public function show(int $year, int $month, int $day, Article $article)
     {
         abort_unless($article->is_published && $article->published_at && $article->published_at->isPast(), 404);
+
+        $publishedDate = $article->published_at->copy()->timezone(config('app.timezone'));
+        abort_unless(
+            $publishedDate->year === $year
+            && $publishedDate->month === $month
+            && $publishedDate->day === $day,
+            404
+        );
 
         $article->incrementViews();
         $article->loadMissing(['category', 'categories', 'approvedComments.user']);
@@ -75,6 +83,14 @@ class ArticleController extends Controller
             'nextArticle' => $nextArticle,
             'categories' => $categories,
         ]);
+    }
+
+    /** Permanently redirect former slug URLs to the canonical date-and-ID URL. */
+    public function redirectLegacy(Article $article)
+    {
+        abort_unless($article->is_published && $article->published_at && $article->published_at->isPast(), 404);
+
+        return redirect()->to($article->publicUrl(), 301);
     }
 
     public function category(Category $category)
@@ -176,7 +192,7 @@ class ArticleController extends Controller
 
         if (! auth()->check()) {
             return redirect()
-                ->to(route('articles.show', $article->slug) . '#comments')
+                ->to($article->publicUrl() . '#comments')
                 ->with('status_warning', 'प्रतिक्रिया लेख्नका लागि कृपया पहिले लगइन गर्नुहोस्।');
         }
 
@@ -209,7 +225,7 @@ class ArticleController extends Controller
         $message = $parentId ? 'तपाईंको जवाफ सफलतापूर्वक पोस्ट गरियो।' : 'तपाईंको प्रतिक्रिया सफलतापूर्वक पोस्ट गरियो।';
 
         return redirect()
-            ->to(route('articles.show', $article->slug) . '#comments')
+            ->to($article->publicUrl() . '#comments')
             ->with('comment_success', $message);
     }
 
@@ -224,10 +240,10 @@ class ArticleController extends Controller
             abort(403);
         }
 
-        $slug = $comment->article?->slug;
+        $article = $comment->article;
         $comment->delete();
 
-        $redirectUrl = $slug ? route('articles.show', $slug) . '#comments' : url()->previous();
+        $redirectUrl = $article ? $article->publicUrl() . '#comments' : url()->previous();
 
         return redirect($redirectUrl)->with('comment_success', 'प्रतिक्रिया हटाइयो।');
     }

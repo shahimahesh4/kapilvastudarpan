@@ -76,7 +76,7 @@ class NotificationSubscriptionController extends Controller
             'title' => $latest ? 'कपिलवस्तु दर्पण - ताजा समाचार' : 'कपिलवस्तु दर्पण डिजिटल न्यूज',
             'body' => $latest ? $latest->title : 'तपाईंले कपिलवस्तु दर्पणको ताजा तथा ब्रेकिङ समाचारहरूको सूचना सक्रिय गर्नुभएको छ।',
             'icon' => asset('images/kapilvastu-darpan-logo.jpg'),
-            'url' => $latest ? route('articles.show', $latest->slug) : route('home'),
+            'url' => $latest ? article_url($latest) : route('home'),
             'tag' => 'kapilvastu-news-' . ($latest ? $latest->id : 'welcome'),
         ]);
     }
