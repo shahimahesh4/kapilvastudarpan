@@ -132,7 +132,7 @@
 <!-- Main Header Branding Section -->
 <header class="bg-white border-b border-stone-100">
     <!-- Mobile header: menu, centred logo, account shortcut. -->
-    <div class="fixed inset-x-0 top-0 z-40 grid h-[4.75rem] grid-cols-[2.75rem_minmax(0,1fr)_2.75rem] items-center gap-2 border-b border-stone-200 bg-white px-4 shadow-sm md:hidden">
+    <div class="fixed inset-x-0 top-0 z-40 grid h-[4.75rem] grid-cols-[2.75rem_minmax(0,1fr)_2.75rem] items-center gap-2 border-b border-stone-200 bg-white px-4 shadow-sm md:hidden" style="position:fixed;inset:0 0 auto;z-index:40;display:grid;height:4.75rem;grid-template-columns:2.75rem minmax(0,1fr) 2.75rem;align-items:center;gap:.5rem;padding-inline:1rem;background:#fff;">
         <button @click="sidebarOpen = true" type="button" class="grid h-10 w-10 place-items-center text-[#0955cf] transition hover:text-[#c92137]" :aria-expanded="sidebarOpen ? 'true' : 'false'" aria-controls="site-sidebar" aria-label="मेनु खोल्नुहोस्">
             <span class="flex w-8 flex-col gap-[7px]" aria-hidden="true">
                 <span class="h-px w-full bg-current"></span>
