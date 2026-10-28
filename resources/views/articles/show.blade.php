@@ -10,7 +10,7 @@
     <div id="article-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-[#c92137] via-red-500 to-amber-500 z-[100] transition-all duration-75" style="width: 0%"></div>
 
     <!-- Main Article Page Container (Alpine managed font size scaling & reader state) -->
-    <main class="mx-auto max-w-[1280px] px-4 py-6 sm:py-8 sm:px-6 lg:px-8" x-data="{
+    <main class="article-reader-page mx-auto max-w-[1280px] px-4 py-6 sm:py-8 sm:px-6 lg:px-8" x-data="{
         fontSize: 'md',
         copied: false,
         bookmarked: false,
@@ -103,7 +103,7 @@
 
         <div class="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
             <!-- Article Main Content Stream -->
-            <article class="flex-1 min-w-0 bg-white">
+            <article class="article-main-surface flex-1 min-w-0 bg-white">
                 <!-- Additional Category Tags if multiple -->
                 @if($article->categories->count() > 1)
                     <div class="mb-3 flex flex-wrap items-center gap-2">
@@ -243,7 +243,7 @@
                     <div class="flex-1 min-w-0">
                         <!-- Editorial Lead Excerpt Box with Stylized Accent -->
                         @if ($article->excerpt)
-                            <div class="relative overflow-hidden rounded-2xl border-l-[6px] border-[#c92137] bg-gradient-to-r from-red-50/70 via-stone-50/50 to-white p-5 sm:p-6 shadow-2xs mb-6">
+                            <div class="article-excerpt-surface relative overflow-hidden rounded-2xl border-l-[6px] border-[#c92137] bg-gradient-to-r from-red-50/70 via-stone-50/50 to-white p-5 sm:p-6 shadow-2xs mb-6">
                                 <svg class="absolute right-3 -bottom-4 h-24 w-24 text-red-100/50 pointer-events-none select-none" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
                                 </svg>
@@ -254,7 +254,7 @@
                         @endif
 
                         <!-- Author & Publishing Meta Card (Mobile only, on desktop author is in sticky side scroller) -->
-                        <div class="block lg:hidden mb-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-stone-200/90 bg-gradient-to-r from-stone-50/90 via-white to-stone-50/40 p-4 sm:p-4.5 shadow-2xs">
+                        <div class="article-meta-surface block lg:hidden mb-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-stone-200/90 bg-gradient-to-r from-stone-50/90 via-white to-stone-50/40 p-4 sm:p-4.5 shadow-2xs">
                     <div class="flex items-center gap-3.5">
                         <span class="profile-avatar-dashed rounded-full w-11 h-11 sm:w-12 sm:h-12 shrink-0 shadow-xs overflow-hidden p-0.5 bg-white">
                             <img src="{{ setting_image_url(setting('news_profile_photo'), 'images/profile-avatar.png') }}" alt="{{ $article->display_author }}" class="h-full w-full rounded-full object-contain">
@@ -424,7 +424,7 @@
 
                 <!-- Editorial Author Profile Card -->
                 @if(setting_bool('show_article_editor_box', false))
-                <div class="mt-8 rounded-2xl border border-stone-200/90 bg-gradient-to-br from-stone-50 via-white to-red-50/20 p-5 sm:p-6 shadow-xs flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5">
+                <div class="article-editor-surface mt-8 rounded-2xl border border-stone-200/90 bg-gradient-to-br from-stone-50 via-white to-red-50/20 p-5 sm:p-6 shadow-xs flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5">
                     <span class="profile-avatar-dashed w-24 sm:w-28 aspect-[3.5/4.5] shrink-0 shadow-sm !rounded-xl overflow-hidden p-1 bg-white">
                         <img src="{{ asset(setting('editor_photo', 'images/team/tuklal-gaire.png')) }}" alt="{{ setting('editor_name', 'टुकलाल गैरे') }}" class="h-full w-full !rounded-lg object-cover" loading="lazy" decoding="async">
                     </span>
@@ -445,7 +445,7 @@
                 @endif
 
                 <!-- Article Comments Section -->
-                <section id="comments" x-data="{ replyingTo: null, replyingToAuthor: '', insertEmoji(emoji, targetId) { const el = document.getElementById(targetId); if (!el) return; const start = el.selectionStart ?? el.value.length; const end = el.selectionEnd ?? el.value.length; const val = el.value; el.value = val.substring(0, start) + emoji + val.substring(end); el.focus(); el.selectionStart = el.selectionEnd = start + emoji.length; } }" class="mt-10 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7 shadow-xs">
+                <section id="comments" x-data="{ replyingTo: null, replyingToAuthor: '', insertEmoji(emoji, targetId) { const el = document.getElementById(targetId); if (!el) return; const start = el.selectionStart ?? el.value.length; const end = el.selectionEnd ?? el.value.length; const val = el.value; el.value = val.substring(0, start) + emoji + val.substring(end); el.focus(); el.selectionStart = el.selectionEnd = start + emoji.length; } }" class="article-comments-surface mt-10 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7 shadow-xs">
                     <!-- Section Header -->
                     <div class="flex items-center justify-between border-b border-stone-200 pb-4 mb-6">
                         <div class="flex items-center gap-2.5">
@@ -801,7 +801,7 @@
                 </div>
 
                 <!-- Bottom Social Sharing Call-to-Action -->
-                <div id="feedback-section" class="mt-8 rounded-2xl bg-gradient-to-r from-red-50 via-stone-50 to-amber-50/50 p-4 sm:p-5 border border-red-200/80 shadow-2xs">
+                <div id="feedback-section" class="article-feedback-surface mt-8 rounded-2xl bg-gradient-to-r from-red-50 via-stone-50 to-amber-50/50 p-4 sm:p-5 border border-red-200/80 shadow-2xs">
                     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                         <div class="min-w-0 flex-1">
                             <h3 class="text-sm sm:text-[15px] font-extrabold text-stone-900 leading-snug">यो समाचार तपाईंलाई कस्तो लाग्यो?</h3>
@@ -834,7 +834,7 @@
                         </div>
                         <div class="grid gap-6 sm:grid-cols-2">
                             @foreach($relatedArticles as $rel)
-                                <article class="rounded-xl border border-stone-200/90 bg-white p-3.5 shadow-xs hover:shadow-md hover:border-red-200 transition-all duration-300 group">
+                                <article class="article-related-surface rounded-xl border border-stone-200/90 bg-white p-3.5 shadow-xs hover:shadow-md hover:border-red-200 transition-all duration-300 group">
                                     <a href="{{ route('articles.show', $rel->slug) }}" wire:navigate.hover class="block aspect-[16/9] rounded-lg overflow-hidden bg-stone-100 relative">
                                         <img src="{{ $rel->image_url }}" alt="{{ $rel->title }}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async">
                                         @php $relCat = $rel->categories->first() ?? $rel->category; @endphp
@@ -869,7 +869,7 @@
             <!-- Right Interactive Sticky Sidebar (Decreased Width) -->
             <aside class="w-full lg:w-[310px] xl:w-[325px] shrink-0 space-y-7 lg:sticky lg:top-24">
                 <!-- Trending News Box (Matches User Reference Image Styling) -->
-                <div class="rounded-2xl border border-red-200/90 bg-gradient-to-b from-red-50/50 via-white to-white p-4 sm:p-5 shadow-xs">
+                <div class="article-trending-surface rounded-2xl border border-red-200/90 bg-gradient-to-b from-red-50/50 via-white to-white p-4 sm:p-5 shadow-xs">
                     <div class="flex items-center justify-between border-b border-red-200 pb-3.5 mb-4">
                         <h3 class="text-base sm:text-lg font-black text-[#c92137] flex items-center gap-2">
                             <span class="grid h-7 w-7 place-items-center rounded-full bg-red-100 text-sm">🔥</span>
@@ -906,7 +906,7 @@
                 </div>
 
                 <!-- Latest News Box (ताजा अपडेट) -->
-                <div class="rounded-2xl border border-stone-200/90 bg-white p-4 sm:p-5 shadow-xs">
+                <div class="article-latest-surface rounded-2xl border border-stone-200/90 bg-white p-4 sm:p-5 shadow-xs">
                     <div class="flex items-center justify-between border-b border-stone-200 pb-3.5 mb-4">
                         <h3 class="text-lg font-black text-stone-900 flex items-center gap-2">
                             <span class="h-4 w-1.5 bg-[#0955cf] rounded-full"></span>
