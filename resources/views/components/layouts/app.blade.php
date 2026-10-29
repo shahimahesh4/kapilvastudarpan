@@ -121,6 +121,10 @@
         <script src="{{ asset('js/nepali-unicode-converter.js') }}" defer></script>
     @endif
 
+    <!-- Preload Critical Mukta Devanagari Fonts (Eliminates LCP Delay & Chaining) -->
+    <link rel="preload" href="{{ Vite::asset('resources/fonts/mukta-400-devanagari.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ Vite::asset('resources/fonts/mukta-700-devanagari.woff2') }}" as="font" type="font/woff2" crossorigin>
+
     {{-- Livewire provides Alpine; the former Vite JS entry only loaded unused Axios. --}}
     @vite(['resources/css/app.css'])
     @livewireStyles
@@ -148,7 +152,6 @@
         accountOpen: {{ (!request()->routeIs('login', 'register', 'password.*', 'dashboard*') && ($errors->any() || session('status_success') || session('status_warning') || session('unverified_email'))) ? 'true' : 'false' }},
         searchOpen: false,
         authTab: '{{ session('auth_tab', ($errors->has('name') || $errors->has('password_confirmation')) ? 'register' : 'login') }}',
-        menuPinned: false,
         darkMode: false,
         activeProvince: 'लुम्बिनी प्रदेश',
         setTheme() {
@@ -156,18 +159,6 @@
         },
         init() {
             this.darkMode = localStorage.getItem('kapilvastu-theme') === 'dark';
-            let frameQueued = false;
-            const updatePinnedState = () => {
-                if (frameQueued) return;
-                frameQueued = true;
-                requestAnimationFrame(() => {
-                    this.menuPinned = this.$refs.menuAnchor?.getBoundingClientRect().top <= 0;
-                    frameQueued = false;
-                });
-            };
-            this.$nextTick(updatePinnedState);
-            window.addEventListener('scroll', updatePinnedState, { passive: true });
-            window.addEventListener('resize', updatePinnedState, { passive: true });
         }
     }"
     @keydown.escape.window="flashOpen = false; sidebarOpen = false; accountOpen = false; searchOpen = false"

@@ -188,11 +188,11 @@
         </div>
 
     </div>
+</header>
 
-    <!-- Sticky Primary Navigation Bar -->
-    <div x-ref="menuAnchor" class="hidden h-[4.2rem] md:block">
-        <div class="inset-x-0 top-0 z-40 bg-[#0955cf] text-white transition-all shadow-md" :class="menuPinned ? 'fixed shadow-xl' : 'relative'">
-            <nav id="primary-nav" aria-label="मुख्य नेभिगेसन">
+<!-- Sticky Primary Navigation Bar -->
+<div class="sticky top-0 z-40 hidden bg-[#0955cf] text-white shadow-md md:block transition-shadow">
+    <nav id="primary-nav" aria-label="मुख्य नेभिगेसन">
                 <style>
                     /* Immediate Header Main Menu Font Increase (Bypasses Browser Cache) */
                     #primary-nav ul.kd-main-nav,
@@ -413,9 +413,7 @@
                     </div>
                 </div>
             </section>
-        </div>
-    </div>
-</header>
+</div>
 
 <!-- Breaking News Highlights Bar -->
 @if(isset($breakingNews) && $breakingNews->isNotEmpty())
