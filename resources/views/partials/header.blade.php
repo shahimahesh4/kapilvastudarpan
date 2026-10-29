@@ -271,7 +271,7 @@
                                                                     @foreach ($provinceStories[$provName] ?? [] as $story)
                                                                         <article class="group flex flex-col">
                                                                             <a href="{{ article_url($story) }}" wire:navigate.hover class="block aspect-[16/10] rounded-lg overflow-hidden bg-stone-100 shadow-sm">
-                                                                                <img src="{{ $story->image_url }}" alt="{{ $story->title }}" class="h-full w-full object-cover group-hover:scale-105 transition duration-300">
+                                                                                <img src="{{ $story->image_url }}" alt="{{ $story->title }}" width="240" height="150" loading="lazy" decoding="async" class="h-full w-full object-cover group-hover:scale-105 transition duration-300">
                                                                             </a>
                                                                             <h4 class="mt-3 text-[16px] sm:text-[17px] font-bold leading-snug text-stone-900 group-hover:text-[#c92137] line-clamp-2 transition">
                                                                                 <a href="{{ article_url($story) }}" wire:navigate.hover>
@@ -396,7 +396,7 @@
                         @foreach($flashNews ?? [] as $flash)
                             <article class="grid grid-cols-[6.5rem_1fr] items-start gap-3 group">
                                 <a href="{{ article_url($flash) }}" wire:navigate.hover class="block aspect-[4/3] rounded overflow-hidden bg-stone-100">
-                                    <img src="{{ $flash->image_url }}" alt="{{ $flash->title }}" class="h-full w-full object-cover group-hover:scale-105 transition duration-300">
+                                    <img src="{{ $flash->image_url }}" alt="{{ $flash->title }}" width="104" height="78" loading="lazy" decoding="async" class="h-full w-full object-cover group-hover:scale-105 transition duration-300">
                                 </a>
                                 <div>
                                     @php $flashCat = $flash->categories->first() ?? $flash->category; @endphp

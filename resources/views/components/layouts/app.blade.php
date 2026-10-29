@@ -125,6 +125,11 @@
     <link rel="preload" href="{{ Vite::asset('resources/fonts/mukta-400-devanagari.woff2') }}" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="{{ Vite::asset('resources/fonts/mukta-700-devanagari.woff2') }}" as="font" type="font/woff2" crossorigin>
 
+    <!-- Preload Article Featured Hero Image Early (Eliminates Speed Index Delay) -->
+    @if ($article && !empty($article->image_path))
+        <link rel="preload" as="image" href="{{ $article->imageUrl(1280) }}" fetchpriority="high">
+    @endif
+
     {{-- Livewire provides Alpine; the former Vite JS entry only loaded unused Axios. --}}
     @vite(['resources/css/app.css'])
     @livewireStyles

@@ -17,6 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'home')->name('home');
 Route::get('/optimized-image/{path}', [OptimizedImageController::class, 'show'])
     ->where('path', '.*')
+    ->withoutMiddleware([
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
+    ])
     ->name('images.optimized');
 Route::redirect('/admin', '/stnapanel');
 
