@@ -131,7 +131,7 @@
                         <!-- Author Avatar with Red Dashed Border -->
                         <div class="relative">
                             <span class="profile-avatar-dashed rounded-full w-12 h-12 shrink-0 shadow-xs overflow-hidden p-0.5 bg-white">
-                                <img src="{{ setting_image_url(setting('news_profile_photo'), 'images/profile-avatar.png') }}" alt="{{ $article->display_author }}" width="48" height="48" class="h-full w-full rounded-full object-contain">
+                                <img src="{{ setting_image_url(setting('news_profile_photo'), 'images/profile-avatar.png', 96) }}" alt="{{ $article->display_author }}" width="48" height="48" class="h-full w-full rounded-full object-contain">
                             </span>
                         </div>
 
@@ -257,7 +257,7 @@
                         <div class="article-meta-surface block lg:hidden mb-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-stone-200/90 bg-gradient-to-r from-stone-50/90 via-white to-stone-50/40 p-4 sm:p-4.5 shadow-2xs">
                     <div class="flex items-center gap-3.5">
                         <span class="profile-avatar-dashed rounded-full w-11 h-11 sm:w-12 sm:h-12 shrink-0 shadow-xs overflow-hidden p-0.5 bg-white">
-                            <img src="{{ setting_image_url(setting('news_profile_photo'), 'images/profile-avatar.png') }}" alt="{{ $article->display_author }}" width="48" height="48" class="h-full w-full rounded-full object-contain">
+                            <img src="{{ setting_image_url(setting('news_profile_photo'), 'images/profile-avatar.png', 96) }}" alt="{{ $article->display_author }}" width="48" height="48" class="h-full w-full rounded-full object-contain">
                         </span>
                         <div>
                             <div class="flex items-center gap-2">

@@ -18,7 +18,14 @@ class OptimizedImageController extends Controller
         // the public storage disk. Treat both consistently so old news photos do
         // not bypass WebP conversion and long-lived browser caching.
         $isPublicAsset = str_starts_with($path, 'images/');
-        abort_unless($isPublicAsset || str_starts_with($path, 'articles/') || str_starts_with($path, 'media/'), 404);
+        abort_unless(
+            $isPublicAsset
+            || str_starts_with($path, 'articles/')
+            || str_starts_with($path, 'media/')
+            || str_starts_with($path, 'settings/')
+            || str_starts_with($path, 'team/'),
+            404
+        );
 
         if ($isPublicAsset) {
             $imagesRoot = realpath(public_path('images'));
@@ -37,7 +44,7 @@ class OptimizedImageController extends Controller
             abort_unless($disk->exists($path), 404);
             $source = $disk->path($path);
         }
-        $width = min(1600, max(160, (int) $request->integer('w', 960)));
+        $width = min(1600, max(32, (int) $request->integer('w', 960)));
         $cachePath = storage_path('app/image-cache/'.sha1($path.'|'.filemtime($source).'|'.$width).'.webp');
 
         if (! File::exists($cachePath)) {

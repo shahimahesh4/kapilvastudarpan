@@ -91,7 +91,7 @@ if (! function_exists('setting_image_url')) {
     /**
      * Resolve a public URL for an image stored in settings, uploaded files, or assets.
      */
-    function setting_image_url(?string $path, ?string $default = null): ?string
+    function setting_image_url(?string $path, ?string $default = null, ?int $width = null): ?string
     {
         $target = $path ?: $default;
         if (blank($target)) {
@@ -100,6 +100,30 @@ if (! function_exists('setting_image_url')) {
 
         if (str_starts_with($target, 'http://') || str_starts_with($target, 'https://')) {
             return $target;
+        }
+
+        // Do not convert favicon icons or SVGs
+        if (
+            str_contains(strtolower($target), 'favicon')
+            || str_ends_with(strtolower($target), '.ico')
+            || str_ends_with(strtolower($target), '.svg')
+        ) {
+            return asset(ltrim($target, '/'));
+        }
+
+        $cleanPath = ltrim(preg_replace('#^/?(storage|public)/#', '', $target), '/');
+        if (
+            $width !== null
+            || str_starts_with($cleanPath, 'settings/')
+            || str_starts_with($cleanPath, 'team/')
+            || str_starts_with($cleanPath, 'images/')
+            || str_starts_with($cleanPath, 'articles/')
+            || str_starts_with($cleanPath, 'media/')
+        ) {
+            return route('images.optimized', [
+                'path' => $cleanPath,
+                'w' => $width ?? 320,
+            ]);
         }
 
         if (str_starts_with($target, 'storage/')) {
@@ -125,7 +149,7 @@ if (! function_exists('setting_image_relative_url')) {
      * Unlike asset(), this does not depend on APP_URL matching the host currently
      * serving the request (for example 127.0.0.1, a local domain, or production).
      */
-    function setting_image_relative_url(?string $path, ?string $default = null): ?string
+    function setting_image_relative_url(?string $path, ?string $default = null, ?int $width = null): ?string
     {
         $target = $path ?: $default;
 
@@ -135,6 +159,28 @@ if (! function_exists('setting_image_relative_url')) {
 
         if (str_starts_with($target, 'http://') || str_starts_with($target, 'https://')) {
             return $target;
+        }
+
+        if (
+            str_contains(strtolower($target), 'favicon')
+            || str_ends_with(strtolower($target), '.ico')
+            || str_ends_with(strtolower($target), '.svg')
+        ) {
+            return '/'.ltrim($target, '/');
+        }
+
+        $cleanPath = ltrim(preg_replace('#^/?(storage|public)/#', '', $target), '/');
+        if (
+            str_starts_with($cleanPath, 'settings/')
+            || str_starts_with($cleanPath, 'team/')
+            || str_starts_with($cleanPath, 'images/')
+            || str_starts_with($cleanPath, 'articles/')
+            || str_starts_with($cleanPath, 'media/')
+        ) {
+            return route('images.optimized', [
+                'path' => $cleanPath,
+                'w' => $width ?? 320,
+            ], false);
         }
 
         if (str_starts_with($target, 'storage/') || str_starts_with($target, 'images/')) {
