@@ -1,5 +1,24 @@
 <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-[#c92137] focus:text-white focus:px-4 focus:py-2">मुख्य सामग्रीमा जानुहोस्</a>
 
+<!-- Mobile-only utility bar: date and time only. -->
+<div class="fixed inset-x-0 top-0 z-50 flex h-8 items-center justify-center border-b border-stone-200/90 bg-stone-50/95 px-3 text-[11px] font-medium text-stone-700 backdrop-blur-sm md:hidden" x-data="{
+    currentTime: '{{ nepali_time() }}',
+    init() {
+        const toNepali = (num) => String(num).replace(/[0-9]/g, d => ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'][d]);
+        const update = () => {
+            const date = new Date();
+            const hours = date.getHours() % 12 || 12;
+            this.currentTime = toNepali(hours) + ':' + toNepali(String(date.getMinutes()).padStart(2, '0')) + ' बजे';
+        };
+        update();
+        setInterval(update, 10000);
+    }
+}">
+    <span>{{ nepali_date() }}</span>
+    <span class="mx-2 text-stone-300">|</span>
+    <span x-text="currentTime">{{ nepali_time() }}</span>
+</div>
+
 <!-- Top Info Utility Bar -->
 <div class="hidden border-b border-stone-200/90 bg-stone-50/80 text-xs text-stone-600 transition-colors md:block">
     <div class="flex w-full items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
@@ -136,7 +155,7 @@
         @media (max-width: 767px) {
             #mobile-site-header {
                 position: fixed !important;
-                inset: 0 0 auto !important;
+                inset: 2rem 0 auto !important;
                 z-index: 40 !important;
                 display: grid !important;
                 height: 4.75rem !important;
@@ -175,7 +194,7 @@
             </button>
         @endauth
     </div>
-    <div class="h-[4.75rem] md:hidden" aria-hidden="true"></div>
+    <div class="h-[6.75rem] md:hidden" aria-hidden="true"></div>
 
     <div class="mx-auto hidden max-w-[1280px] items-center justify-between gap-6 px-4 py-3 sm:px-6 sm:py-4 md:flex lg:px-8">
         <a href="{{ route('home') }}" wire:navigate.hover class="shrink-0 flex items-center gap-3.5 group" aria-label="{{ setting('site_name', 'कपिलवस्तु दर्पण') }} गृहपृष्ठ">
