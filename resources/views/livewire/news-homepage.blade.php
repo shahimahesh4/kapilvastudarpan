@@ -277,6 +277,62 @@
             </div>
         </section>
 
+        @if($rupandehiSpecial->isNotEmpty())
+            <!-- Section: रुपन्देही विशेष (Rupandehi Special) -->
+            <section class="mb-10" aria-labelledby="rupandehi-heading">
+                <div class="mb-6 flex flex-wrap items-end justify-between gap-4 border-b-2 border-[#0955cf] pb-3">
+                    <div class="flex items-center gap-3">
+                        <span class="inline-block h-7 w-2 rounded-full bg-[#0955cf]"></span>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h2 id="rupandehi-heading" class="text-2xl sm:text-3xl font-black tracking-tight text-stone-900">
+                                    रुपन्देही <span class="text-[#0955cf]">विशेष</span>
+                                </h2>
+                                <span class="hidden sm:inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-black text-[#0955cf]">
+                                    विशेष कभरेज
+                                </span>
+                            </div>
+                            <p class="text-xs sm:text-sm text-stone-600 font-medium mt-0.5">भैरहवा, बुटवल, सिद्धार्थनगर र रुपन्देहीका स्थानीय समाचारहरू</p>
+                        </div>
+                    </div>
+                    <a wire:navigate.hover href="{{ route('category.show', 'rupandehi-special') }}" class="group inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3.5 py-1.5 text-xs sm:text-sm font-bold text-stone-700 shadow-2xs hover:border-[#0955cf] hover:bg-[#0955cf] hover:text-white transition-all duration-200">
+                        <span>सबै रुपन्देही समाचार</span>
+                        <svg class="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    @foreach($rupandehiSpecial as $art)
+                        <article class="group flex flex-col rounded-2xl border border-stone-200/90 bg-white shadow-2xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+                            <a wire:navigate.hover href="{{ article_url($art) }}" class="relative block aspect-[16/10] overflow-hidden bg-stone-100">
+                                <img src="{{ $art->image_url }}" alt="{{ $art->title }}" onerror="this.onerror=null;this.src='{{ asset('images/kapilvastu-darpan-logo.png') }}';" loading="lazy" decoding="async" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
+                                <span class="absolute bottom-3 left-3 z-10 inline-flex items-center gap-1 rounded-md bg-[#0955cf] px-2.5 py-1 text-[11px] font-black text-white shadow-md">
+                                    📍 रुपन्देही
+                                </span>
+                            </a>
+                            <div class="flex flex-1 flex-col p-5">
+                                <h3 class="flex-1">
+                                    <a wire:navigate.hover href="{{ article_url($art) }}" class="block text-base sm:text-lg font-black leading-snug text-stone-900 group-hover:text-[#0955cf] transition-colors duration-150 line-clamp-2">
+                                        {{ $art->title }}
+                                    </a>
+                                </h3>
+                                @if($art->excerpt)
+                                    <p class="mt-2.5 text-xs sm:text-sm text-stone-600 line-clamp-2 leading-relaxed font-normal">{{ $art->excerpt }}</p>
+                                @endif
+                                <div class="mt-4 flex items-center justify-between border-t border-stone-100 pt-3 text-xs text-stone-600 font-medium">
+                                    <span>{{ $art->published_at?->diffForHumans() }}</span>
+                                    <span class="text-stone-700 font-semibold">{{ $art->display_author }}</span>
+                                </div>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+            </section>
+        @endif
+
         <!-- Section: राजनीति (Politics - Pro Modern Magazine) -->
         <section class="homepage-section-panel mb-10 rounded-2xl border border-stone-200/80 bg-linear-to-b from-stone-50/50 to-white p-5 sm:p-6 shadow-xs" aria-labelledby="politics-heading">
             <div class="mb-5 flex items-center justify-between border-b border-stone-200 pb-3">

@@ -14,6 +14,7 @@ class RatopatiNewsSeeder extends Seeder
         $categoriesData = [
             ['name' => 'मुख्य समाचार', 'slug' => 'main-news', 'order' => 1, 'is_nav' => true],
             ['name' => 'कपिलवस्तु विशेष', 'slug' => 'kapilvastu-special', 'order' => 2, 'is_nav' => true],
+            ['name' => 'रुपन्देही विशेष', 'slug' => 'rupandehi-special', 'order' => 3, 'is_nav' => true],
             ['name' => 'राजनीति', 'slug' => 'politics', 'order' => 3, 'is_nav' => true],
             ['name' => 'अर्थतन्त्र', 'slug' => 'economy', 'order' => 4, 'is_nav' => true],
             ['name' => 'प्रदेश', 'slug' => 'pradesh', 'order' => 5, 'is_nav' => true],

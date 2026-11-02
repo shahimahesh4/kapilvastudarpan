@@ -103,6 +103,14 @@ class NewsHomepage extends Component
             ->take(6)
             ->get();
 
+        $rupandehiSpecial = Article::query()
+            ->forCard()
+            ->published()
+            ->forCategory('rupandehi-special')
+            ->latest('published_at')
+            ->take(6)
+            ->get();
+
         $politicsArticles = Article::query()
             ->forCard()
             ->published()
@@ -223,6 +231,7 @@ class NewsHomepage extends Component
             'headlines' => $headlines,
             'trendingNews' => $trendingNews,
             'kapilvastuSpecial' => $kapilvastuSpecial,
+            'rupandehiSpecial' => $rupandehiSpecial,
             'politicsArticles' => $politicsArticles,
             'economyArticles' => $economyArticles,
             'sportsArticles' => $sportsArticles,
