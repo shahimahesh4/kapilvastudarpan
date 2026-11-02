@@ -1,8 +1,8 @@
 <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-[#c92137] focus:text-white focus:px-4 focus:py-2">मुख्य सामग्रीमा जानुहोस्</a>
 
 <!-- Top Info Utility Bar -->
-<div class="block border-b border-stone-200/90 bg-stone-50/80 text-xs text-stone-600 transition-colors">
-    <div class="flex w-full items-center justify-center px-4 py-1.5 sm:px-6 lg:px-8">
+<div class="hidden border-b border-stone-200/90 bg-stone-50/80 text-xs text-stone-600 transition-colors md:block">
+    <div class="flex w-full items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
         <div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
             <div class="flex items-center gap-1.5 font-medium text-stone-700" x-data="{
                 currentTime: '{{ nepali_time() }}',
@@ -31,8 +31,8 @@
                 </svg>
                 <span x-text="currentTime">{{ nepali_time() }}</span>
             </div>
-            <span class="hidden text-stone-300">|</span>
-            <div class="hidden items-center gap-1 font-medium text-stone-600">
+            <span class="hidden sm:inline text-stone-300">|</span>
+            <div class="hidden sm:flex items-center gap-1 font-medium text-stone-600">
                 <svg class="h-3.5 w-3.5 text-rose-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -41,7 +41,7 @@
             </div>
         </div>
 
-        <div class="hidden items-center gap-3">
+        <div class="flex items-center gap-3">
             @php
                 $socialFacebook = trim((string) setting('social_facebook', ''));
                 $socialTwitter = trim((string) setting('social_twitter', ''));
