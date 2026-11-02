@@ -2,8 +2,9 @@
     :title="!empty($article->meta_title) ? $article->meta_title : ($article->title . ' | ' . setting('site_name', 'कपिलवस्तु दर्पण'))"
     :description="$article->meta_description ?? $article->excerpt ?? Str::limit(strip_tags($article->body), 160)"
     :keywords="$article->meta_keywords ?? 'कपिलवस्तु दर्पण, ' . ($article->categories->isNotEmpty() ? $article->categories->pluck('name')->join(', ') : ($article->category?->name ?? 'समाचार')) . ', ' . $article->title"
+    :canonical="$article->publicUrl()"
     :ogType="'article'"
-    :ogImage="$article->image_url"
+    :ogImage="$article->imageUrl(1280)"
     :article="$article"
 >
     @php

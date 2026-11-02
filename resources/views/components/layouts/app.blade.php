@@ -101,6 +101,15 @@
     <meta property="og:description" content="{{ $description }}">
     <meta property="og:url" content="{{ $canonicalUrl }}">
     <meta property="og:image" content="{{ $shareImage }}">
+    <meta property="og:image:secure_url" content="{{ $shareImage }}">
+    <meta property="og:image:width" content="1280">
+    <meta property="og:image:height" content="720">
+    @if($article)
+        <meta property="article:published_time" content="{{ $article->published_at?->toIso8601String() }}">
+        <meta property="article:modified_time" content="{{ $article->updated_at?->toIso8601String() }}">
+        <meta property="article:section" content="{{ ($article->categories->first() ?? $article->category)?->name ?? 'समाचार' }}">
+        <meta property="article:author" content="{{ $article->display_author }}">
+    @endif
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
